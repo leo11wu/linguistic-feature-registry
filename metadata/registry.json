@@ -1,0 +1,113 @@
+{
+  "title": "Linguistic Feature Registry",
+  "snapshot_version": "0.1.0",
+  "research_checked": "2026-10-14",
+  "timezone": "Asia/Taipei",
+  "primary_language": "en",
+  "repository": "https://github.com/leo11wu/linguistic-feature-registry",
+  "status": "research_inventory; extraction implementations not empirically validated",
+  "counts": {
+    "features": 177,
+    "categories": 17,
+    "sources": 73,
+    "paper_operationalizations": 44,
+    "resource_decisions": 25,
+    "guidance_rows": 62
+  },
+  "category_counts": {
+    "01 基础长度与规模": 9,
+    "02 词汇多样性": 14,
+    "03 词汇频率与熟练度": 10,
+    "04 多词单位与搭配": 8,
+    "05 词汇语义与心理常模": 12,
+    "06 形态结构": 8,
+    "07 词性与语法分布": 10,
+    "08 句法复杂度与构式": 25,
+    "09 依存与树结构": 16,
+    "10 篇章衔接与语义相似度": 12,
+    "11 信息论与语言模型": 10,
+    "12 可读性复合分数": 9,
+    "13 文体语域与语用代理量": 7,
+    "14 正字法与词典音系": 6,
+    "15 计量规律与分布拟合": 11,
+    "16 错误与语料质量诊断": 5,
+    "17 词汇共现网络": 5
+  },
+  "files": [
+    {
+      "path": ".gitattributes",
+      "bytes": 79,
+      "sha256": "88bf794d9e4ce4816485f1bcdaa4e3a8faa3ac9e427044c5d126c9ffafe3ab08"
+    },
+    {
+      "path": ".gitignore",
+      "bytes": 107,
+      "sha256": "f20802cec1ee1eb42c29a7c6e561a62bd7d0105d0ce0668171ca637c66b6d80c"
+    },
+    {
+      "path": "CHANGELOG.md",
+      "bytes": 590,
+      "sha256": "183e8b5ea3b25c628a8a3153f9b6fabee42a9c121af5ce3844b6549e36dde8fe"
+    },
+    {
+      "path": "README.md",
+      "bytes": 5271,
+      "sha256": "3519957cc196debdc85208504fe381737b52d3aff78c0046b343828cbb1206db"
+    },
+    {
+      "path": "data/english_linguistic_feature_registry.csv",
+      "bytes": 79832,
+      "sha256": "0dd4541dc0108bd0253d518b00fdf28b67c53712d324df81ab8fbdae74aafd24"
+    },
+    {
+      "path": "data/external_resource_selection.csv",
+      "bytes": 22182,
+      "sha256": "8f5757e3644efa77bb6a926728368ccfebf91bd0d7625aba5b7f2392bc2b2abe"
+    },
+    {
+      "path": "data/modeling_guidance.csv",
+      "bytes": 15799,
+      "sha256": "9c674f5c4997e20fbc14c5485f24d9cf4a692bd49ccd5f4c4d057863b338dc76"
+    },
+    {
+      "path": "data/paper_measure_specifications.csv",
+      "bytes": 36295,
+      "sha256": "2322ef9ad6eabc3f52df80d6c01d2ff26d2374e2f770a6806a5017a982aa7de3"
+    },
+    {
+      "path": "data/sources.csv",
+      "bytes": 22189,
+      "sha256": "04b206b1bb70d9c2c54c094ed02348cd8258afef4ef516a473a5f06fb4657577"
+    },
+    {
+      "path": "docs/data_dictionary.md",
+      "bytes": 4278,
+      "sha256": "2a25cc31c4dad1ba82e0d4bb7c27ba39f25939e2489a014236aa81fff6886e74"
+    },
+    {
+      "path": "docs/methodology.md",
+      "bytes": 2929,
+      "sha256": "f59c51040c7b4e71e4faf5cdffb98c3851fe3a8f6d9ffbb36f88698bbf252724"
+    },
+    {
+      "path": "docs/resource_selection.md",
+      "bytes": 5060,
+      "sha256": "d78058b83ca58b8d647592e4683905367d69315c57c228378cdde5844ba9ff64"
+    },
+    {
+      "path": "docs/sources.md",
+      "bytes": 27777,
+      "sha256": "ec5c8232c69b0295a2792b619d18e697fdad2dece6649b37d0f7f6f0d6c1469c"
+    },
+    {
+      "path": "downloads/english_linguistic_feature_registry_20261014.xlsx",
+      "bytes": 97280,
+      "sha256": "90a4aa146cd91fed9f59cadbd8a5355b9727e9ef81cf001f71183b5c0fd8f3fa"
+    },
+    {
+      "path": "scripts/validate_registry.py",
+      "bytes": 7328,
+      "sha256": "bc7c33722ba433293f98f7d9f34aaf69e3b2f77f66e12e2b37ff2e99e76d9cf4"
+    }
+  ]
+}

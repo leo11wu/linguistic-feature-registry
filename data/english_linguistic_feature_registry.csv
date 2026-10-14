@@ -1,0 +1,246 @@
+﻿"feature_id","类别","英文名称","中文名称","定义或计算口径","观察层级与单位","提取入口","实施分组","建模与测量注意点","跨语言说明","来源ID","来源链接","核验状态"
+"LEN01","01 基础长度与规模","Token count (N)","词次总数","固定分词规则后计数；建议排除标点另存标点数","文本；词次","TextDescriptives / spaCy","基础","子词 token 不等于语言学词；N 也是其他比率的分母","可迁移，但须统一词、句、字符与标点口径","R01,R35","https://hlasse.github.io/TextDescriptives/usingthepackage.html
+https://spacy.io/usage/linguistic-features","来源支持条目；实现未实测"
+"LEN02","01 基础长度与规模","Type count (V)","词型总数","按选定大小写和词形/lemma 规则统计不同类型","文本；词型","TextDescriptives / 自定义计数","基础","lemma 和 wordform 必须分开命名","可迁移，但须统一词、句、字符与标点口径","R01,R35","https://hlasse.github.io/TextDescriptives/usingthepackage.html
+https://spacy.io/usage/linguistic-features","来源支持构念；此处操作化需校准"
+"LEN03","01 基础长度与规模","Sentence count","句子数","按固定句界识别规则统计句子","文本；句","TextDescriptives / spaCy","基础","缩写、列表、对话会造成断句差异","可迁移，但须统一词、句、字符与标点口径","R01,R35","https://hlasse.github.io/TextDescriptives/usingthepackage.html
+https://spacy.io/usage/linguistic-features","来源支持条目；实现未实测"
+"LEN04","01 基础长度与规模","Paragraph count","段落数","按空行或文档段落结构识别段落","文本；段","自定义；参考 Coh-Metrix","基础","PDF 换行不能直接当分段","可迁移，但须统一词、句、字符与标点口径","R40","https://doi.org/10.1111/j.1756-8765.2010.01081.x","来源支持构念；此处操作化需校准"
+"LEN05","01 基础长度与规模","Character count","字符数","记录含/不含空白、标点的字符数量","文本；字符","TextDescriptives / 自定义计数","基础","Unicode 字符与字节是不同单位","可迁移，但须统一词、句、字符与标点口径","R01","https://hlasse.github.io/TextDescriptives/usingthepackage.html","来源支持构念；此处操作化需校准"
+"LEN06","01 基础长度与规模","Word length in letters","词长（字母）","逐词字母数；保留分布，另聚合均值/中位数/SD","词→文本；字母/词","TextDescriptives；字母过滤需自定义","基础","连字符、数字、撇号规则影响结果","可迁移，但须统一词、句、字符与标点口径","R01","https://hlasse.github.io/TextDescriptives/usingthepackage.html","来源支持构念；此处操作化需校准"
+"LEN07","01 基础长度与规模","Word length in syllables","词长（音节）","逐词音节数；优先发音词典，缺失另作标记","词→文本；音节/词","TextDescriptives / CMUdict","基础","算法估音节和词典计数不可混作同一测量","可迁移，但须统一词、句、字符与标点口径","R01,R27","https://hlasse.github.io/TextDescriptives/usingthepackage.html
+https://github.com/cmusphinx/cmudict","来源支持条目；实现未实测"
+"LEN08","01 基础长度与规模","Mean length of sentence (MLS)","平均句长","词次 N / 句数 S，同时保留逐句词数","句→文本；词/句","TextDescriptives / L2SCA","基础","与 L2SCA 的 MLS 合并登记，实际值需统一分词","可迁移，但须统一词、句、字符与标点口径","R01,R17","https://hlasse.github.io/TextDescriptives/usingthepackage.html
+https://sites.psu.edu/xxl13/l2sca/","来源支持条目；实现未实测"
+"LEN09","01 基础长度与规模","Paragraph length","段落长度","每段词数或句数，分开命名并保留逐段值","段→文本；词/段、句/段","自定义；参考 Coh-Metrix","基础","段落结构是编辑和语域的共同结果","可迁移，但须统一词、句、字符与标点口径","R40","https://doi.org/10.1111/j.1756-8765.2010.01081.x","来源支持构念；此处操作化需校准"
+"LD01","02 词汇多样性","Type-token ratio (TTR)","类符形符比","V/N","文本；比例","LexicalRichness / quanteda / LFTK","基础","随文本长度系统变化；不直接比不同长度文本","数学形式可迁移；词形、lemma、分词和文本长度必须匹配","R03,R04,R02","https://lexicalrichness.readthedocs.io/en/latest/
+https://quanteda.r-universe.dev/quanteda.textstats/doc/manual.html
+https://aclanthology.org/2023.bea-1.1/","来源支持条目；实现未实测"
+"LD02","02 词汇多样性","Root TTR / Guiraud R","根式 TTR","V/sqrt(N)","文本；指数","LexicalRichness / quanteda","基础","仍可能长度敏感；与 CTTR 仅差固定倍数","数学形式可迁移；词形、lemma、分词和文本长度必须匹配","R03,R04","https://lexicalrichness.readthedocs.io/en/latest/
+https://quanteda.r-universe.dev/quanteda.textstats/doc/manual.html","来源支持条目；实现未实测"
+"LD03","02 词汇多样性","Corrected TTR (CTTR)","校正 TTR","V/sqrt(2N)","文本；指数","LexicalRichness / quanteda","基础","与 Root TTR 完全线性相关，常规回归只选一个","数学形式可迁移；词形、lemma、分词和文本长度必须匹配","R03,R04","https://lexicalrichness.readthedocs.io/en/latest/
+https://quanteda.r-universe.dev/quanteda.textstats/doc/manual.html","来源支持条目；实现未实测"
+"LD04","02 词汇多样性","Herdan C / log TTR","Herdan C","log(V)/log(N)","文本；指数","LexicalRichness / quanteda","基础","N≤1 时无定义；不是普遍无长度偏差的指标","数学形式可迁移；词形、lemma、分词和文本长度必须匹配","R03,R04","https://lexicalrichness.readthedocs.io/en/latest/
+https://quanteda.r-universe.dev/quanteda.textstats/doc/manual.html","来源支持条目；实现未实测"
+"LD05","02 词汇多样性","Maas a²","Maas 指数","[log(N)-log(V)]/[log(N)]²","文本；指数","LexicalRichness / quanteda","基础","底数须固定；方向与许多多样性指标相反","数学形式可迁移；词形、lemma、分词和文本长度必须匹配","R03,R04","https://lexicalrichness.readthedocs.io/en/latest/
+https://quanteda.r-universe.dev/quanteda.textstats/doc/manual.html","来源支持条目；实现未实测"
+"LD06","02 词汇多样性","MSTTR","平均分段 TTR","把文本分成固定长度非重叠片段，平均片段 TTR","文本；比例","LexicalRichness / quanteda","基础","固定片段长度及末尾不足片段处理","数学形式可迁移；词形、lemma、分词和文本长度必须匹配","R03,R04","https://lexicalrichness.readthedocs.io/en/latest/
+https://quanteda.r-universe.dev/quanteda.textstats/doc/manual.html","来源支持条目；实现未实测"
+"LD07","02 词汇多样性","MATTR","滑动平均 TTR","固定长度滑窗逐次算 TTR，再求均值","文本；比例","LexicalRichness / quanteda","基础","窗口不得大于文本；窗口长度构成测量定义","数学形式可迁移；词形、lemma、分词和文本长度必须匹配","R03,R04","https://lexicalrichness.readthedocs.io/en/latest/
+https://quanteda.r-universe.dev/quanteda.textstats/doc/manual.html","来源支持条目；实现未实测"
+"LD08","02 词汇多样性","MTLD","词汇多样性测度","以 TTR 达阈值形成片段，估计平均片段长度","文本；词次/片段","LexicalRichness / TAALED","基础","固定阈值及双向算法；短文本稳定性须检验","数学形式可迁移；词形、lemma、分词和文本长度必须匹配","R03,R05","https://lexicalrichness.readthedocs.io/en/latest/
+https://www.linguisticanalysistools.org/taaled.html","来源支持条目；实现未实测"
+"LD09","02 词汇多样性","HD-D","超几何词汇多样性","对各词型计算抽样 n 次至少出现一次的概率，求和除 n","文本；比例","LexicalRichness / TAALED","基础","固定抽样规模；与抽样 voc-D 是不同算法","数学形式可迁移；词形、lemma、分词和文本长度必须匹配","R03,R05","https://lexicalrichness.readthedocs.io/en/latest/
+https://www.linguisticanalysistools.org/taaled.html","来源支持条目；实现未实测"
+"LD10","02 词汇多样性","voc-D","D 指数","重复子样本的 TTR 曲线拟合 D 参数","文本；拟合参数","LexicalRichness","专项","固定抽样范围、次数、种子和文本最低长度","数学形式可迁移；词形、lemma、分词和文本长度必须匹配","R03","https://lexicalrichness.readthedocs.io/en/latest/","来源支持条目；实现未实测"
+"LD11","02 词汇多样性","Yule K","Yule K","10000 × (Σf_i²-N)/N²，f_i 为第 i 词型频数","文本；集中度","LexicalRichness / quanteda","基础","通常越大越集中；不要误解方向","数学形式可迁移；词形、lemma、分词和文本长度必须匹配","R03,R04","https://lexicalrichness.readthedocs.io/en/latest/
+https://quanteda.r-universe.dev/quanteda.textstats/doc/manual.html","来源支持条目；实现未实测"
+"LD12","02 词汇多样性","Simpson D","Simpson 集中度","Σ f_i(f_i-1)/[N(N-1)]","文本；概率","LexicalRichness / quanteda","基础","D、1-D、1/D 是不同命名；须固定","数学形式可迁移；词形、lemma、分词和文本长度必须匹配","R03,R04","https://lexicalrichness.readthedocs.io/en/latest/
+https://quanteda.r-universe.dev/quanteda.textstats/doc/manual.html","来源支持条目；实现未实测"
+"LD13","02 词汇多样性","Hapax proportion","单现词比例","频数为 1 的词型数 V1/V；同时保存 V1","文本；比例","自定义频谱计数 / zipfR","基础","V1/N 是另一指标；不要共用 hapax_ratio 名称","数学形式可迁移；词形、lemma、分词和文本长度必须匹配","R29","https://cran.r-project.org/web/packages/zipfR/zipfR.pdf","来源支持构念；此处操作化需校准"
+"LD14","02 词汇多样性","POS-conditioned diversity","分词性词汇多样性","对名词、动词等子集分别计算已选 LD 指标","词性子集→文本；指标族","TAALED / 自定义","常模与标注","属于 LD 的分组变体；须报告各子集 N","数学形式可迁移；词形、lemma、分词和文本长度必须匹配","R05,R02","https://www.linguisticanalysistools.org/taaled.html
+https://aclanthology.org/2023.bea-1.1/","来源支持构念；此处操作化需校准"
+"FREQ01","03 词汇频率与熟练度","Reference word frequency","参考语料词频","查询词形或 lemma 的每百万词频率","词→文本；次/百万词","SUBTLEX-US / TAALES","常模与标注","平均原频数和平均 log 频数不是同一统计量","依赖语言、年代、语域匹配的参考语料或词表","R08,R06","https://www.ugent.be/plone_portal/pp/experimentele-psychologie/en/research/documents/subtlexus/overview.htm
+https://www.linguisticanalysistools.org/taales.html","来源支持条目；实现未实测"
+"FREQ02","03 词汇频率与熟练度","Mean log frequency","平均对数词频","先逐词变换 log(f)，再在被覆盖词上聚合","词→文本；log 频率","TAALES / 自定义查表","常模与标注","零频率、底数、平滑常数均需记录","依赖语言、年代、语域匹配的参考语料或词表","R07","https://docs.google.com/spreadsheets/d/1axmeHlKE-aelPHX4L17WpHjC7Jn4yQlE/edit","来源支持构念；此处操作化需校准"
+"FREQ03","03 词汇频率与熟练度","Zipf frequency","Zipf 词频刻度","log10(每十亿词出现次数)","词→文本；刻度值","wordfreq","常模与标注","不是 Zipf 定律指数；默认 OOV 回退 0 不是真实测量","依赖语言、年代、语域匹配的参考语料或词表","R09","https://github.com/rspeer/wordfreq/blob/master/README.md?plain=1","来源支持条目；实现未实测"
+"FREQ04","03 词汇频率与熟练度","Low-frequency word proportion","低频词比例","在指定外部词表中低于预定阈值的词次/N","文本；比例","自定义；SUBTLEX / wordfreq","常模与标注","阈值需预先确定；未覆盖词另记","依赖语言、年代、语域匹配的参考语料或词表","R08,R09","https://www.ugent.be/plone_portal/pp/experimentele-psychologie/en/research/documents/subtlexus/overview.htm
+https://github.com/rspeer/wordfreq/blob/master/README.md?plain=1","来源支持构念；此处操作化需校准"
+"FREQ05","03 词汇频率与熟练度","Frequency-band coverage","词频层级覆盖率","按指定词表排名区间统计各区间词次/N","文本；比例向量","自定义词表匹配","常模与标注","词形、lemma、词族三个排名体系不能混用","依赖语言、年代、语域匹配的参考语料或词表","R06,R09","https://www.linguisticanalysistools.org/taales.html
+https://github.com/rspeer/wordfreq/blob/master/README.md?plain=1","来源支持构念；此处操作化需校准"
+"FREQ06","03 词汇频率与熟练度","Contextual diversity / range","语境覆盖与分布范围","一个词出现于参考语料多少文档/语境及其比例","词→文本；文档数/比例","SUBTLEX-US / TAALES","常模与标注","与同一词的总频数不同；参考文档划分必须固定","依赖语言、年代、语域匹配的参考语料或词表","R08,R07","https://www.ugent.be/plone_portal/pp/experimentele-psychologie/en/research/documents/subtlexus/overview.htm
+https://docs.google.com/spreadsheets/d/1axmeHlKE-aelPHX4L17WpHjC7Jn4yQlE/edit","来源支持条目；实现未实测"
+"FREQ07","03 词汇频率与熟练度","Register-specific frequency","分语域词频","分别查询口语、学术、新闻等参考子语料词频","词→文本；多列","TAALES","常模与标注","不是把全部语域均值混成一个难度量","依赖语言、年代、语域匹配的参考语料或词表","R07","https://docs.google.com/spreadsheets/d/1axmeHlKE-aelPHX4L17WpHjC7Jn4yQlE/edit","来源支持条目；实现未实测"
+"FREQ08","03 词汇频率与熟练度","Academic/domain vocabulary coverage","学术或领域词覆盖","指定且有版本的词表中命中词次/N","文本；比例","自定义词表匹配","专项","需另选词表并核对许可；此处未锁定 AWL/AVL 等任何一个版本","依赖语言、年代、语域匹配的参考语料或词表","R06","https://www.linguisticanalysistools.org/taales.html","来源支持构念；此处操作化需校准"
+"FREQ09","03 词汇频率与熟练度","Lexicon coverage","外部资源覆盖率","被某词表赋值的目标词次/所有目标词次","文本×资源；比例","TAALES diagnostics / 自定义","基础","每种词典单独记录；作为测量质控保留","依赖语言、年代、语域匹配的参考语料或词表","R06","https://www.linguisticanalysistools.org/taales.html","来源支持构念；此处操作化需校准"
+"MWE01","04 多词单位与搭配","N-gram frequency","多词序列频率","统计或查询连续 2/3/4-gram 的频数/相对频率","序列→文本；频率族","TAALES / NLTK","常模与标注","不同 n 和语料构成不同实现；不跨句拼接","须匹配参考语料、n 值、窗口和词形处理","R07,R36","https://docs.google.com/spreadsheets/d/1axmeHlKE-aelPHX4L17WpHjC7Jn4yQlE/edit
+https://www.nltk.org/howto/collocations.html","来源支持条目；实现未实测"
+"MWE02","04 多词单位与搭配","PMI","点互信息","log2[p(x,y)/(p(x)p(y))]","词对→文本；bit","NLTK / TAALES","常模与标注","罕见词对可得高分；固定最低频数","须匹配参考语料、n 值、窗口和词形处理","R36","https://www.nltk.org/howto/collocations.html","来源支持条目；实现未实测"
+"MWE03","04 多词单位与搭配","T-score association","搭配 t-score","常用词对关联量 (O-E)/sqrt(O)；按选定工具定义","词对→文本；分数","NLTK；具体字段实施前核对","专项","不要当作模型 t 检验的 t 值；计数空间需一致","须匹配参考语料、n 值、窗口和词形处理","R36","https://www.nltk.org/howto/collocations.html","来源支持条目；实现未实测"
+"MWE04","04 多词单位与搭配","N-gram diversity","多词序列多样性","固定 n 后，不同 n-gram 数/全部 n-gram 数","文本；比例族","TAACO / 自定义","常模与标注","与单词 TTR 分别命名；受长度影响","须匹配参考语料、n 值、窗口和词形处理","R20","https://www.linguisticanalysistools.org/taaco.html","来源支持构念；此处操作化需校准"
+"MWE05","04 多词单位与搭配","Recurrent lexical bundle coverage","高复现词块覆盖","满足事先给定频数和跨文档范围的词块覆盖词次","文本；比例","自定义 NLTK/参考语料流程","专项","重叠命中去重；需训练语料建立词块表","须匹配参考语料、n 值、窗口和词形处理","R36,R07","https://www.nltk.org/howto/collocations.html
+https://docs.google.com/spreadsheets/d/1axmeHlKE-aelPHX4L17WpHjC7Jn4yQlE/edit","来源支持构念；此处操作化需校准"
+"MWE06","04 多词单位与搭配","Collocational profile by POS","按词性结构分组的搭配","分别汇总形容词-名词、动词-名词等的频率/关联量","结构组→文本；指标族","自定义 POS+搭配计数","专项","这是结构约束变体；必须核查标注与匹配规则","须匹配参考语料、n 值、窗口和词形处理","R35,R36","https://spacy.io/usage/linguistic-features
+https://www.nltk.org/howto/collocations.html","来源支持构念；此处操作化需校准"
+"SEM01","05 词汇语义与心理常模","Age of acquisition (AoA)","习得年龄","词在常模中的主观习得年龄，保留均值及覆盖率","词→文本；年","Kuperman 常模 / TAALES / LFTK","常模与标注","成人回溯评分不等于个体真实习得年龄；留意勘误","优先语言和人群相匹配的常模；翻译词表不保证测量等价","R10,R02","https://link.springer.com/article/10.3758/s13428-012-0210-4
+https://aclanthology.org/2023.bea-1.1/","来源支持条目；实现未实测"
+"SEM02","05 词汇语义与心理常模","Concreteness","具体性","查具体性常模，再按词次或词型权重聚合","词→文本；常模分数","Brysbaert 常模 / TAALES","常模与标注","具体性与意象性相关但不同；固定词义匹配","优先语言和人群相匹配的常模；翻译词表不保证测量等价","R11","https://biblio.ugent.be/publication/5774089","来源支持条目；实现未实测"
+"SEM03","05 词汇语义与心理常模","Familiarity","熟悉度","受试者对词的熟悉程度评分","词→文本；常模分数","MRC / TAALES","常模与标注","不能以词频直接替代；需核对实际常模字段和覆盖","优先语言和人群相匹配的常模；翻译词表不保证测量等价","R07","https://docs.google.com/spreadsheets/d/1axmeHlKE-aelPHX4L17WpHjC7Jn4yQlE/edit","来源支持条目；实现未实测"
+"SEM04","05 词汇语义与心理常模","Imageability","意象性","词唤起心理表象的容易程度评分","词→文本；常模分数","MRC / TAALES","常模与标注","不是词向量维度，也不等于具体性","优先语言和人群相匹配的常模；翻译词表不保证测量等价","R07","https://docs.google.com/spreadsheets/d/1axmeHlKE-aelPHX4L17WpHjC7Jn4yQlE/edit","来源支持条目；实现未实测"
+"SEM05","05 词汇语义与心理常模","Valence","情感效价","词项正面/负面评价维度的常模评分","词→文本；常模分数","NRC VAD","常模与标注","脱离语境的评分无法完整处理否定和讽刺","优先语言和人群相匹配的常模；翻译词表不保证测量等价","R13","https://saifmohammad.com/WebPages/nrc-vad.html","来源支持条目；实现未实测"
+"SEM06","05 词汇语义与心理常模","Arousal","唤醒度","词项激活强度的常模评分","词→文本；常模分数","NRC VAD","常模与标注","不得与效价合成未经验证的单一情感分","优先语言和人群相匹配的常模；翻译词表不保证测量等价","R13","https://saifmohammad.com/WebPages/nrc-vad.html","来源支持条目；实现未实测"
+"SEM07","05 词汇语义与心理常模","Dominance","支配感","词项关联的控制感或支配感评分","词→文本；常模分数","NRC VAD","常模与标注","使用版本的量尺需要统一","优先语言和人群相匹配的常模；翻译词表不保证测量等价","R13","https://saifmohammad.com/WebPages/nrc-vad.html","来源支持条目；实现未实测"
+"SEM08","05 词汇语义与心理常模","Sensorimotor strength profile","感知运动强度","视觉、听觉、触觉、嗅觉、味觉、内感及五类动作评分","词→文本；11 维特征族","Lancaster Sensorimotor Norms","常模与标注","此行是一个指标族；具体输出为 11 列，保留覆盖率","优先语言和人群相匹配的常模；翻译词表不保证测量等价","R12","https://www.lancaster.ac.uk/psychology/lsnorms/","来源支持条目；实现未实测"
+"SEM09","05 词汇语义与心理常模","Polysemy / synset count","词典多义性","固定词性后计算词的 WordNet synset 数","词→文本；义项数","WordNet / 自定义查表","常模与标注","反映词典收录，不代表该文实际激活多个词义","优先语言和人群相匹配的常模；翻译词表不保证测量等价","R14","https://wordnet.princeton.edu/front","来源支持构念；此处操作化需校准"
+"SEM10","05 词汇语义与心理常模","Hypernym depth","上位词层级深度","指定 synset 到上位层级根的深度，注明多路径聚合","词义→文本；边数","WordNet / 自定义","专项","名词和动词层级不能直接混合；须说明消歧策略","优先语言和人群相匹配的常模；翻译词表不保证测量等价","R14","https://wordnet.princeton.edu/front","来源支持构念；此处操作化需校准"
+"SEM11","05 词汇语义与心理常模","Semantic diversity (SemD)","语境语义多样性","查语境变异常模，或复现原文基于 LSA 的语境分散度","词→文本；常模/模型分数","Hoffman et al. 常模；重算需自定义","专项","不同于词汇多样性及出现文档数","优先语言和人群相匹配的常模；翻译词表不保证测量等价","R39","https://research.manchester.ac.uk/en/publications/semantic-diversity-a-measure-of-semantic-ambiguity-based-on-varia/","来源支持构念；此处操作化需校准"
+"SEM12","05 词汇语义与心理常模","Semantic-category profile","语义类别分布","按选定词典类别统计词次占比","文本；类别向量","LIWC / 自定义 WordNet 类别","专项","词典类别可能重叠；需要匹配语境和研究构念","优先语言和人群相匹配的常模；翻译词表不保证测量等价","R14,R26","https://wordnet.princeton.edu/front
+https://www.liwc.app/","来源支持构念；此处操作化需校准"
+"MOR01","06 形态结构","Morpheme count","每词语素数","按指定形态词典把词分为词根和派生词缀后计数","词→文本；语素/词","MorphoLex-en / 自定义汇总","常模与标注","这里只能覆盖词典规定的分析；不等于语言模型子词数","形态切分、派生/屈折和词族定义需语言专门化","R15","https://github.com/hugomailhot/MorphoLex-en","来源支持构念；此处操作化需校准"
+"MOR02","06 形态结构","Prefix count","前缀数","一个词的已标注派生前缀数量","词→文本；前缀/词","MorphoLex-en","常模与标注","字符串起始片段不必是前缀；不要只靠拼写猜测","形态切分、派生/屈折和词族定义需语言专门化","R15","https://github.com/hugomailhot/MorphoLex-en","来源支持条目；实现未实测"
+"MOR03","06 形态结构","Suffix count","后缀数","一个词的已标注派生后缀数量","词→文本；后缀/词","MorphoLex-en","常模与标注","派生后缀与屈折词尾分开","形态切分、派生/屈折和词族定义需语言专门化","R15","https://github.com/hugomailhot/MorphoLex-en","来源支持条目；实现未实测"
+"MOR04","06 形态结构","Root count","词根数","一个词中按词典标注识别的词根数","词→文本；词根/词","MorphoLex-en","常模与标注","复合词的切分依赖词典分析原则","形态切分、派生/屈折和词族定义需语言专门化","R15","https://github.com/hugomailhot/MorphoLex-en","来源支持条目；实现未实测"
+"MOR05","06 形态结构","Morphological family size","形态词族大小","共享指定词根或词缀的词型数量","词根/词缀→词；词型数","MorphoLex-en","常模与标注","必须注明 root family 与 affix family，不使用笼统 family_size","形态切分、派生/屈折和词族定义需语言专门化","R15","https://github.com/hugomailhot/MorphoLex-en","来源支持条目；实现未实测"
+"MOR06","06 形态结构","Morphological family frequency","形态词族频率","指定词族在参考词汇库中的累计频率","词根/词缀；频率","MorphoLex-en","常模与标注","与目标文本的词次计数不同；实际字段实施前核对","形态切分、派生/屈折和词族定义需语言专门化","R15","https://github.com/hugomailhot/MorphoLex-en","来源支持条目；实现未实测"
+"MOR07","06 形态结构","Inflectional type diversity","屈折形式多样性","每个 lemma 的不同屈折词形数，再汇总分布","lemma→文本；词形数","自定义 lemma+形态标注","专项","受语料规模影响；需要区分同形异义","形态切分、派生/屈折和词族定义需语言专门化","R16,R35","https://universaldependencies.org/en/feat/
+https://spacy.io/usage/linguistic-features","来源支持构念；此处操作化需校准"
+"MOR08","06 形态结构","Potential morphological productivity","形态潜在能产性","给定构词过程，单现派生词数/该过程全部词次","构词过程×语料；比例","自定义形态频谱 / zipfR","专项","先固定构词过程；样本量及词表遗漏可强烈影响","形态切分、派生/屈折和词族定义需语言专门化","R29,R15","https://cran.r-project.org/web/packages/zipfR/zipfR.pdf
+https://github.com/hugomailhot/MorphoLex-en","来源支持构念；此处操作化需校准"
+"POS01","07 词性与语法分布","POS proportions","词性比例","各词性词次/符合条件的总词次","文本；比例向量","TextDescriptives / LFTK / spaCy","基础","互斥比例总和为 1；含截距回归需处理冗余","可借助统一标注框架；英语规则不可未经核验移植","R01,R02,R35","https://hlasse.github.io/TextDescriptives/usingthepackage.html
+https://aclanthology.org/2023.bea-1.1/
+https://spacy.io/usage/linguistic-features","来源支持条目；实现未实测"
+"POS02","07 词性与语法分布","Lexical density","词汇密度","实词词次/总词次，预先列明实词 POS 集合","文本；比例","自定义 POS 汇总","基础","不同研究对副词、助动词等分类不同","可借助统一标注框架；英语规则不可未经核验移植","R35,R02","https://spacy.io/usage/linguistic-features
+https://aclanthology.org/2023.bea-1.1/","来源支持构念；此处操作化需校准"
+"POS03","07 词性与语法分布","Noun-to-verb ratio","名动词比","名词词次/动词词次","文本；比率","自定义 POS 汇总","基础","分母 0 记缺失；与名词、动词比例有确定性关联","可借助统一标注框架；英语规则不可未经核验移植","R35,R02","https://spacy.io/usage/linguistic-features
+https://aclanthology.org/2023.bea-1.1/","来源支持构念；此处操作化需校准"
+"POS04","07 词性与语法分布","Personal-pronoun profile","人称代词分布","按一、二、三人称及单复数分别统计","文本；每千词频率","LFTK / 自定义形态规则","常模与标注","指代功能与人称形式不同；不能直接推断作者立场","可借助统一标注框架；英语规则不可未经核验移植","R02,R16","https://aclanthology.org/2023.bea-1.1/
+https://universaldependencies.org/en/feat/","来源支持构念；此处操作化需校准"
+"POS05","07 词性与语法分布","Tense profile","时态分布","按时态标注或已定义复合谓词规则统计","谓词/文本；比例族","自定义 UD/spaCy 标注汇总","常模与标注","助动词组合需额外规则，token 标签不等于整段时态","可借助统一标注框架；英语规则不可未经核验移植","R16,R35","https://universaldependencies.org/en/feat/
+https://spacy.io/usage/linguistic-features","来源支持构念；此处操作化需校准"
+"POS06","07 词性与语法分布","Aspect profile","体貌分布","按预设规则识别完成/进行等形式","谓词/文本；比例族","自定义谓词规则","专项","英语体貌常由多词表达，不能只读单个形态标签","可借助统一标注框架；英语规则不可未经核验移植","R16","https://universaldependencies.org/en/feat/","来源支持构念；此处操作化需校准"
+"POS07","07 词性与语法分布","Mood / modality profile","语气与情态分布","统计语气标签、情态助动词及选定情态构式","文本；比例/频率族","自定义标注与词表规则 / MAT","专项","语法语气与认识情态须分列，词义歧义需抽查","可借助统一标注框架；英语规则不可未经核验移植","R16,R25","https://universaldependencies.org/en/feat/
+https://sites.google.com/site/multidimensionaltagger/about","来源支持构念；此处操作化需校准"
+"POS08","07 词性与语法分布","Verb-form profile","动词形式分布","限定式、不定式、分词等的词次分布","动词→文本；比例族","自定义形态标注汇总","常模与标注","具体标签支持依赖树库和模型","可借助统一标注框架；英语规则不可未经核验移植","R16","https://universaldependencies.org/en/feat/","来源支持构念；此处操作化需校准"
+"POS09","07 词性与语法分布","Passive construction rate","被动结构比例","被动谓词数/全部合格谓词数","文本；比例","自定义依存规则 / MAT","常模与标注","包括或排除 get-passive、无施事被动须声明","可借助统一标注框架；英语规则不可未经核验移植","R16,R25","https://universaldependencies.org/en/feat/
+https://sites.google.com/site/multidimensionaltagger/about","来源支持构念；此处操作化需校准"
+"POS10","07 词性与语法分布","Negation incidence","否定表达频率","按预定范围计数否定词/否定构式","文本；每千词频率","MAT / 自定义词表与句法规则","常模与标注","词表命中不能识别否定辖域和双重否定","可借助统一标注框架；英语规则不可未经核验移植","R25,R35","https://sites.google.com/site/multidimensionaltagger/about
+https://spacy.io/usage/linguistic-features","来源支持构念；此处操作化需校准"
+"SYN01","08 句法复杂度与构式","Mean length of T-unit (MLT)","平均 T-unit 长度","W/T；W 为词数，T 为 T-unit 数","文本；词/T-unit","L2SCA / TAASSC","常模与标注","T-unit 为主句及附属从句；自动识别须核验","需明确从句、T-unit、短语定义；跨工具分母和解析器不同","R17","https://sites.psu.edu/xxl13/l2sca/","来源支持条目；实现未实测"
+"SYN02","08 句法复杂度与构式","Mean length of clause (MLC)","平均小句长度","W/C；C 按所用工具的 clause 定义计数","文本；词/clause","L2SCA / TAASSC","常模与标注","clause 包含独立与从属小句；采用工具规定的识别口径","需明确从句、T-unit、短语定义；跨工具分母和解析器不同","R17","https://sites.psu.edu/xxl13/l2sca/","来源支持条目；实现未实测"
+"SYN03","08 句法复杂度与构式","Clauses per sentence (C/S)","每句小句数","C/S","文本；clause/句","L2SCA","常模与标注","MLS 已列 LEN08；保留组成计数以便复算","需明确从句、T-unit、短语定义；跨工具分母和解析器不同","R17","https://sites.psu.edu/xxl13/l2sca/","来源支持条目；实现未实测"
+"SYN04","08 句法复杂度与构式","Verb phrases per T-unit (VP/T)","每 T-unit 动词短语数","VP/T","文本；VP/T-unit","L2SCA","常模与标注","VP 节点识别依赖成分句法树","需明确从句、T-unit、短语定义；跨工具分母和解析器不同","R17","https://sites.psu.edu/xxl13/l2sca/","来源支持条目；实现未实测"
+"SYN05","08 句法复杂度与构式","Clauses per T-unit (C/T)","每 T-unit 小句数","C/T","文本；clause/T-unit","L2SCA","常模与标注","不要与 S/T 或 C/S 混名","需明确从句、T-unit、短语定义；跨工具分母和解析器不同","R17","https://sites.psu.edu/xxl13/l2sca/","来源支持条目；实现未实测"
+"SYN06","08 句法复杂度与构式","Dependent clauses per clause (DC/C)","从属小句比例","DC/C","文本；比例","L2SCA","常模与标注","分母是全部 clause，不是词数","需明确从句、T-unit、短语定义；跨工具分母和解析器不同","R17","https://sites.psu.edu/xxl13/l2sca/","来源支持条目；实现未实测"
+"SYN07","08 句法复杂度与构式","Dependent clauses per T-unit (DC/T)","每 T-unit 从属小句数","DC/T","文本；DC/T-unit","L2SCA","常模与标注","与 DC/C 相关但分母不同","需明确从句、T-unit、短语定义；跨工具分母和解析器不同","R17","https://sites.psu.edu/xxl13/l2sca/","来源支持条目；实现未实测"
+"SYN08","08 句法复杂度与构式","T-units per sentence (T/S)","每句 T-unit 数","T/S","文本；T-unit/句","L2SCA","常模与标注","主要对并列组织敏感；不能单独代表总体能力","需明确从句、T-unit、短语定义；跨工具分母和解析器不同","R17","https://sites.psu.edu/xxl13/l2sca/","来源支持条目；实现未实测"
+"SYN09","08 句法复杂度与构式","Complex T-unit ratio (CT/T)","复杂 T-unit 比例","含从属小句的 T-unit 数/T","文本；比例","L2SCA","常模与标注","明确 complex 的结构判定","需明确从句、T-unit、短语定义；跨工具分母和解析器不同","R17","https://sites.psu.edu/xxl13/l2sca/","来源支持条目；实现未实测"
+"SYN10","08 句法复杂度与构式","Coordinate phrases per T-unit (CP/T)","每 T-unit 并列短语数","CP/T","文本；CP/T-unit","L2SCA","常模与标注","并列从句与并列短语不能混计","需明确从句、T-unit、短语定义；跨工具分母和解析器不同","R17","https://sites.psu.edu/xxl13/l2sca/","来源支持条目；实现未实测"
+"SYN11","08 句法复杂度与构式","Coordinate phrases per clause (CP/C)","每小句并列短语数","CP/C","文本；CP/clause","L2SCA","常模与标注","保留 CP、C 原始计数","需明确从句、T-unit、短语定义；跨工具分母和解析器不同","R17","https://sites.psu.edu/xxl13/l2sca/","来源支持条目；实现未实测"
+"SYN12","08 句法复杂度与构式","Complex nominals per T-unit (CN/T)","每 T-unit 复杂名词性成分数","CN/T","文本；CN/T-unit","L2SCA","常模与标注","CN 是特定工具操作化，不是任意复杂名词短语","需明确从句、T-unit、短语定义；跨工具分母和解析器不同","R17","https://sites.psu.edu/xxl13/l2sca/","来源支持条目；实现未实测"
+"SYN13","08 句法复杂度与构式","Complex nominals per clause (CN/C)","每小句复杂名词性成分数","CN/C","文本；CN/clause","L2SCA","常模与标注","不同 CN 识别规则产生不同量值","需明确从句、T-unit、短语定义；跨工具分母和解析器不同","R17","https://sites.psu.edu/xxl13/l2sca/","来源支持条目；实现未实测"
+"SYN14","08 句法复杂度与构式","Constituency tree height","成分树高度","根到最深叶节点的最大边数","句→文本；边数","LingFeat 历史入口 / 自定义树遍历","专项","与依存树高度不同；强烈受句长和树形规则影响","需明确从句、T-unit、短语定义；跨工具分母和解析器不同","R43","https://github.com/brucewlee/lingfeat","来源支持构念；此处操作化需校准"
+"SYN15","08 句法复杂度与构式","Phrase-type incidence","短语类型频率","NP、VP、PP 等各类节点数/句数或词数","句→文本；指标族","LingFeat / 自定义成分解析","专项","嵌套短语是否重复计数须固定","需明确从句、T-unit、短语定义；跨工具分母和解析器不同","R43","https://github.com/brucewlee/lingfeat","来源支持构念；此处操作化需校准"
+"SYN16","08 句法复杂度与构式","Noun-phrase length","名词短语长度","按选定最小/最大 NP 范围统计词数","NP→文本；词/NP","自定义解析 / TAASSC 指标体系","专项","必须明确 NP 跨度口径","需明确从句、T-unit、短语定义；跨工具分母和解析器不同","R18,R43","https://www.linguisticanalysistools.org/taassc.html
+https://github.com/brucewlee/lingfeat","来源支持构念；此处操作化需校准"
+"SYN17","08 句法复杂度与构式","Adjectives per noun phrase","名词短语内形容词数","NP 中形容词数/合格 NP 数","文本；形容词/NP","TAASSC","常模与标注","短语界限和修饰依附决定数值","需明确从句、T-unit、短语定义；跨工具分母和解析器不同","R18","https://www.linguisticanalysistools.org/taassc.html","来源支持条目；实现未实测"
+"SYN18","08 句法复杂度与构式","Nominal premodifier density","名词性前置修饰密度","名词中心语前的名词修饰成分数/中心语数","文本；修饰语/名词中心语","自定义依存规则；参考 TAASSC","专项","noun compound 关系和专有名词需区分","需明确从句、T-unit、短语定义；跨工具分母和解析器不同","R18,R35","https://www.linguisticanalysistools.org/taassc.html
+https://spacy.io/usage/linguistic-features","来源支持构念；此处操作化需校准"
+"SYN19","08 句法复杂度与构式","PP postmodifier density","介词短语后置修饰密度","附着于名词中心语的 PP 数/中心语数","文本；PP/名词中心语","自定义依存/成分规则；参考 TAASSC","专项","介词短语附着歧义须抽查","需明确从句、T-unit、短语定义；跨工具分母和解析器不同","R18,R35","https://www.linguisticanalysistools.org/taassc.html
+https://spacy.io/usage/linguistic-features","来源支持构念；此处操作化需校准"
+"SYN20","08 句法复杂度与构式","Relative-clause modification rate","关系从句修饰率","有关系从句修饰的名词中心语数/合格中心语数","文本；比例","自定义依存规则","专项","这是目录建议的分母，非声称各软件使用同一定义","需明确从句、T-unit、短语定义；跨工具分母和解析器不同","R16,R35","https://universaldependencies.org/en/feat/
+https://spacy.io/usage/linguistic-features","来源支持构念；此处操作化需校准"
+"SYN21","08 句法复杂度与构式","Adverbials per clause","每小句状语数","按工具定义统计状语并按 clause 归一化","文本；状语/clause","TAASSC","常模与标注","状语词、短语和从句是否分开须固定","需明确从句、T-unit、短语定义；跨工具分母和解析器不同","R18","https://www.linguisticanalysistools.org/taassc.html","来源支持条目；实现未实测"
+"SYN22","08 句法复杂度与构式","Verb-argument construction frequency","动词论元构式频率","查询特定动词与论元构式在参考语料的频率","构式→文本；频率","TAASSC","专项","使用型熟练度与结构复杂度是不同构念","需明确从句、T-unit、短语定义；跨工具分母和解析器不同","R18","https://www.linguisticanalysistools.org/taassc.html","来源支持条目；实现未实测"
+"DEP01","09 依存与树结构","Total dependency length (D)","依存距离总和","Σ abs(position(head)-position(dependent))，排除 root 自环","句；词位差总和","LAL / 自定义依存图","基础","标点移除后是否重编号必须固定","可迁移到依存树；需控制句长、标点、root 和标签方案","R19","https://cqllab.upc.edu/lal/","来源支持构念；此处操作化需校准"
+"DEP02","09 依存与树结构","Mean dependency distance (MDD)","平均依存距离","一组有效依存边的距离总和/边数","句→文本；词位差","TextDescriptives / LAL","基础","边池化平均与先逐句再平均权重不同","可迁移到依存树；需控制句长、标点、root 和标签方案","R01,R19","https://hlasse.github.io/TextDescriptives/usingthepackage.html
+https://cqllab.upc.edu/lal/","来源支持条目；实现未实测"
+"DEP03","09 依存与树结构","Dependency-distance distribution","依存距离分布","保留每条边的距离，汇总 SD、分位数和分布频数","依存边→文本；分布","TextDescriptives / 自定义","基础","SD、分位数是聚合变体；不要冒充独立构念","可迁移到依存树；需控制句长、标点、root 和标签方案","R01,R19","https://hlasse.github.io/TextDescriptives/usingthepackage.html
+https://cqllab.upc.edu/lal/","来源支持构念；此处操作化需校准"
+"DEP04","09 依存与树结构","Adjacent dependency proportion","相邻依存比例","距离等于 1 的有效边数/所有有效边数","句→文本；比例","TextDescriptives","基础","分词粒度和标点处理可改变相邻关系","可迁移到依存树；需控制句长、标点、root 和标签方案","R01","https://hlasse.github.io/TextDescriptives/usingthepackage.html","来源支持条目；实现未实测"
+"DEP05","09 依存与树结构","Head-direction profile","中心语方向分布","中心语在依存词左/右侧的边比例，可按关系分层","句→文本；比例族","LAL / 自定义依存图","基础","英语总体比例可能掩盖关系类别差异","可迁移到依存树；需控制句长、标点、root 和标签方案","R19,R16","https://cqllab.upc.edu/lal/
+https://universaldependencies.org/en/feat/","来源支持构念；此处操作化需校准"
+"DEP06","09 依存与树结构","Dependency-relation profile","依存关系分布","各关系边数/有效边总数","文本；比例向量","自定义依存标注汇总","基础","UD 与 spaCy 英语依存标签不应直接合并","可迁移到依存树；需控制句长、标点、root 和标签方案","R16,R35","https://universaldependencies.org/en/feat/
+https://spacy.io/usage/linguistic-features","来源支持构念；此处操作化需校准"
+"DEP07","09 依存与树结构","Dependency tree height","依存树高度","root 到最深 token 的边数","句→文本；边数","自定义依存树遍历 / LAL","专项","不同于成分树高度；需检验句长作用","可迁移到依存树；需控制句长、标点、root 和标签方案","R19","https://cqllab.upc.edu/lal/","来源支持构念；此处操作化需校准"
+"DEP08","09 依存与树结构","Mean root depth","平均根深度","所有 token 到 root 的边数均值","句→文本；边数","自定义依存树遍历","专项","定义是否包含深度为 0 的 root","可迁移到依存树；需控制句长、标点、root 和标签方案","R19","https://cqllab.upc.edu/lal/","来源支持构念；此处操作化需校准"
+"DEP09","09 依存与树结构","Hierarchical distance","层级距离","在无向化依存树上，token 对之间的最短路径距离","句→文本；边数","LAL / 自定义树遍历","专项","这里为节点对平均，不是线性词位差","可迁移到依存树；需控制句长、标点、root 和标签方案","R19","https://cqllab.upc.edu/lal/","来源支持构念；此处操作化需校准"
+"DEP10","09 依存与树结构","Maximum branching / degree","最大分支与度","分别记录最大出度或无向度；二者分列","句→文本；边数","自定义依存图","专项","不要用整棵树平均度作复杂度主指标，树的边数固定","可迁移到依存树；需控制句长、标点、root 和标签方案","R19","https://cqllab.upc.edu/lal/","来源支持构念；此处操作化需校准"
+"DEP11","09 依存与树结构","Dependency crossing count","交叉依存数","线性排列下不共享节点的边发生交叉的次数","句；交叉对数","LAL","专项","交叉数受句长和可交叉边对数量影响","可迁移到依存树；需控制句长、标点、root 和标签方案","R19","https://cqllab.upc.edu/lal/","来源支持条目；实现未实测"
+"DEP12","09 依存与树结构","Crossing rate","交叉依存率","交叉边对数/不共享节点的可比较边对数","句→文本；比例","自定义 LAL 输出汇总","专项","分母为 0 记不可用；这是一种明确的归一化方案","可迁移到依存树；需控制句长、标点、root 和标签方案","R19","https://cqllab.upc.edu/lal/","来源支持构念；此处操作化需校准"
+"DEP13","09 依存与树结构","Projectivity profile","投射性分布","按给定 rooted dependency tree 定义分类投射/非投射","句→文本；布尔与比例","LAL","专项","非投射与仅按无交叉判定不完全等同","可迁移到依存树；需控制句长、标点、root 和标签方案","R19","https://cqllab.upc.edu/lal/","来源支持条目；实现未实测"
+"DEP14","09 依存与树结构","Dependency-length z score","依存距离随机基线标准分","[D-E(D)]/SD(D)，随机排列条件需指定","句→文本；标准分","LAL / 自定义随机基线","专项","固定树形及允许排列；零方差情况不可计算","可迁移到依存树；需控制句长、标点、root 和标签方案","R19","https://cqllab.upc.edu/lal/","来源支持构念；此处操作化需校准"
+"DEP15","09 依存与树结构","Dependency-length optimality","依存距离最优化程度","比较 D、同树最小 D 和随机基线，固定所用标准化式","句→文本；分数","LAL","专项","项目约束/平面约束会改变最小值；不是单一通用公式","可迁移到依存树；需控制句长、标点、root 和标签方案","R19","https://cqllab.upc.edu/lal/","来源支持条目；实现未实测"
+"DIS01","10 篇章衔接与语义相似度","Adjacent sentence lexical overlap","相邻句词汇重叠","相邻句共享词形/lemma 的程度，按工具指定分母","句对→文本；比例","TAACO","常模与标注","Jaccard、覆盖比例和二值有无重叠不是同一指标","词汇重叠可重定义迁移；词典、实体、向量模型需语言匹配","R20","https://www.linguisticanalysistools.org/taaco.html","来源支持条目；实现未实测"
+"DIS02","10 篇章衔接与语义相似度","Adjacent paragraph lexical overlap","相邻段词汇重叠","相邻段共享词形/lemma 的程度","段对→文本；比例","TAACO","常模与标注","单段文本无定义；保留段界","词汇重叠可重定义迁移；词典、实体、向量模型需语言匹配","R20","https://www.linguisticanalysistools.org/taaco.html","来源支持条目；实现未实测"
+"DIS03","10 篇章衔接与语义相似度","Global lexical overlap","全局词汇重叠","按预定句对或段对范围计算整体重叠","文本；分数族","TAACO / 自定义","专项","全对全与指定距离窗口不同；长度影响配对数","词汇重叠可重定义迁移；词典、实体、向量模型需语言匹配","R20","https://www.linguisticanalysistools.org/taaco.html","来源支持构念；此处操作化需校准"
+"DIS04","10 篇章衔接与语义相似度","Connective incidence","连接词频率","因果、转折、时间、添加等连接表达的类别频率","文本；每千词频率向量","TAACO / Coh-Metrix 框架","常模与标注","词表类别与语境功能不一定一致","词汇重叠可重定义迁移；词典、实体、向量模型需语言匹配","R20,R40","https://www.linguisticanalysistools.org/taaco.html
+https://doi.org/10.1111/j.1756-8765.2010.01081.x","来源支持条目；实现未实测"
+"DIS05","10 篇章衔接与语义相似度","Entity density","实体密度","识别实体提及数/词数，按实体类别或规则分层","文本；每千词频率","LFTK / LingFeat","常模与标注","命名实体提及不等于所有话语实体；同指提及未必去重","词汇重叠可重定义迁移；词典、实体、向量模型需语言匹配","R02,R43","https://aclanthology.org/2023.bea-1.1/
+https://github.com/brucewlee/lingfeat","来源支持条目；实现未实测"
+"DIS06","10 篇章衔接与语义相似度","Entity-grid transitions","实体格转移","记录实体跨句的主语/宾语/其他/缺席状态转移比例","句序列→文本；向量","LingFeat 历史实现","专项","须核对实体识别与同指归并；旧实现未实测","词汇重叠可重定义迁移；词典、实体、向量模型需语言匹配","R43","https://github.com/brucewlee/lingfeat","来源支持条目；实现未实测"
+"DIS07","10 篇章衔接与语义相似度","Entity persistence","实体持续性","实体在多少句中出现，以及跨句持续距离","实体→文本；句数/距离","自定义实体追踪","专项","需要明示词形匹配或共指模型；不能把重复词一律视为同实体","词汇重叠可重定义迁移；词典、实体、向量模型需语言匹配","R43,R40","https://github.com/brucewlee/lingfeat
+https://doi.org/10.1111/j.1756-8765.2010.01081.x","来源支持构念；此处操作化需校准"
+"DIS08","10 篇章衔接与语义相似度","Adjacent sentence semantic similarity","相邻句语义相似度","相邻句向量的余弦相似度均值及逐对值","句对→文本；余弦","TextDescriptives coherence / TAACO","常模与标注","固定向量模型；高相似度可能来自重复","词汇重叠可重定义迁移；词典、实体、向量模型需语言匹配","R21,R20","https://hlasse.github.io/TextDescriptives/coherence.html
+https://www.linguisticanalysistools.org/taaco.html","来源支持条目；实现未实测"
+"DIS09","10 篇章衔接与语义相似度","Second-order sentence similarity","隔句语义相似度","第 i 句与第 i+2 句向量的余弦相似度","句对→文本；余弦","TextDescriptives coherence","常模与标注","至少三句；短文本缺失不是零","词汇重叠可重定义迁移；词典、实体、向量模型需语言匹配","R21","https://hlasse.github.io/TextDescriptives/coherence.html","来源支持条目；实现未实测"
+"DIS10","10 篇章衔接与语义相似度","Paragraph semantic similarity","段落语义相似度","按规定段落范围计算语义向量相似度","段对→文本；分数族","TAACO","专项","LSA、word2vec、其他向量方法不直接合并","词汇重叠可重定义迁移；词典、实体、向量模型需语言匹配","R20","https://www.linguisticanalysistools.org/taaco.html","来源支持条目；实现未实测"
+"INF01","11 信息论与语言模型","Empirical unigram entropy","经验词项熵","H=-Σ p_i log2 p_i；p_i=f_i/N，遍历不同词型","文本；bit","自定义词频分布+SciPy","基础","不是语言熵率；小样本、词表规模与长度有偏差","数学形式可迁移；概率空间、tokenizer、模型与上下文需固定","R23","https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.entropy.html","来源支持构念；此处操作化需校准"
+"INF02","11 信息论与语言模型","POS entropy","词性分布熵","对已定义的 POS 比例向量计算 Shannon entropy","文本；bit","自定义 POS 汇总+SciPy","基础","只概括边际分布，不表示词序不确定性","数学形式可迁移；概率空间、tokenizer、模型与上下文需固定","R23,R35","https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.entropy.html
+https://spacy.io/usage/linguistic-features","来源支持构念；此处操作化需校准"
+"INF03","11 信息论与语言模型","N-gram conditional entropy","序列条件熵","在已定义语料分布上估计 H(X_t given X_t-1…)","序列/语料；bit/单位","自定义 n-gram 概率模型","专项","稀疏性和平滑敏感；训练语料与评估语料分开","数学形式可迁移；概率空间、tokenizer、模型与上下文需固定","R23,R36","https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.entropy.html
+https://www.nltk.org/howto/collocations.html","来源支持构念；此处操作化需校准"
+"INF04","11 信息论与语言模型","Contextual surprisal","上下文惊奇度","-log p(w_i given context)；保存逐 token 分数","词/子词；bit 或 nat","因果 LM + Transformers","专项","记录模型、tokenizer、上下文窗；子词合并到词须有规则","数学形式可迁移；概率空间、tokenizer、模型与上下文需固定","R22","https://huggingface.co/docs/transformers/perplexity","来源支持条目；实现未实测"
+"INF05","11 信息论与语言模型","Mean negative log-likelihood","平均负对数概率","固定 LM 下的逐 token surprisal 均值","文本；nat/token 或 bit/token","因果 LM + Transformers","专项","在评估集计算；排除特殊 token 的规则固定","数学形式可迁移；概率空间、tokenizer、模型与上下文需固定","R22","https://huggingface.co/docs/transformers/perplexity","来源支持条目；实现未实测"
+"INF06","11 信息论与语言模型","Perplexity (PPL)","困惑度","exp(平均负自然对数概率)，或 2^(平均 bit surprisal)","文本；PPL","因果 LM + Transformers","专项","与平均 NLL 单调一一对应；不是新增独立信息","数学形式可迁移；概率空间、tokenizer、模型与上下文需固定","R22","https://huggingface.co/docs/transformers/perplexity","来源支持条目；实现未实测"
+"INF07","11 信息论与语言模型","Distribution divergence","分布差异","在共同支持集上计算 KL，或另行定义对称 JS","文本对/分布；bit 或 nat","自定义频率/POS分布+SciPy","专项","KL 遇参考零概率可发散；注明平滑及 JS 是否开方","数学形式可迁移；概率空间、tokenizer、模型与上下文需固定","R23","https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.entropy.html","来源支持构念；此处操作化需校准"
+"READ01","12 可读性复合分数","Flesch Reading Ease","Flesch 阅读易度","组合平均句长与每词音节数的传统易度公式","文本；分数","TextDescriptives / textstat","基础","通常高分更易读；与其输入变量有数学依赖","多数公式依赖英语校准，不能原样当作多语言量尺","R01,R24","https://hlasse.github.io/TextDescriptives/usingthepackage.html
+https://github.com/textstat/textstat","来源支持条目；实现未实测"
+"READ02","12 可读性复合分数","Flesch–Kincaid Grade","Flesch–Kincaid 年级","以句长和音节词长估计美国年级标度","文本；估计年级","TextDescriptives / textstat","基础","不是经过你目标读者校准的真实阅读年级","多数公式依赖英语校准，不能原样当作多语言量尺","R01,R24","https://hlasse.github.io/TextDescriptives/usingthepackage.html
+https://github.com/textstat/textstat","来源支持条目；实现未实测"
+"READ03","12 可读性复合分数","Gunning Fog","Gunning Fog 指数","组合句长与复杂词比例","文本；估计年级","TextDescriptives / textstat","基础","复杂词判定的排除规则应按实现核对","多数公式依赖英语校准，不能原样当作多语言量尺","R01,R24","https://hlasse.github.io/TextDescriptives/usingthepackage.html
+https://github.com/textstat/textstat","来源支持条目；实现未实测"
+"READ04","12 可读性复合分数","SMOG","SMOG 指数","依据多音节词数量和句数得到可读性估计","文本；估计年级","TextDescriptives / textstat","基础","原适用长度与软件短文本回退行为不同，需核查","多数公式依赖英语校准，不能原样当作多语言量尺","R24","https://github.com/textstat/textstat","来源支持条目；实现未实测"
+"READ05","12 可读性复合分数","Automated Readability Index (ARI)","自动可读性指数","组合字符词长与句长","文本；估计年级","TextDescriptives / textstat","基础","字符和标点统计不同会改变数值","多数公式依赖英语校准，不能原样当作多语言量尺","R01,R24","https://hlasse.github.io/TextDescriptives/usingthepackage.html
+https://github.com/textstat/textstat","来源支持条目；实现未实测"
+"READ06","12 可读性复合分数","Coleman–Liau Index","Coleman–Liau 指数","使用每百词字母数及每百词句数","文本；估计年级","TextDescriptives / textstat","基础","与其他长度公式高度相关","多数公式依赖英语校准，不能原样当作多语言量尺","R01,R24","https://hlasse.github.io/TextDescriptives/usingthepackage.html
+https://github.com/textstat/textstat","来源支持条目；实现未实测"
+"READ07","12 可读性复合分数","Dale–Chall readability","Dale–Chall 可读性","组合指定易词表之外的词比例与句长","文本；可读性分数","textstat","常模与标注","易词表版本决定结果；陌生词不等于所有读者的难词","多数公式依赖英语校准，不能原样当作多语言量尺","R24","https://github.com/textstat/textstat","来源支持条目；实现未实测"
+"READ08","12 可读性复合分数","LIX","LIX 指数","N/S + 100×长词数/N；长词通常为超过 6 字母","文本；分数","TextDescriptives / textstat","基础","固定长词及字符口径；不是英语独有原始公式","多数公式依赖英语校准，不能原样当作多语言量尺","R01,R24","https://hlasse.github.io/TextDescriptives/usingthepackage.html
+https://github.com/textstat/textstat","来源支持条目；实现未实测"
+"READ09","12 可读性复合分数","RIX","RIX 指数","长词数/句数；长词判定按所选实现","文本；分数","TextDescriptives / textstat","基础","与 LIX 成分相关；短文本分母不稳定","多数公式依赖英语校准，不能原样当作多语言量尺","R01,R24","https://hlasse.github.io/TextDescriptives/usingthepackage.html
+https://github.com/textstat/textstat","来源支持条目；实现未实测"
+"STY01","13 文体语域与语用代理量","Function-word profile","功能词分布","固定功能词集合的各词相对频率","文本；频率向量","自定义 / LIWC / quanteda","基础","语域、主题、作者均可能影响；高维特征需正则化","语域基准、词表、语言功能规则需在新语言重新检验","R26,R04","https://www.liwc.app/
+https://quanteda.r-universe.dev/quanteda.textstats/doc/manual.html","来源支持构念；此处操作化需校准"
+"STY02","13 文体语域与语用代理量","Character n-gram profile","字符 n-gram 分布","固定 n 后统计字符序列频率","文本；高维向量","自定义计数","专项","可含拼写、标点、内容信息；维度不是可命名语言构念","语域基准、词表、语言功能规则需在新语言重新检验","R35","https://spacy.io/usage/linguistic-features","来源支持构念；此处操作化需校准"
+"STY03","13 文体语域与语用代理量","Punctuation profile","标点使用分布","逗号、分号、冒号、问号等按词数或字符数归一化","文本；频率向量","自定义字符计数","基础","引用格式、编辑处理和 OCR 会干扰","语域基准、词表、语言功能规则需在新语言重新检验","R38","https://hlasse.github.io/TextDescriptives/quality.html","来源支持构念；此处操作化需校准"
+"STY04","13 文体语域与语用代理量","Nominalization rate","名词化频率","按词表及句法规则识别名词化形式","文本；每千词频率","MAT / 自定义","专项","只按 -tion 等后缀命中会有误判和遗漏","语域基准、词表、语言功能规则需在新语言重新检验","R25","https://sites.google.com/site/multidimensionaltagger/about","来源支持构念；此处操作化需校准"
+"STY05","13 文体语域与语用代理量","Stance-marker incidence","立场标记频率","按预定词表/构式标注 hedge、booster 等表达","文本；类别频率","自定义；参考 MAT/LIWC","专项","仅为语用代理量；需具体研究重新定义类别并人工核验","语域基准、词表、语言功能规则需在新语言重新检验","R25,R26","https://sites.google.com/site/multidimensionaltagger/about
+https://www.liwc.app/","来源支持构念；此处操作化需校准"
+"STY06","13 文体语域与语用代理量","Biber/MAT dimension scores","多维语域分数","按固定特征集合、参照均值/SD及原权重计算维度分","文本；标准化复合分","MAT","专项","原始特征频率和维度分数分开；参照语料不可隐去","语域基准、词表、语言功能规则需在新语言重新检验","R25","https://sites.google.com/site/multidimensionaltagger/about","来源支持条目；实现未实测"
+"STY07","13 文体语域与语用代理量","Language Style Matching (LSM)","语言风格匹配","比较两段文本在功能词类别上的使用匹配程度","文本对；分数","LIWC","专项","需要文本对；不能直接当单篇文本固有属性","语域基准、词表、语言功能规则需在新语言重新检验","R26","https://www.liwc.app/","来源支持条目；实现未实测"
+"PHO01","14 正字法与词典音系","Phoneme count","每词音素数","按选定 CMUdict 发音条目统计音素","词→文本；音素/词","CMUdict / 自定义","常模与标注","多发音词先选规则；缺失发音另存","英语发音和邻域词典专属；实际语音须另有音频及标注","R27","https://github.com/cmusphinx/cmudict","来源支持构念；此处操作化需校准"
+"PHO02","14 正字法与词典音系","Lexical stress pattern","词汇重音模式","提取词典的主/次重音和无重音音节序列","词→文本；模式向量","CMUdict / 自定义","专项","不代表句中实际重音或韵律","英语发音和邻域词典专属；实际语音须另有音频及标注","R27","https://github.com/cmusphinx/cmudict","来源支持构念；此处操作化需校准"
+"PHO03","14 正字法与词典音系","Orthographic neighborhood size","正字法邻域大小","在固定词库中，与目标词差一个字母替换的等长词数","词→文本；邻词数","ELP / 自定义固定词表","常模与标注","必须固定词库、大小写、变体和编辑规则","英语发音和邻域词典专属；实际语音须另有音频及标注","R28","https://elexicon.wustl.edu/","来源支持构念；此处操作化需校准"
+"PHO04","14 正字法与词典音系","OLD20","正字法编辑距离邻域","与最近 20 个词的 Levenshtein 距离均值","词→文本；编辑次数","ELP 候选字段 / 自定义","专项","本轮未核对导出字段；词库选择影响数值","英语发音和邻域词典专属；实际语音须另有音频及标注","R28","https://elexicon.wustl.edu/","来源支持构念；此处操作化需校准"
+"PHO05","14 正字法与词典音系","PLD20","音系编辑距离邻域","与最近 20 个发音形式的编辑距离均值","词→文本；编辑次数","ELP 候选字段 / 自定义 CMUdict","专项","实际字段与发音编码待核；不使用字母距离替代","英语发音和邻域词典专属；实际语音须另有音频及标注","R28,R27","https://elexicon.wustl.edu/
+https://github.com/cmusphinx/cmudict","来源支持构念；此处操作化需校准"
+"PHO06","14 正字法与词典音系","Phonotactic sequence frequency","音系序列频率","在固定发音词典/语料中估计音素或双音素相对频率","词→文本；频率","自定义 CMUdict 统计","专项","需说明 type/token 加权及位置敏感性；不是现成 CMUdict 输出","英语发音和邻域词典专属；实际语音须另有音频及标注","R27","https://github.com/cmusphinx/cmudict","来源支持构念；此处操作化需校准"
+"QL01","15 计量规律与分布拟合","Rank-frequency curve / Zipf exponent","秩频曲线与 Zipf 指数","保留词型-频数-排名；候选 f(r)=C×r^(-a)","文本/语料；曲线、参数","zipfR / 自定义拟合","规律拟合","a 是排名斜率参数；不能直接等同频率分布尾指数","多数形式可迁移；分析单位和生成假设需保持一致","R29,R30","https://cran.r-project.org/web/packages/zipfR/zipfR.pdf
+https://aaronclauset.github.io/powerlaws/","来源支持构念；此处操作化需校准"
+"QL02","15 计量规律与分布拟合","Zipf–Mandelbrot parameters","Zipf–Mandelbrot 参数","候选 f(r)=C×(r+b)^(-a)，估计 a、b 及不确定性","文本/语料；参数族","zipfR / 自定义模型","规律拟合","区分样本秩频拟合与总体 LNRE 模型定义","多数形式可迁移；分析单位和生成假设需保持一致","R29","https://cran.r-project.org/web/packages/zipfR/zipfR.pdf","来源支持构念；此处操作化需校准"
+"QL03","15 计量规律与分布拟合","Vocabulary growth / Heaps curve","词汇增长与 Heaps 曲线","保留位置 n 对累计 V(n)；候选 V(n)=K×n^beta","有序语料；曲线、参数","zipfR / 自定义","规律拟合","嵌套累计点非独立；文本排序和拼接规则改变曲线","多数形式可迁移；分析单位和生成假设需保持一致","R29","https://cran.r-project.org/web/packages/zipfR/zipfR.pdf","来源支持构念；此处操作化需校准"
+"QL04","15 计量规律与分布拟合","Frequency spectrum / LNRE","词频频谱与 LNRE","保留 V_m：恰出现 m 次的词型数；拟合稀有事件模型","语料；频谱、参数","zipfR","规律拟合","与秩频表是同一计数的不同表示；不可当独立样本证据","多数形式可迁移；分析单位和生成假设需保持一致","R29","https://cran.r-project.org/web/packages/zipfR/zipfR.pdf","来源支持条目；实现未实测"
+"QL05","15 计量规律与分布拟合","Length-distribution models","词长与句长分布模型","保留整数长度频数，比较适合支持域的离散模型","词/句/语料；分布参数","自定义计数与分布拟合","规律拟合","不能只凭均值或一张直方图选分布；保留零截断等规则","多数形式可迁移；分析单位和生成假设需保持一致","R01,R30","https://hlasse.github.io/TextDescriptives/usingthepackage.html
+https://aaronclauset.github.io/powerlaws/","来源支持构念；此处操作化需校准"
+"QL06","15 计量规律与分布拟合","Menzerath–Altmann parameters","Menzerath–Altmann 参数","保存每构体的组成单位数 x 与平均组成大小 y；候选 y=a×x^b×exp(c×x)","句-小句等层级；参数","自定义层级提取与拟合","规律拟合","检验分母耦合、分组均值偏差和替代模型；不预设 b<0","多数形式可迁移；分析单位和生成假设需保持一致","R31","https://aclanthology.org/W17-6513/","来源支持构念；此处操作化需校准"
+"QL07","15 计量规律与分布拟合","Abbreviation relation","简短律关系","将词型频率/概率与字母、音节或音素长度配对建模","词型；相关/回归参数","自定义词频+词长表","规律拟合","与 Zipf 秩频律不同；控制形态、词性并区分 type/token 权重","多数形式可迁移；分析单位和生成假设需保持一致","R34","https://pmc.ncbi.nlm.nih.gov/articles/PMC3048148/","来源支持构念；此处操作化需校准"
+"QL08","15 计量规律与分布拟合","Taylor exponent","Taylor 波动标度指数","固定窗口求各词频数均值 μ 和 SD σ，拟合 σ∝μ^a","词项×窗口；指数","自定义窗口计数与拟合","规律拟合","若用 variance∝mean^b，则 b=2a；固定窗口大小","多数形式可迁移；分析单位和生成假设需保持一致","R32","https://aclanthology.org/P18-1105/","来源支持构念；此处操作化需校准"
+"QL09","15 计量规律与分布拟合","Word recurrence burstiness","词项复现突发性","保留同词相邻出现位置间隔 τ；候选 B=(SDτ-meanτ)/(SDτ+meanτ)","词型/序列；分数","自定义词项位置分析","规律拟合","由事件统计方法迁移；低频与有限长度偏差需检验","多数形式可迁移；分析单位和生成假设需保持一致","R33","https://barabasi.com/media/pub_imports/files/233.pdf","来源支持构念；此处操作化需校准"
+"QL10","15 计量规律与分布拟合","Inter-recurrence memory","复现间隔记忆","相邻复现间隔 τ_j 与 τ_j+1 的相关","词型/序列；相关系数","自定义词项位置分析","规律拟合","低频词不可可靠估计；重叠对、边界截断影响标准误","多数形式可迁移；分析单位和生成假设需保持一致","R33","https://barabasi.com/media/pub_imports/files/233.pdf","来源支持构念；此处操作化需校准"
+"QC01","16 错误与语料质量诊断","Grammar error incidence","语法错误标记率","语法检查器标记数量/词数；保存原始错误位置","文本；每千词标记数","GAMET","专项","标记不是金标准；按文本类型人工估计误报漏报","规则和编码可部分迁移；不能直接当作语言能力量尺","R37","https://www.linguisticanalysistools.org/gamet.html","来源支持条目；实现未实测"
+"QC02","16 错误与语料质量诊断","Spelling error incidence","拼写错误标记率","拼写检查标记数量/词数","文本；每千词标记数","GAMET","专项","专名、方言、专业词及英美拼写可触发误报","规则和编码可部分迁移；不能直接当作语言能力量尺","R37","https://www.linguisticanalysistools.org/gamet.html","来源支持条目；实现未实测"
+"QC03","16 错误与语料质量诊断","Mechanics error incidence","标点空白等格式错误率","按预定类别计数标点、空格、重复等错误标记","文本；类别频率","GAMET","专项","排版清洗可能移除真实信息，须保留原文","规则和编码可部分迁移；不能直接当作语言能力量尺","R37","https://www.linguisticanalysistools.org/gamet.html","来源支持条目；实现未实测"
+"QC04","16 错误与语料质量诊断","Repetition / duplicate ratio","文本重复比例","按字符、行或 n-gram 层面定义重复占比","文本；比例族","TextDescriptives quality","基础","修辞重复与抓取重复不同，不能自动等同低质量","规则和编码可部分迁移；不能直接当作语言能力量尺","R38","https://hlasse.github.io/TextDescriptives/quality.html","来源支持条目；实现未实测"
+"QC05","16 错误与语料质量诊断","Character-composition diagnostics","字符组成诊断","字母、数字、符号及异常字符占比","文本；比例向量","TextDescriptives quality / 自定义","基础","适合发现 OCR/清洗问题；领域差异可能是正常信号","规则和编码可部分迁移；不能直接当作语言能力量尺","R38","https://hlasse.github.io/TextDescriptives/quality.html","来源支持构念；此处操作化需校准"
+"FREQ10","03 词汇频率与熟练度","Deviation of proportions (DP / DPnorm)","词项分布偏离度","比较词项分布比例与各语料分块的大小比例；具体归一化分开登记","词项×分块语料；无量纲","Gries 2008 + Lijffijt & Gries 2012；自定义计数","专项","DP、DPnorm(2008)、修正版 DPnorm(2012) 不应共用未注明版本的字段","须锁定分词、资源与模型；迁移到其他语言需重新校准","R44,R45","https://www.stgries.info/research/2008_STG_Dispersion_IJCL.pdf
+https://www.stgries.info/research/2012_JL-STG_DispersionCorrection_IJCL.pdf","论文方法已核对；实现未实测"
+"MWE07","04 多词单位与搭配","Directional association ΔP","有方向的搭配关联","P(Y|X)-P(Y|非X)；逆向另算","词对×参考语料；概率差","Gries 2013；自定义 2×2 表","专项","明确 cue/outcome；窗口与事件总体决定四格计数","须锁定分词、资源与模型；迁移到其他语言需重新校准","R46","https://stgries.info/research/2013_STG_DeltaP%26H_IJCL.pdf","论文方法已核对；实现未实测"
+"MWE08","04 多词单位与搭配","logDice","对数 Dice 关联分数","14+log2[2fxy/(fx+fy)]","词对×参考语料；分数","Rychlý 2008；共现工具或自定义","专项","对称分数；记录是否按语法关系计数，不把分数当 p 值","须锁定分词、资源与模型；迁移到其他语言需重新校准","R47","https://nlp.fi.muni.cz/raslan/2008/papers/13.pdf","论文方法已核对；实现未实测"
+"SYN23","08 句法复杂度与构式","Yngve complexity","Yngve 复杂度","成分树每层从右至左赋支路 0,1,…；逐词路径求和","词→句/篇；分数","按 Roark et al. 2007 的树规则实现","专项","均值、最大值、总和不同；树的扁平化和二叉化会改变数值","须锁定分词、资源与模型；迁移到其他语言需重新校准","R51","https://aclanthology.org/W07-1001/","论文方法已核对；实现未实测"
+"SYN24","08 句法复杂度与构式","Frazier complexity","Frazier 复杂度","沿规定左分支路径计分；句节点权重与其他非终结节点不同","词→句/篇；分数","按 Roark et al. 2007 的带标签树规则实现","专项","逐词均值与连续三词分数之和的最大值须分开","须锁定分词、资源与模型；迁移到其他语言需重新校准","R51","https://aclanthology.org/W07-1001/","论文方法已核对；实现未实测"
+"SYN25","08 句法复杂度与构式","Revised D-Level","修订发展水平等级","按完整修订规则将句子分到 0–7 级","句；有序类别","Lu 2008；规则解析/人工标注","常模与标注","不要与原始七级表混合；等级差未必等距","针对英语发展性结构；其他语言需重建或验证规则","R52","https://cdn.aaai.org/FLAIRS/2008/FLAIRS08-043.pdf","论文方法已核对；实现未实测"
+"DEP16","09 依存与树结构","Normalized dependency distance (NDD)","归一化依存距离","候选式 abs(ln[MDD/sqrt(root_position×sentence_length)])","句→篇；分数","Lei & Jockers；QuanSyn 文档提供替代实现","专项","root_position 是句内线性位置；不是树深度；原论文口径待核对","可迁移的候选形式；长度和 root 的计数规则影响比较","R48,R49","https://www.tandfonline.com/doi/abs/10.1080/09296174.2018.1504615
+https://github.com/YuhuYang/QuanSyn","原文全文未取得；替代实现文档已核对"
+"DIS11","10 篇章衔接与语义相似度","Propositional idea density (PID)","命题密度","命题计数/词数；按 POS、依存、去重复等规则有不同实现","文本；命题/词","CPIDR / DEPID / DEPID-R","专项","完整规则、speech 模式及重复命题处理决定分子","须锁定分词、资源与模型；迁移到其他语言需重新校准","R53,R54","https://ai.uga.edu/sites/default/files/inline-files/caspr/BrownSnodgrassKemperHermanCovington2008.pdf
+https://aclanthology.org/K17-1033/","论文方法已核对；实现未实测"
+"DIS12","10 篇章衔接与语义相似度","Semantic idea density (SID)","语义信息单位密度","预定义或由聚类生成的信息单位命中数/词数","文本；信息单位/词","Sirts et al. 2017 §4；自定义嵌入聚类","专项","内容单位、命题和词型不是同一单位；聚类参数应在训练数据确定","须锁定分词、资源与模型；迁移到其他语言需重新校准","R54","https://aclanthology.org/K17-1033/","论文方法已核对；实现未实测"
+"INF08","11 信息论与语言模型","UID non-uniformity measures","信息密度非均匀性","逐词 surprisal 的超线性矩、均值偏离、相邻差分或最大值","句；指标族","Meister et al. 2021；固定 LM 后自定义","专项","五种操作化分别命名；模型、单位、log 底数、参考均值需固定","须锁定分词、资源与模型；迁移到其他语言需重新校准","R56","https://aclanthology.org/2021.emnlp-main.74/","论文方法已核对；实现未实测"
+"INF09","11 信息论与语言模型","Syntactic log-odds ratio (SLOR)","句长与词频校正的语言模型分数","[log P_LM(sentence)-Σlog P_unigram(word)]/词数","句；每词 log 比值","Lau et al. 2017 §3.2；自定义","专项","不能当成纯句法或直接语法正确率；词频基线必须说明","须锁定分词、资源与模型；迁移到其他语言需重新校准","R57","https://jeyhan.my/files/2017-cogsci-grammaticality.pdf","论文方法已核对；实现未实测"
+"INF10","11 信息论与语言模型","Masked-LM pseudo-likelihood scores","掩码语言模型伪似然","逐个掩码得到条件概率后聚合；PLL 与 word-l2r 变体分开","子词→句；模型评分族","Salazar et al. 2020 / Kauf & Ivanova 2023","专项","双侧上下文与因果 LM 不同；记录同词剩余子词是否可见","须锁定分词、资源与模型；迁移到其他语言需重新校准","R58,R59","https://aclanthology.org/2020.acl-main.240/
+https://aclanthology.org/2023.acl-short.80/","PLL方法段已核对；word-l2r仅摘要及正文索引核对；未实测"
+"QL11","15 计量规律与分布拟合","Finite-sequence burstiness An","有限序列突发性修正","依事件数 n 对间隔变异系数 r=σ/μ 进行边界校正","词项出现序列；无量纲","Kim & Jo 2016 Eq.(22)；迁移实现","专项","事件数和间隔数不同；周期/开放边界不同；不自动证明英语效度","从一般事件序列移用至词位置，需语言材料校准","R62","https://arxiv.org/pdf/1604.01125","原方法已核对；语言应用为候选"
+"NET01","17 词汇共现网络","Co-occurrence degree / strength","共现网络度与强度","节点连接的不同邻居数，或共现边权之和；分列","词节点→文本图；计数","按 Amancio et al. 2010 图构造；自定义","专项","入/出度均值相等；二值度与加权强度不能混称","原文葡语；英语可按相同图定义迁移后校准","R63","https://aclanthology.org/W10-2313/","论文方法已核对；实现未实测"
+"NET02","17 词汇共现网络","Directed neighbor clustering","有向邻域聚类系数","出邻居之间边数/[出邻居数×(出邻居数-1)]","词节点→文本图；比例","Amancio et al. 2010 Eq.(3)；自定义","专项","邻居少于 2 时须显式定约；原文对恰有 1 邻居的边界表述不足","原文葡语；英语可迁移，须统一有向/无向及权重","R63","https://aclanthology.org/W10-2313/","论文方法已核对；实现未实测"
+"NET03","17 词汇共现网络","Mean geodesic distance","共现网络平均最短路径","节点对之间最短图路径的均值","文本图；边数","Amancio et al. 2010 Eq.(4)；自定义","专项","不是词在线性文本中的距离；不可达节点不能悄悄删去","原文葡语；英语可迁移，连通性口径须统一","R63","https://aclanthology.org/W10-2313/","论文方法已核对；实现未实测"
+"NET04","17 词汇共现网络","Global network efficiency","共现网络全局效率","所有异节点对的最短路径倒数均值","文本图；无量纲","Amancio et al. 2010 Eq.(5)；自定义","专项","不可达对贡献 0；不是平均路径长度的倒数","原文葡语；英语可迁移，须统一图方向","R63","https://aclanthology.org/W10-2313/","论文方法已核对；实现未实测"
+"NET05","17 词汇共现网络","Betweenness centrality","共现网络介数","通过节点的最短路径数占比，对节点对求和","词节点→文本图；分数","Amancio et al. 2010 Eq.(6)；自定义","专项","无归一化与除以可用节点对数的版本分开；多条最短路径需分摊","原文葡语；英语可迁移，须统一端点与节点对计数","R63","https://aclanthology.org/W10-2313/","论文方法已核对；实现未实测"
