@@ -1,0 +1,621 @@
+{
+  "application_version": "0.2.0",
+  "date": "2026-10-15",
+  "unit_tests": {
+    "total": 46,
+    "passed": 42,
+    "skipped": 4,
+    "failures": 0,
+    "errors": 0,
+    "new_workflow_tests": 12,
+    "skipped_modules": [
+      "optional torch/transformers kernels (3)",
+      "optional rapidfuzz phonology (1)"
+    ],
+    "lnre": "interface tested with fixture; physical R/zipfR fit not repeated"
+  },
+  "bundled_application": {
+    "application_version": "0.2.0",
+    "bundled_runtime_workflow": true,
+    "default_extraction": {
+      "computed": 120,
+      "undefined": 2
+    },
+    "fits": {
+      "rank_frequency": {
+        "computed": 2
+      },
+      "word_lengths": {
+        "computed": 4
+      },
+      "taylor_points": {
+        "computed": 2
+      }
+    },
+    "measurement_files_unchanged": true,
+    "deep_signature_verified": true,
+    "root": "/private/tmp/lingmetrics020-qa/bundle-smoke"
+  },
+  "source_workflow": {
+    "extraction": {
+      "computed": 14
+    },
+    "rank_fit": {
+      "computed": 2
+    },
+    "length_fit": {
+      "computed": 4
+    },
+    "source_files_unchanged": true,
+    "frozen_reference_applied": true,
+    "observations": 12,
+    "root": "/private/tmp/lingmetrics020-qa/source-smoke"
+  },
+  "source_engine_matches_bundle": [
+    "engine/lingmetrics/runner.py",
+    "engine/lingmetrics/models.py",
+    "engine/lingmetrics/phonology.py",
+    "engine/lingmetrics/util.py",
+    "engine/lingmetrics/observations.py",
+    "engine/lingmetrics/__init__.py",
+    "engine/lingmetrics/core.py",
+    "engine/lingmetrics/fasttext_vectors.py",
+    "engine/lingmetrics/stats.py",
+    "engine/lingmetrics/fitting.py",
+    "engine/lingmetrics/syntax.py",
+    "engine/lingmetrics/configured.py",
+    "engine/lingmetrics/resources.py",
+    "engine/lingmetrics/managed_r.py",
+    "engine/lingmetrics/__main__.py",
+    "engine/lingmetrics/corpus.py",
+    "engine/lingmetrics/lexicons.py",
+    "engine/lingmetrics/catalogue.py"
+  ],
+  "performance": {
+    "before": {
+      "seconds": 5.3667916669510305,
+      "documents": 20,
+      "features": "default61",
+      "feature_matrix_sha256": "1bd159da0d65563f27125444fda8614d52972233e01d5ed754edd81ef25f9578",
+      "peak_memory_bytes": 303235072,
+      "timings": {
+        "phases_seconds": {
+          "base": 4.176919667050242,
+          "export": 0.6805699998512864
+        },
+        "features": {
+          "DEP01": {
+            "seconds": 0.12897204258479178,
+            "calls": 20
+          },
+          "DEP02": {
+            "seconds": 0.00020554079674184322,
+            "calls": 20
+          },
+          "DEP03": {
+            "seconds": 0.00014799810014665127,
+            "calls": 20
+          },
+          "DEP04": {
+            "seconds": 0.00010879081673920155,
+            "calls": 20
+          },
+          "DEP05": {
+            "seconds": 0.00010700197890400887,
+            "calls": 20
+          },
+          "DEP06": {
+            "seconds": 0.00015379022806882858,
+            "calls": 20
+          },
+          "DEP07": {
+            "seconds": 0.00012212316505610943,
+            "calls": 20
+          },
+          "DEP08": {
+            "seconds": 0.00011287489905953407,
+            "calls": 20
+          },
+          "DEP09": {
+            "seconds": 9.791599586606026e-05,
+            "calls": 20
+          },
+          "DEP10": {
+            "seconds": 0.00014000129885971546,
+            "calls": 20
+          },
+          "DEP11": {
+            "seconds": 0.0004192942287772894,
+            "calls": 20
+          },
+          "DEP12": {
+            "seconds": 0.00010712677612900734,
+            "calls": 20
+          },
+          "DEP13": {
+            "seconds": 0.00010091857984662056,
+            "calls": 20
+          },
+          "DIS01": {
+            "seconds": 0.00235875160433352,
+            "calls": 20
+          },
+          "DIS02": {
+            "seconds": 0.003150247735902667,
+            "calls": 20
+          },
+          "DIS03": {
+            "seconds": 0.08413137798197567,
+            "calls": 20
+          },
+          "DIS05": {
+            "seconds": 0.00015345914289355278,
+            "calls": 20
+          },
+          "INF01": {
+            "seconds": 0.0003085406497120857,
+            "calls": 20
+          },
+          "INF02": {
+            "seconds": 0.0018899173010140657,
+            "calls": 20
+          },
+          "INF03": {
+            "seconds": 0.006844957126304507,
+            "calls": 20
+          },
+          "LD01": {
+            "seconds": 0.00707945809699595,
+            "calls": 20
+          },
+          "LD02": {
+            "seconds": 0.00010033044964075089,
+            "calls": 20
+          },
+          "LD03": {
+            "seconds": 7.529160939157009e-05,
+            "calls": 20
+          },
+          "LD04": {
+            "seconds": 7.204199209809303e-05,
+            "calls": 20
+          },
+          "LD05": {
+            "seconds": 7.087201811373234e-05,
+            "calls": 20
+          },
+          "LD06": {
+            "seconds": 7.275305688381195e-05,
+            "calls": 20
+          },
+          "LD07": {
+            "seconds": 7.183384150266647e-05,
+            "calls": 20
+          },
+          "LD08": {
+            "seconds": 7.070973515510559e-05,
+            "calls": 20
+          },
+          "LD09": {
+            "seconds": 6.983405910432339e-05,
+            "calls": 20
+          },
+          "LD11": {
+            "seconds": 6.850087083876133e-05,
+            "calls": 20
+          },
+          "LD12": {
+            "seconds": 7.050414569675922e-05,
+            "calls": 20
+          },
+          "LD13": {
+            "seconds": 7.483363151550293e-05,
+            "calls": 20
+          },
+          "LEN01": {
+            "seconds": 5.853804759681225e-05,
+            "calls": 20
+          },
+          "LEN02": {
+            "seconds": 5.629519000649452e-05,
+            "calls": 20
+          },
+          "LEN03": {
+            "seconds": 5.52949495613575e-05,
+            "calls": 20
+          },
+          "LEN04": {
+            "seconds": 5.6208809837698936e-05,
+            "calls": 20
+          },
+          "LEN05": {
+            "seconds": 0.0064360827673226595,
+            "calls": 20
+          },
+          "LEN06": {
+            "seconds": 0.007432126672938466,
+            "calls": 20
+          },
+          "LEN07": {
+            "seconds": 0.2694267916958779,
+            "calls": 20
+          },
+          "LEN08": {
+            "seconds": 9.016599506139755e-05,
+            "calls": 20
+          },
+          "LEN09": {
+            "seconds": 0.0016286252066493034,
+            "calls": 20
+          },
+          "MOR07": {
+            "seconds": 0.004089876310899854,
+            "calls": 20
+          },
+          "POS01": {
+            "seconds": 0.0018335410859435797,
+            "calls": 20
+          },
+          "POS02": {
+            "seconds": 0.0017082481645047665,
+            "calls": 20
+          },
+          "POS03": {
+            "seconds": 0.0016811667010188103,
+            "calls": 20
+          },
+          "POS04": {
+            "seconds": 0.015020501101389527,
+            "calls": 20
+          },
+          "POS05": {
+            "seconds": 0.009277834789827466,
+            "calls": 20
+          },
+          "POS06": {
+            "seconds": 0.006058623781427741,
+            "calls": 20
+          },
+          "POS07": {
+            "seconds": 0.026411414379253983,
+            "calls": 20
+          },
+          "POS08": {
+            "seconds": 0.017123542493209243,
+            "calls": 20
+          },
+          "POS09": {
+            "seconds": 0.005627832841128111,
+            "calls": 20
+          },
+          "POS10": {
+            "seconds": 0.0025496252346783876,
+            "calls": 20
+          },
+          "QC04": {
+            "seconds": 0.002522251568734646,
+            "calls": 20
+          },
+          "QC05": {
+            "seconds": 0.019090416142717004,
+            "calls": 20
+          },
+          "READ01": {
+            "seconds": 0.01262041530571878,
+            "calls": 20
+          },
+          "READ02": {
+            "seconds": 0.012708044378086925,
+            "calls": 20
+          },
+          "READ05": {
+            "seconds": 0.01189258391968906,
+            "calls": 20
+          },
+          "READ06": {
+            "seconds": 0.012305624084547162,
+            "calls": 20
+          },
+          "READ08": {
+            "seconds": 0.011851916555315256,
+            "calls": 20
+          },
+          "READ09": {
+            "seconds": 0.011857000878080726,
+            "calls": 20
+          },
+          "STY03": {
+            "seconds": 0.0005505038425326347,
+            "calls": 20
+          }
+        },
+        "scope": "current invocation; reused checkpoints excluded; shared work and resource/model loading attributed to first requesting feature"
+      }
+    },
+    "after": {
+      "seconds": 6.099815333029255,
+      "documents": 20,
+      "features": "default61",
+      "feature_matrix_sha256": "1bd159da0d65563f27125444fda8614d52972233e01d5ed754edd81ef25f9578",
+      "peak_memory_bytes": 329072640,
+      "timings": {
+        "phases_seconds": {
+          "base": 4.253242957871407,
+          "corpus": 0.20080487499944866,
+          "export": 0.7246677498333156
+        },
+        "features": {
+          "DEP01": {
+            "seconds": 0.1413862477056682,
+            "calls": 20
+          },
+          "DEP02": {
+            "seconds": 0.00020054029300808907,
+            "calls": 20
+          },
+          "DEP03": {
+            "seconds": 0.00014662789180874825,
+            "calls": 20
+          },
+          "DEP04": {
+            "seconds": 0.00010958407074213028,
+            "calls": 20
+          },
+          "DEP05": {
+            "seconds": 0.00011454150080680847,
+            "calls": 20
+          },
+          "DEP06": {
+            "seconds": 0.00016041984781622887,
+            "calls": 20
+          },
+          "DEP07": {
+            "seconds": 0.00012616650201380253,
+            "calls": 20
+          },
+          "DEP08": {
+            "seconds": 0.00011475034989416599,
+            "calls": 20
+          },
+          "DEP09": {
+            "seconds": 9.841658174991608e-05,
+            "calls": 20
+          },
+          "DEP10": {
+            "seconds": 0.00020766467787325382,
+            "calls": 20
+          },
+          "DEP11": {
+            "seconds": 0.000993957743048668,
+            "calls": 20
+          },
+          "DEP12": {
+            "seconds": 0.00011116336099803448,
+            "calls": 20
+          },
+          "DEP13": {
+            "seconds": 0.0001036676112562418,
+            "calls": 20
+          },
+          "DIS01": {
+            "seconds": 0.0023608768824487925,
+            "calls": 20
+          },
+          "DIS02": {
+            "seconds": 0.0031671684700995684,
+            "calls": 20
+          },
+          "DIS03": {
+            "seconds": 0.13822070602327585,
+            "calls": 20
+          },
+          "DIS05": {
+            "seconds": 0.00016083382070064545,
+            "calls": 20
+          },
+          "INF01": {
+            "seconds": 0.0003103325143456459,
+            "calls": 20
+          },
+          "INF02": {
+            "seconds": 0.0019465391524136066,
+            "calls": 20
+          },
+          "INF03": {
+            "seconds": 0.0070046239998191595,
+            "calls": 20
+          },
+          "LD01": {
+            "seconds": 0.0071671223267912865,
+            "calls": 20
+          },
+          "LD02": {
+            "seconds": 9.812740609049797e-05,
+            "calls": 20
+          },
+          "LD03": {
+            "seconds": 7.637310773134232e-05,
+            "calls": 20
+          },
+          "LD04": {
+            "seconds": 7.183174602687359e-05,
+            "calls": 20
+          },
+          "LD05": {
+            "seconds": 7.095746695995331e-05,
+            "calls": 20
+          },
+          "LD06": {
+            "seconds": 7.412536069750786e-05,
+            "calls": 20
+          },
+          "LD07": {
+            "seconds": 7.370719686150551e-05,
+            "calls": 20
+          },
+          "LD08": {
+            "seconds": 7.116561755537987e-05,
+            "calls": 20
+          },
+          "LD09": {
+            "seconds": 7.133209146559238e-05,
+            "calls": 20
+          },
+          "LD11": {
+            "seconds": 7.137446664273739e-05,
+            "calls": 20
+          },
+          "LD12": {
+            "seconds": 7.183244451880455e-05,
+            "calls": 20
+          },
+          "LD13": {
+            "seconds": 7.975148037075996e-05,
+            "calls": 20
+          },
+          "LEN01": {
+            "seconds": 6.0083577409386635e-05,
+            "calls": 20
+          },
+          "LEN02": {
+            "seconds": 5.695642903447151e-05,
+            "calls": 20
+          },
+          "LEN03": {
+            "seconds": 5.529029294848442e-05,
+            "calls": 20
+          },
+          "LEN04": {
+            "seconds": 5.691521801054478e-05,
+            "calls": 20
+          },
+          "LEN05": {
+            "seconds": 0.006477960152551532,
+            "calls": 20
+          },
+          "LEN06": {
+            "seconds": 0.007235753117129207,
+            "calls": 20
+          },
+          "LEN07": {
+            "seconds": 0.28376904246397316,
+            "calls": 20
+          },
+          "LEN08": {
+            "seconds": 9.07916110008955e-05,
+            "calls": 20
+          },
+          "LEN09": {
+            "seconds": 0.0016639186069369316,
+            "calls": 20
+          },
+          "MOR07": {
+            "seconds": 0.004156542243435979,
+            "calls": 20
+          },
+          "POS01": {
+            "seconds": 0.001895917346701026,
+            "calls": 20
+          },
+          "POS02": {
+            "seconds": 0.001770583912730217,
+            "calls": 20
+          },
+          "POS03": {
+            "seconds": 0.0017703732009977102,
+            "calls": 20
+          },
+          "POS04": {
+            "seconds": 0.015460209222510457,
+            "calls": 20
+          },
+          "POS05": {
+            "seconds": 0.009393958374857903,
+            "calls": 20
+          },
+          "POS06": {
+            "seconds": 0.0061254610773175955,
+            "calls": 20
+          },
+          "POS07": {
+            "seconds": 0.026540584163740277,
+            "calls": 20
+          },
+          "POS08": {
+            "seconds": 0.017232914455235004,
+            "calls": 20
+          },
+          "POS09": {
+            "seconds": 0.005850752582773566,
+            "calls": 20
+          },
+          "POS10": {
+            "seconds": 0.0025845407508313656,
+            "calls": 20
+          },
+          "QC04": {
+            "seconds": 0.002510498510673642,
+            "calls": 20
+          },
+          "QC05": {
+            "seconds": 0.0195220448076725,
+            "calls": 20
+          },
+          "READ01": {
+            "seconds": 0.012697375612333417,
+            "calls": 20
+          },
+          "READ02": {
+            "seconds": 0.012684999499469995,
+            "calls": 20
+          },
+          "READ05": {
+            "seconds": 0.011987461242824793,
+            "calls": 20
+          },
+          "READ06": {
+            "seconds": 0.01207154174335301,
+            "calls": 20
+          },
+          "READ08": {
+            "seconds": 0.011958540882915258,
+            "calls": 20
+          },
+          "READ09": {
+            "seconds": 0.012003872310742736,
+            "calls": 20
+          },
+          "STY03": {
+            "seconds": 0.0005723752547055483,
+            "calls": 20
+          }
+        },
+        "scope": "current invocation; reused checkpoints excluded; shared work and resource/model loading attributed to first requesting feature"
+      }
+    },
+    "identical_tables": {
+      "features.csv": true,
+      "feature_status.csv": true,
+      "tokens.csv": true,
+      "sentences.csv": true,
+      "word_frequency.csv": true
+    },
+    "fixture": "20 synthetic repetitive English documents, 1160 whitespace-separated words each; one sequential trial per version"
+  },
+  "build": {
+    "version": "0.2.0",
+    "target": "arm64-macos13+",
+    "signing": "ad-hoc",
+    "notarized": false,
+    "archive_bytes": 90755250,
+    "expanded_bytes": 209264308,
+    "sha256": "c598d2a1d752717bb44160efedbf027972e5a031aee6c5508f1a22a02e0a4272",
+    "budget_archive_pass": true,
+    "budget_expanded_pass": true
+  },
+  "native_ui": {
+    "state": "not_verified",
+    "reason": "Mac locked; computer-use tool requested manual unlock; no automated clicks or visual QA completed"
+  },
+  "scope": "software checks and fixtures; no target-corpus validity, linguistic-law validation or pretrained-model throughput claim"
+}

@@ -23,7 +23,7 @@ TABLES={
  'unigram':('SLOR unigram reference',['probability']),
 }
 PACKS={
- 'corpus': dict(title='规律拟合与语料统计',packages=['scipy==1.17.1'],size='约30–60 MB'),
+ 'corpus': dict(title='拟合计算工具：SciPy（不含语料）',packages=['scipy==1.17.1'],size='约30–60 MB'),
  'wordfreq':dict(title='wordfreq 平行词频',packages=['wordfreq==3.1.1'],size='约60–100 MB'),
  'phonology':dict(title='词典邻域与 WordNet',packages=['rapidfuzz==3.14.3','nltk==3.9.2'],size='约30–80 MB'),
  'tensor':dict(title='共享模型运行环境',packages=['torch==2.7.0','transformers==4.57.1','sentence-transformers==5.1.2','stanza==1.10.1','scipy==1.17.1','peft==0.17.1'],size='约600–1000 MB'),

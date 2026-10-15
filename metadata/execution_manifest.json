@@ -11,12 +11,13 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "base",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [],
     "state": "ready",
     "note": "已实现；公式验证与目标语料效度分别记录",
     "default": true,
-    "method_id": "len01.lingmetrics.0.1"
+    "method_id": "len01.lingmetrics.0.2"
   },
   {
     "id": "LEN02",
@@ -30,12 +31,13 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "base",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [],
     "state": "ready",
     "note": "已实现；公式验证与目标语料效度分别记录",
     "default": true,
-    "method_id": "len02.lingmetrics.0.1"
+    "method_id": "len02.lingmetrics.0.2"
   },
   {
     "id": "LEN03",
@@ -49,12 +51,13 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "base",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [],
     "state": "ready",
     "note": "已实现；公式验证与目标语料效度分别记录",
     "default": true,
-    "method_id": "len03.lingmetrics.0.1"
+    "method_id": "len03.lingmetrics.0.2"
   },
   {
     "id": "LEN04",
@@ -68,12 +71,13 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "base",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [],
     "state": "ready",
     "note": "已实现；公式验证与目标语料效度分别记录",
     "default": true,
-    "method_id": "len04.lingmetrics.0.1"
+    "method_id": "len04.lingmetrics.0.2"
   },
   {
     "id": "LEN05",
@@ -87,12 +91,13 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "base",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [],
     "state": "ready",
     "note": "已实现；公式验证与目标语料效度分别记录",
     "default": true,
-    "method_id": "len05.lingmetrics.0.1"
+    "method_id": "len05.lingmetrics.0.2"
   },
   {
     "id": "LEN06",
@@ -106,12 +111,13 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "base",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [],
     "state": "ready",
     "note": "已实现；公式验证与目标语料效度分别记录",
     "default": true,
-    "method_id": "len06.lingmetrics.0.1"
+    "method_id": "len06.lingmetrics.0.2"
   },
   {
     "id": "LEN07",
@@ -125,12 +131,13 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "base",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [],
     "state": "ready",
     "note": "已实现；公式验证与目标语料效度分别记录",
     "default": true,
-    "method_id": "len07.lingmetrics.0.1"
+    "method_id": "len07.lingmetrics.0.2"
   },
   {
     "id": "LEN08",
@@ -144,12 +151,13 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "base",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [],
     "state": "ready",
     "note": "已实现；公式验证与目标语料效度分别记录",
     "default": true,
-    "method_id": "len08.lingmetrics.0.1"
+    "method_id": "len08.lingmetrics.0.2"
   },
   {
     "id": "LEN09",
@@ -163,12 +171,13 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "base",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [],
     "state": "ready",
     "note": "已实现；公式验证与目标语料效度分别记录",
     "default": true,
-    "method_id": "len09.lingmetrics.0.1"
+    "method_id": "len09.lingmetrics.0.2"
   },
   {
     "id": "LD01",
@@ -182,12 +191,13 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "base",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [],
     "state": "ready",
     "note": "已实现；公式验证与目标语料效度分别记录",
     "default": true,
-    "method_id": "ld01.lingmetrics.0.1"
+    "method_id": "ld01.lingmetrics.0.2"
   },
   {
     "id": "LD02",
@@ -201,12 +211,13 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "base",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [],
     "state": "ready",
     "note": "已实现；公式验证与目标语料效度分别记录",
     "default": true,
-    "method_id": "ld02.lingmetrics.0.1"
+    "method_id": "ld02.lingmetrics.0.2"
   },
   {
     "id": "LD03",
@@ -220,12 +231,13 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "base",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [],
     "state": "ready",
     "note": "已实现；公式验证与目标语料效度分别记录",
     "default": true,
-    "method_id": "ld03.lingmetrics.0.1"
+    "method_id": "ld03.lingmetrics.0.2"
   },
   {
     "id": "LD04",
@@ -239,12 +251,13 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "base",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [],
     "state": "ready",
     "note": "已实现；公式验证与目标语料效度分别记录",
     "default": true,
-    "method_id": "ld04.lingmetrics.0.1"
+    "method_id": "ld04.lingmetrics.0.2"
   },
   {
     "id": "LD05",
@@ -258,12 +271,13 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "base",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [],
     "state": "ready",
     "note": "已实现；公式验证与目标语料效度分别记录",
     "default": true,
-    "method_id": "ld05.lingmetrics.0.1"
+    "method_id": "ld05.lingmetrics.0.2"
   },
   {
     "id": "LD06",
@@ -277,12 +291,13 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "base",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [],
     "state": "ready",
     "note": "已实现；公式验证与目标语料效度分别记录",
     "default": true,
-    "method_id": "ld06.lingmetrics.0.1"
+    "method_id": "ld06.lingmetrics.0.2"
   },
   {
     "id": "LD07",
@@ -296,12 +311,13 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "base",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [],
     "state": "ready",
     "note": "已实现；公式验证与目标语料效度分别记录",
     "default": true,
-    "method_id": "ld07.lingmetrics.0.1"
+    "method_id": "ld07.lingmetrics.0.2"
   },
   {
     "id": "LD08",
@@ -371,12 +387,13 @@
       }
     ],
     "route": "base",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [],
     "state": "ready",
     "note": "已实现；公式验证与目标语料效度分别记录",
     "default": true,
-    "method_id": "ld08.lingmetrics.0.1"
+    "method_id": "ld08.lingmetrics.0.2"
   },
   {
     "id": "LD09",
@@ -390,12 +407,13 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "base",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [],
     "state": "ready",
     "note": "已实现；公式验证与目标语料效度分别记录",
     "default": true,
-    "method_id": "ld09.lingmetrics.0.1"
+    "method_id": "ld09.lingmetrics.0.2"
   },
   {
     "id": "LD10",
@@ -409,12 +427,13 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "base",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [],
     "state": "ready",
     "note": "已实现；公式验证与目标语料效度分别记录",
     "default": false,
-    "method_id": "ld10.lingmetrics.0.1"
+    "method_id": "ld10.lingmetrics.0.2"
   },
   {
     "id": "LD11",
@@ -428,12 +447,13 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "base",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [],
     "state": "ready",
     "note": "已实现；公式验证与目标语料效度分别记录",
     "default": true,
-    "method_id": "ld11.lingmetrics.0.1"
+    "method_id": "ld11.lingmetrics.0.2"
   },
   {
     "id": "LD12",
@@ -447,12 +467,13 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "base",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [],
     "state": "ready",
     "note": "已实现；公式验证与目标语料效度分别记录",
     "default": true,
-    "method_id": "ld12.lingmetrics.0.1"
+    "method_id": "ld12.lingmetrics.0.2"
   },
   {
     "id": "LD13",
@@ -466,12 +487,13 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "base",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [],
     "state": "ready",
     "note": "已实现；公式验证与目标语料效度分别记录",
     "default": true,
-    "method_id": "ld13.lingmetrics.0.1"
+    "method_id": "ld13.lingmetrics.0.2"
   },
   {
     "id": "LD14",
@@ -485,12 +507,13 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "base",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [],
     "state": "ready",
     "note": "已实现；公式验证与目标语料效度分别记录",
     "default": false,
-    "method_id": "ld14.lingmetrics.0.1"
+    "method_id": "ld14.lingmetrics.0.2"
   },
   {
     "id": "FREQ01",
@@ -504,6 +527,7 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "lexical",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [
       "subtlex"
@@ -511,7 +535,7 @@
     "state": "resource_required",
     "note": "需准备：subtlex",
     "default": false,
-    "method_id": "freq01.lingmetrics.0.1"
+    "method_id": "freq01.lingmetrics.0.2"
   },
   {
     "id": "FREQ02",
@@ -525,6 +549,7 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "lexical",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [
       "subtlex"
@@ -532,7 +557,7 @@
     "state": "resource_required",
     "note": "需准备：subtlex",
     "default": false,
-    "method_id": "freq02.lingmetrics.0.1"
+    "method_id": "freq02.lingmetrics.0.2"
   },
   {
     "id": "FREQ03",
@@ -546,6 +571,7 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "lexical",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [
       "wordfreq"
@@ -553,7 +579,7 @@
     "state": "resource_required",
     "note": "需准备：wordfreq",
     "default": false,
-    "method_id": "freq03.lingmetrics.0.1"
+    "method_id": "freq03.lingmetrics.0.2"
   },
   {
     "id": "FREQ04",
@@ -567,6 +593,7 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "lexical",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [
       "subtlex"
@@ -574,7 +601,7 @@
     "state": "resource_required",
     "note": "需准备：subtlex",
     "default": false,
-    "method_id": "freq04.lingmetrics.0.1"
+    "method_id": "freq04.lingmetrics.0.2"
   },
   {
     "id": "FREQ05",
@@ -588,6 +615,7 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "lexical",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [
       "subtlex"
@@ -595,7 +623,7 @@
     "state": "resource_required",
     "note": "需准备：subtlex",
     "default": false,
-    "method_id": "freq05.lingmetrics.0.1"
+    "method_id": "freq05.lingmetrics.0.2"
   },
   {
     "id": "FREQ06",
@@ -609,6 +637,7 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "lexical",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [
       "subtlex"
@@ -616,7 +645,7 @@
     "state": "resource_required",
     "note": "需准备：subtlex",
     "default": false,
-    "method_id": "freq06.lingmetrics.0.1"
+    "method_id": "freq06.lingmetrics.0.2"
   },
   {
     "id": "FREQ07",
@@ -630,6 +659,7 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "lexical",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [
       "register_frequency"
@@ -637,7 +667,7 @@
     "state": "resource_required",
     "note": "需准备：register_frequency",
     "default": false,
-    "method_id": "freq07.lingmetrics.0.1"
+    "method_id": "freq07.lingmetrics.0.2"
   },
   {
     "id": "FREQ08",
@@ -651,6 +681,7 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "lexical",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [
       "academic"
@@ -658,7 +689,7 @@
     "state": "resource_required",
     "note": "需准备：academic",
     "default": false,
-    "method_id": "freq08.lingmetrics.0.1"
+    "method_id": "freq08.lingmetrics.0.2"
   },
   {
     "id": "FREQ09",
@@ -672,6 +703,7 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "lexical",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [
       "subtlex"
@@ -679,7 +711,7 @@
     "state": "resource_required",
     "note": "需准备：subtlex",
     "default": false,
-    "method_id": "freq09.lingmetrics.0.1"
+    "method_id": "freq09.lingmetrics.0.2"
   },
   {
     "id": "MWE01",
@@ -693,12 +725,13 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "corpus",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [],
     "state": "ready",
     "note": "已实现；公式验证与目标语料效度分别记录",
     "default": false,
-    "method_id": "mwe01.lingmetrics.0.1"
+    "method_id": "mwe01.lingmetrics.0.2"
   },
   {
     "id": "MWE02",
@@ -712,12 +745,13 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "corpus",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [],
     "state": "ready",
     "note": "已实现；公式验证与目标语料效度分别记录",
     "default": false,
-    "method_id": "mwe02.lingmetrics.0.1"
+    "method_id": "mwe02.lingmetrics.0.2"
   },
   {
     "id": "MWE03",
@@ -731,12 +765,13 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "corpus",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [],
     "state": "ready",
     "note": "已实现；公式验证与目标语料效度分别记录",
     "default": false,
-    "method_id": "mwe03.lingmetrics.0.1"
+    "method_id": "mwe03.lingmetrics.0.2"
   },
   {
     "id": "MWE04",
@@ -750,12 +785,13 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "corpus",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [],
     "state": "ready",
     "note": "已实现；公式验证与目标语料效度分别记录",
     "default": false,
-    "method_id": "mwe04.lingmetrics.0.1"
+    "method_id": "mwe04.lingmetrics.0.2"
   },
   {
     "id": "MWE05",
@@ -769,12 +805,13 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "corpus",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [],
     "state": "ready",
     "note": "已实现；公式验证与目标语料效度分别记录",
     "default": false,
-    "method_id": "mwe05.lingmetrics.0.1"
+    "method_id": "mwe05.lingmetrics.0.2"
   },
   {
     "id": "MWE06",
@@ -788,12 +825,13 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "corpus",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [],
     "state": "ready",
     "note": "已实现；公式验证与目标语料效度分别记录",
     "default": false,
-    "method_id": "mwe06.lingmetrics.0.1"
+    "method_id": "mwe06.lingmetrics.0.2"
   },
   {
     "id": "SEM01",
@@ -807,6 +845,7 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "lexical",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [
       "aoa"
@@ -814,7 +853,7 @@
     "state": "resource_required",
     "note": "需准备：aoa",
     "default": false,
-    "method_id": "sem01.lingmetrics.0.1"
+    "method_id": "sem01.lingmetrics.0.2"
   },
   {
     "id": "SEM02",
@@ -828,6 +867,7 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "lexical",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [
       "concreteness"
@@ -835,7 +875,7 @@
     "state": "resource_required",
     "note": "需准备：concreteness",
     "default": false,
-    "method_id": "sem02.lingmetrics.0.1"
+    "method_id": "sem02.lingmetrics.0.2"
   },
   {
     "id": "SEM03",
@@ -849,6 +889,7 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "lexical",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [
       "mrc"
@@ -856,7 +897,7 @@
     "state": "resource_required",
     "note": "需准备：mrc",
     "default": false,
-    "method_id": "sem03.lingmetrics.0.1"
+    "method_id": "sem03.lingmetrics.0.2"
   },
   {
     "id": "SEM04",
@@ -870,6 +911,7 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "lexical",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [
       "mrc"
@@ -877,7 +919,7 @@
     "state": "resource_required",
     "note": "需准备：mrc",
     "default": false,
-    "method_id": "sem04.lingmetrics.0.1"
+    "method_id": "sem04.lingmetrics.0.2"
   },
   {
     "id": "SEM05",
@@ -891,6 +933,7 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "lexical",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [
       "vad"
@@ -898,7 +941,7 @@
     "state": "resource_required",
     "note": "需准备：vad",
     "default": false,
-    "method_id": "sem05.lingmetrics.0.1"
+    "method_id": "sem05.lingmetrics.0.2"
   },
   {
     "id": "SEM06",
@@ -912,6 +955,7 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "lexical",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [
       "vad"
@@ -919,7 +963,7 @@
     "state": "resource_required",
     "note": "需准备：vad",
     "default": false,
-    "method_id": "sem06.lingmetrics.0.1"
+    "method_id": "sem06.lingmetrics.0.2"
   },
   {
     "id": "SEM07",
@@ -933,6 +977,7 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "lexical",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [
       "vad"
@@ -940,7 +985,7 @@
     "state": "resource_required",
     "note": "需准备：vad",
     "default": false,
-    "method_id": "sem07.lingmetrics.0.1"
+    "method_id": "sem07.lingmetrics.0.2"
   },
   {
     "id": "SEM08",
@@ -954,6 +999,7 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "lexical",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [
       "lancaster"
@@ -961,7 +1007,7 @@
     "state": "resource_required",
     "note": "需准备：lancaster",
     "default": false,
-    "method_id": "sem08.lingmetrics.0.1"
+    "method_id": "sem08.lingmetrics.0.2"
   },
   {
     "id": "SEM09",
@@ -975,6 +1021,7 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "lexical",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [
       "phonology"
@@ -982,7 +1029,7 @@
     "state": "resource_required",
     "note": "需准备：phonology",
     "default": false,
-    "method_id": "sem09.lingmetrics.0.1"
+    "method_id": "sem09.lingmetrics.0.2"
   },
   {
     "id": "SEM10",
@@ -996,6 +1043,7 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "lexical",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [
       "phonology"
@@ -1003,7 +1051,7 @@
     "state": "resource_required",
     "note": "需准备：phonology",
     "default": false,
-    "method_id": "sem10.lingmetrics.0.1"
+    "method_id": "sem10.lingmetrics.0.2"
   },
   {
     "id": "SEM11",
@@ -1017,6 +1065,7 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "lexical",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [
       "semd"
@@ -1024,7 +1073,7 @@
     "state": "resource_required",
     "note": "需准备：semd",
     "default": false,
-    "method_id": "sem11.lingmetrics.0.1"
+    "method_id": "sem11.lingmetrics.0.2"
   },
   {
     "id": "SEM12",
@@ -1038,6 +1087,7 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "lexical",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [
       "semantic_categories"
@@ -1045,7 +1095,7 @@
     "state": "resource_required",
     "note": "需准备：semantic_categories",
     "default": false,
-    "method_id": "sem12.lingmetrics.0.1"
+    "method_id": "sem12.lingmetrics.0.2"
   },
   {
     "id": "MOR01",
@@ -1059,6 +1109,7 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "lexical",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [
       "morpholex"
@@ -1066,7 +1117,7 @@
     "state": "resource_required",
     "note": "需准备：morpholex",
     "default": false,
-    "method_id": "mor01.lingmetrics.0.1"
+    "method_id": "mor01.lingmetrics.0.2"
   },
   {
     "id": "MOR02",
@@ -1080,6 +1131,7 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "lexical",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [
       "morpholex"
@@ -1087,7 +1139,7 @@
     "state": "resource_required",
     "note": "需准备：morpholex",
     "default": false,
-    "method_id": "mor02.lingmetrics.0.1"
+    "method_id": "mor02.lingmetrics.0.2"
   },
   {
     "id": "MOR03",
@@ -1101,6 +1153,7 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "lexical",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [
       "morpholex"
@@ -1108,7 +1161,7 @@
     "state": "resource_required",
     "note": "需准备：morpholex",
     "default": false,
-    "method_id": "mor03.lingmetrics.0.1"
+    "method_id": "mor03.lingmetrics.0.2"
   },
   {
     "id": "MOR04",
@@ -1122,6 +1175,7 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "lexical",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [
       "morpholex"
@@ -1129,7 +1183,7 @@
     "state": "resource_required",
     "note": "需准备：morpholex",
     "default": false,
-    "method_id": "mor04.lingmetrics.0.1"
+    "method_id": "mor04.lingmetrics.0.2"
   },
   {
     "id": "MOR05",
@@ -1143,6 +1197,7 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "lexical",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [
       "morpholex"
@@ -1150,7 +1205,7 @@
     "state": "resource_required",
     "note": "需准备：morpholex",
     "default": false,
-    "method_id": "mor05.lingmetrics.0.1"
+    "method_id": "mor05.lingmetrics.0.2"
   },
   {
     "id": "MOR06",
@@ -1164,6 +1219,7 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "lexical",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [
       "morpholex"
@@ -1171,7 +1227,7 @@
     "state": "resource_required",
     "note": "需准备：morpholex",
     "default": false,
-    "method_id": "mor06.lingmetrics.0.1"
+    "method_id": "mor06.lingmetrics.0.2"
   },
   {
     "id": "MOR07",
@@ -1185,12 +1241,13 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "base",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [],
     "state": "ready",
     "note": "已实现；公式验证与目标语料效度分别记录",
     "default": true,
-    "method_id": "mor07.lingmetrics.0.1"
+    "method_id": "mor07.lingmetrics.0.2"
   },
   {
     "id": "MOR08",
@@ -1204,6 +1261,7 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "lexical",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [
       "morpholex"
@@ -1211,7 +1269,7 @@
     "state": "resource_required",
     "note": "需准备：morpholex",
     "default": false,
-    "method_id": "mor08.lingmetrics.0.1"
+    "method_id": "mor08.lingmetrics.0.2"
   },
   {
     "id": "POS01",
@@ -1225,12 +1283,13 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "base",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [],
     "state": "ready",
     "note": "已实现；公式验证与目标语料效度分别记录",
     "default": true,
-    "method_id": "pos01.lingmetrics.0.1"
+    "method_id": "pos01.lingmetrics.0.2"
   },
   {
     "id": "POS02",
@@ -1244,12 +1303,13 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "base",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [],
     "state": "ready",
     "note": "已实现；公式验证与目标语料效度分别记录",
     "default": true,
-    "method_id": "pos02.lingmetrics.0.1"
+    "method_id": "pos02.lingmetrics.0.2"
   },
   {
     "id": "POS03",
@@ -1263,12 +1323,13 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "base",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [],
     "state": "ready",
     "note": "已实现；公式验证与目标语料效度分别记录",
     "default": true,
-    "method_id": "pos03.lingmetrics.0.1"
+    "method_id": "pos03.lingmetrics.0.2"
   },
   {
     "id": "POS04",
@@ -1282,12 +1343,13 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "base",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [],
     "state": "ready",
     "note": "已实现；公式验证与目标语料效度分别记录",
     "default": true,
-    "method_id": "pos04.lingmetrics.0.1"
+    "method_id": "pos04.lingmetrics.0.2"
   },
   {
     "id": "POS05",
@@ -1301,12 +1363,13 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "base",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [],
     "state": "ready",
     "note": "已实现；公式验证与目标语料效度分别记录",
     "default": true,
-    "method_id": "pos05.lingmetrics.0.1"
+    "method_id": "pos05.lingmetrics.0.2"
   },
   {
     "id": "POS06",
@@ -1320,12 +1383,13 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "base",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [],
     "state": "ready",
     "note": "已实现；公式验证与目标语料效度分别记录",
     "default": true,
-    "method_id": "pos06.lingmetrics.0.1"
+    "method_id": "pos06.lingmetrics.0.2"
   },
   {
     "id": "POS07",
@@ -1339,12 +1403,13 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "base",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [],
     "state": "ready",
     "note": "已实现；公式验证与目标语料效度分别记录",
     "default": true,
-    "method_id": "pos07.lingmetrics.0.1"
+    "method_id": "pos07.lingmetrics.0.2"
   },
   {
     "id": "POS08",
@@ -1358,12 +1423,13 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "base",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [],
     "state": "ready",
     "note": "已实现；公式验证与目标语料效度分别记录",
     "default": true,
-    "method_id": "pos08.lingmetrics.0.1"
+    "method_id": "pos08.lingmetrics.0.2"
   },
   {
     "id": "POS09",
@@ -1377,12 +1443,13 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "base",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [],
     "state": "ready",
     "note": "已实现；公式验证与目标语料效度分别记录",
     "default": true,
-    "method_id": "pos09.lingmetrics.0.1"
+    "method_id": "pos09.lingmetrics.0.2"
   },
   {
     "id": "POS10",
@@ -1396,12 +1463,13 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "base",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [],
     "state": "ready",
     "note": "已实现；公式验证与目标语料效度分别记录",
     "default": true,
-    "method_id": "pos10.lingmetrics.0.1"
+    "method_id": "pos10.lingmetrics.0.2"
   },
   {
     "id": "SYN01",
@@ -1415,6 +1483,7 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "syntax",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [
       "stanza"
@@ -1422,7 +1491,7 @@
     "state": "resource_required",
     "note": "需准备：stanza",
     "default": false,
-    "method_id": "syn01.lingmetrics.0.1"
+    "method_id": "syn01.lingmetrics.0.2"
   },
   {
     "id": "SYN02",
@@ -1436,6 +1505,7 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "syntax",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [
       "stanza"
@@ -1443,7 +1513,7 @@
     "state": "resource_required",
     "note": "需准备：stanza",
     "default": false,
-    "method_id": "syn02.lingmetrics.0.1"
+    "method_id": "syn02.lingmetrics.0.2"
   },
   {
     "id": "SYN03",
@@ -1457,6 +1527,7 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "syntax",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [
       "stanza"
@@ -1464,7 +1535,7 @@
     "state": "resource_required",
     "note": "需准备：stanza",
     "default": false,
-    "method_id": "syn03.lingmetrics.0.1"
+    "method_id": "syn03.lingmetrics.0.2"
   },
   {
     "id": "SYN04",
@@ -1478,6 +1549,7 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "syntax",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [
       "stanza"
@@ -1485,7 +1557,7 @@
     "state": "resource_required",
     "note": "需准备：stanza",
     "default": false,
-    "method_id": "syn04.lingmetrics.0.1"
+    "method_id": "syn04.lingmetrics.0.2"
   },
   {
     "id": "SYN05",
@@ -1499,6 +1571,7 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "syntax",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [
       "stanza"
@@ -1506,7 +1579,7 @@
     "state": "resource_required",
     "note": "需准备：stanza",
     "default": false,
-    "method_id": "syn05.lingmetrics.0.1"
+    "method_id": "syn05.lingmetrics.0.2"
   },
   {
     "id": "SYN06",
@@ -1520,6 +1593,7 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "syntax",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [
       "stanza"
@@ -1527,7 +1601,7 @@
     "state": "resource_required",
     "note": "需准备：stanza",
     "default": false,
-    "method_id": "syn06.lingmetrics.0.1"
+    "method_id": "syn06.lingmetrics.0.2"
   },
   {
     "id": "SYN07",
@@ -1541,6 +1615,7 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "syntax",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [
       "stanza"
@@ -1548,7 +1623,7 @@
     "state": "resource_required",
     "note": "需准备：stanza",
     "default": false,
-    "method_id": "syn07.lingmetrics.0.1"
+    "method_id": "syn07.lingmetrics.0.2"
   },
   {
     "id": "SYN08",
@@ -1562,6 +1637,7 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "syntax",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [
       "stanza"
@@ -1569,7 +1645,7 @@
     "state": "resource_required",
     "note": "需准备：stanza",
     "default": false,
-    "method_id": "syn08.lingmetrics.0.1"
+    "method_id": "syn08.lingmetrics.0.2"
   },
   {
     "id": "SYN09",
@@ -1583,6 +1659,7 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "syntax",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [
       "stanza"
@@ -1590,7 +1667,7 @@
     "state": "resource_required",
     "note": "需准备：stanza",
     "default": false,
-    "method_id": "syn09.lingmetrics.0.1"
+    "method_id": "syn09.lingmetrics.0.2"
   },
   {
     "id": "SYN10",
@@ -1604,6 +1681,7 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "syntax",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [
       "stanza"
@@ -1611,7 +1689,7 @@
     "state": "resource_required",
     "note": "需准备：stanza",
     "default": false,
-    "method_id": "syn10.lingmetrics.0.1"
+    "method_id": "syn10.lingmetrics.0.2"
   },
   {
     "id": "SYN11",
@@ -1625,6 +1703,7 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "syntax",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [
       "stanza"
@@ -1632,7 +1711,7 @@
     "state": "resource_required",
     "note": "需准备：stanza",
     "default": false,
-    "method_id": "syn11.lingmetrics.0.1"
+    "method_id": "syn11.lingmetrics.0.2"
   },
   {
     "id": "SYN12",
@@ -1646,6 +1725,7 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "syntax",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [
       "stanza"
@@ -1653,7 +1733,7 @@
     "state": "resource_required",
     "note": "需准备：stanza",
     "default": false,
-    "method_id": "syn12.lingmetrics.0.1"
+    "method_id": "syn12.lingmetrics.0.2"
   },
   {
     "id": "SYN13",
@@ -1667,6 +1747,7 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "syntax",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [
       "stanza"
@@ -1674,7 +1755,7 @@
     "state": "resource_required",
     "note": "需准备：stanza",
     "default": false,
-    "method_id": "syn13.lingmetrics.0.1"
+    "method_id": "syn13.lingmetrics.0.2"
   },
   {
     "id": "SYN14",
@@ -1688,6 +1769,7 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "syntax",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [
       "stanza"
@@ -1695,7 +1777,7 @@
     "state": "resource_required",
     "note": "需准备：stanza",
     "default": false,
-    "method_id": "syn14.lingmetrics.0.1"
+    "method_id": "syn14.lingmetrics.0.2"
   },
   {
     "id": "SYN15",
@@ -1709,6 +1791,7 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "syntax",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [
       "stanza"
@@ -1716,7 +1799,7 @@
     "state": "resource_required",
     "note": "需准备：stanza",
     "default": false,
-    "method_id": "syn15.lingmetrics.0.1"
+    "method_id": "syn15.lingmetrics.0.2"
   },
   {
     "id": "SYN16",
@@ -1730,6 +1813,7 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "syntax",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [
       "stanza"
@@ -1737,7 +1821,7 @@
     "state": "resource_required",
     "note": "需准备：stanza",
     "default": false,
-    "method_id": "syn16.lingmetrics.0.1"
+    "method_id": "syn16.lingmetrics.0.2"
   },
   {
     "id": "SYN17",
@@ -1751,6 +1835,7 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "syntax",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [
       "stanza"
@@ -1758,7 +1843,7 @@
     "state": "resource_required",
     "note": "需准备：stanza",
     "default": false,
-    "method_id": "syn17.lingmetrics.0.1"
+    "method_id": "syn17.lingmetrics.0.2"
   },
   {
     "id": "SYN18",
@@ -1772,12 +1857,13 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "base",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [],
     "state": "ready",
     "note": "已实现；公式验证与目标语料效度分别记录",
     "default": false,
-    "method_id": "syn18.lingmetrics.0.1"
+    "method_id": "syn18.lingmetrics.0.2"
   },
   {
     "id": "SYN19",
@@ -1791,12 +1877,13 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "base",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [],
     "state": "ready",
     "note": "已实现；公式验证与目标语料效度分别记录",
     "default": false,
-    "method_id": "syn19.lingmetrics.0.1"
+    "method_id": "syn19.lingmetrics.0.2"
   },
   {
     "id": "SYN20",
@@ -1810,12 +1897,13 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "base",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [],
     "state": "ready",
     "note": "已实现；公式验证与目标语料效度分别记录",
     "default": false,
-    "method_id": "syn20.lingmetrics.0.1"
+    "method_id": "syn20.lingmetrics.0.2"
   },
   {
     "id": "SYN21",
@@ -1829,6 +1917,7 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "syntax",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [
       "stanza"
@@ -1836,7 +1925,7 @@
     "state": "resource_required",
     "note": "需准备：stanza",
     "default": false,
-    "method_id": "syn21.lingmetrics.0.1"
+    "method_id": "syn21.lingmetrics.0.2"
   },
   {
     "id": "SYN22",
@@ -1850,6 +1939,7 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "lexical",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [
       "vac"
@@ -1857,7 +1947,7 @@
     "state": "resource_required",
     "note": "需准备：vac",
     "default": false,
-    "method_id": "syn22.lingmetrics.0.1"
+    "method_id": "syn22.lingmetrics.0.2"
   },
   {
     "id": "DEP01",
@@ -1871,12 +1961,13 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "base",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [],
     "state": "ready",
     "note": "已实现；公式验证与目标语料效度分别记录",
     "default": true,
-    "method_id": "dep01.lingmetrics.0.1"
+    "method_id": "dep01.lingmetrics.0.2"
   },
   {
     "id": "DEP02",
@@ -1946,12 +2037,13 @@
       }
     ],
     "route": "base",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [],
     "state": "ready",
     "note": "已实现；公式验证与目标语料效度分别记录",
     "default": true,
-    "method_id": "dep02.lingmetrics.0.1"
+    "method_id": "dep02.lingmetrics.0.2"
   },
   {
     "id": "DEP03",
@@ -1965,12 +2057,13 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "base",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [],
     "state": "ready",
     "note": "已实现；公式验证与目标语料效度分别记录",
     "default": true,
-    "method_id": "dep03.lingmetrics.0.1"
+    "method_id": "dep03.lingmetrics.0.2"
   },
   {
     "id": "DEP04",
@@ -1984,12 +2077,13 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "base",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [],
     "state": "ready",
     "note": "已实现；公式验证与目标语料效度分别记录",
     "default": true,
-    "method_id": "dep04.lingmetrics.0.1"
+    "method_id": "dep04.lingmetrics.0.2"
   },
   {
     "id": "DEP05",
@@ -2003,12 +2097,13 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "base",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [],
     "state": "ready",
     "note": "已实现；公式验证与目标语料效度分别记录",
     "default": true,
-    "method_id": "dep05.lingmetrics.0.1"
+    "method_id": "dep05.lingmetrics.0.2"
   },
   {
     "id": "DEP06",
@@ -2022,12 +2117,13 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "base",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [],
     "state": "ready",
     "note": "已实现；公式验证与目标语料效度分别记录",
     "default": true,
-    "method_id": "dep06.lingmetrics.0.1"
+    "method_id": "dep06.lingmetrics.0.2"
   },
   {
     "id": "DEP07",
@@ -2041,12 +2137,13 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "base",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [],
     "state": "ready",
     "note": "已实现；公式验证与目标语料效度分别记录",
     "default": true,
-    "method_id": "dep07.lingmetrics.0.1"
+    "method_id": "dep07.lingmetrics.0.2"
   },
   {
     "id": "DEP08",
@@ -2060,12 +2157,13 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "base",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [],
     "state": "ready",
     "note": "已实现；公式验证与目标语料效度分别记录",
     "default": true,
-    "method_id": "dep08.lingmetrics.0.1"
+    "method_id": "dep08.lingmetrics.0.2"
   },
   {
     "id": "DEP09",
@@ -2079,12 +2177,13 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "base",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [],
     "state": "ready",
     "note": "已实现；公式验证与目标语料效度分别记录",
     "default": true,
-    "method_id": "dep09.lingmetrics.0.1"
+    "method_id": "dep09.lingmetrics.0.2"
   },
   {
     "id": "DEP10",
@@ -2098,12 +2197,13 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "base",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [],
     "state": "ready",
     "note": "已实现；公式验证与目标语料效度分别记录",
     "default": true,
-    "method_id": "dep10.lingmetrics.0.1"
+    "method_id": "dep10.lingmetrics.0.2"
   },
   {
     "id": "DEP11",
@@ -2117,12 +2217,13 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "base",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [],
     "state": "ready",
     "note": "已实现；公式验证与目标语料效度分别记录",
     "default": true,
-    "method_id": "dep11.lingmetrics.0.1"
+    "method_id": "dep11.lingmetrics.0.2"
   },
   {
     "id": "DEP12",
@@ -2136,12 +2237,13 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "base",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [],
     "state": "ready",
     "note": "已实现；公式验证与目标语料效度分别记录",
     "default": true,
-    "method_id": "dep12.lingmetrics.0.1"
+    "method_id": "dep12.lingmetrics.0.2"
   },
   {
     "id": "DEP13",
@@ -2155,12 +2257,13 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "base",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [],
     "state": "ready",
     "note": "已实现；公式验证与目标语料效度分别记录",
     "default": true,
-    "method_id": "dep13.lingmetrics.0.1"
+    "method_id": "dep13.lingmetrics.0.2"
   },
   {
     "id": "DEP14",
@@ -2203,12 +2306,13 @@
       }
     ],
     "route": "base",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [],
     "state": "ready",
     "note": "已实现；公式验证与目标语料效度分别记录",
     "default": false,
-    "method_id": "dep14.lingmetrics.0.1"
+    "method_id": "dep14.lingmetrics.0.2"
   },
   {
     "id": "DEP15",
@@ -2305,6 +2409,7 @@
       }
     ],
     "route": "configured",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [
       "lal"
@@ -2312,7 +2417,7 @@
     "state": "resource_required",
     "note": "需准备：lal",
     "default": false,
-    "method_id": "dep15.lingmetrics.0.1"
+    "method_id": "dep15.lingmetrics.0.2"
   },
   {
     "id": "DIS01",
@@ -2326,12 +2431,13 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "base",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [],
     "state": "ready",
     "note": "已实现；公式验证与目标语料效度分别记录",
     "default": true,
-    "method_id": "dis01.lingmetrics.0.1"
+    "method_id": "dis01.lingmetrics.0.2"
   },
   {
     "id": "DIS02",
@@ -2345,12 +2451,13 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "base",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [],
     "state": "ready",
     "note": "已实现；公式验证与目标语料效度分别记录",
     "default": true,
-    "method_id": "dis02.lingmetrics.0.1"
+    "method_id": "dis02.lingmetrics.0.2"
   },
   {
     "id": "DIS03",
@@ -2364,12 +2471,13 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "base",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [],
     "state": "ready",
     "note": "已实现；公式验证与目标语料效度分别记录",
     "default": true,
-    "method_id": "dis03.lingmetrics.0.1"
+    "method_id": "dis03.lingmetrics.0.2"
   },
   {
     "id": "DIS04",
@@ -2383,6 +2491,7 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "lexical",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [
       "connectives"
@@ -2390,7 +2499,7 @@
     "state": "resource_required",
     "note": "需准备：connectives",
     "default": false,
-    "method_id": "dis04.lingmetrics.0.1"
+    "method_id": "dis04.lingmetrics.0.2"
   },
   {
     "id": "DIS05",
@@ -2404,12 +2513,13 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "base",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [],
     "state": "ready",
     "note": "已实现；公式验证与目标语料效度分别记录",
     "default": true,
-    "method_id": "dis05.lingmetrics.0.1"
+    "method_id": "dis05.lingmetrics.0.2"
   },
   {
     "id": "DIS06",
@@ -2506,6 +2616,7 @@
       }
     ],
     "route": "coref",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [
       "coref"
@@ -2513,7 +2624,7 @@
     "state": "resource_required",
     "note": "需准备：coref",
     "default": false,
-    "method_id": "dis06.lingmetrics.0.1"
+    "method_id": "dis06.lingmetrics.0.2"
   },
   {
     "id": "DIS07",
@@ -2527,6 +2638,7 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "coref",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [
       "coref"
@@ -2534,7 +2646,7 @@
     "state": "resource_required",
     "note": "需准备：coref",
     "default": false,
-    "method_id": "dis07.lingmetrics.0.1"
+    "method_id": "dis07.lingmetrics.0.2"
   },
   {
     "id": "DIS08",
@@ -2548,6 +2660,7 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "sbert",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [
       "sbert"
@@ -2555,7 +2668,7 @@
     "state": "resource_required",
     "note": "需准备：sbert",
     "default": false,
-    "method_id": "dis08.lingmetrics.0.1"
+    "method_id": "dis08.lingmetrics.0.2"
   },
   {
     "id": "DIS09",
@@ -2569,6 +2682,7 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "sbert",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [
       "sbert"
@@ -2576,7 +2690,7 @@
     "state": "resource_required",
     "note": "需准备：sbert",
     "default": false,
-    "method_id": "dis09.lingmetrics.0.1"
+    "method_id": "dis09.lingmetrics.0.2"
   },
   {
     "id": "DIS10",
@@ -2590,6 +2704,7 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "sbert",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [
       "sbert"
@@ -2597,7 +2712,7 @@
     "state": "resource_required",
     "note": "需准备：sbert",
     "default": false,
-    "method_id": "dis10.lingmetrics.0.1"
+    "method_id": "dis10.lingmetrics.0.2"
   },
   {
     "id": "INF01",
@@ -2611,12 +2726,13 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "base",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [],
     "state": "ready",
     "note": "已实现；公式验证与目标语料效度分别记录",
     "default": true,
-    "method_id": "inf01.lingmetrics.0.1"
+    "method_id": "inf01.lingmetrics.0.2"
   },
   {
     "id": "INF02",
@@ -2630,12 +2746,13 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "base",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [],
     "state": "ready",
     "note": "已实现；公式验证与目标语料效度分别记录",
     "default": true,
-    "method_id": "inf02.lingmetrics.0.1"
+    "method_id": "inf02.lingmetrics.0.2"
   },
   {
     "id": "INF03",
@@ -2649,12 +2766,13 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "base",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [],
     "state": "ready",
     "note": "已实现；公式验证与目标语料效度分别记录",
     "default": true,
-    "method_id": "inf03.lingmetrics.0.1"
+    "method_id": "inf03.lingmetrics.0.2"
   },
   {
     "id": "INF04",
@@ -2668,6 +2786,7 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "causal",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [
       "causal"
@@ -2675,7 +2794,7 @@
     "state": "resource_required",
     "note": "需准备：causal",
     "default": false,
-    "method_id": "inf04.lingmetrics.0.1"
+    "method_id": "inf04.lingmetrics.0.2"
   },
   {
     "id": "INF05",
@@ -2689,6 +2808,7 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "causal",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [
       "causal"
@@ -2696,7 +2816,7 @@
     "state": "resource_required",
     "note": "需准备：causal",
     "default": false,
-    "method_id": "inf05.lingmetrics.0.1"
+    "method_id": "inf05.lingmetrics.0.2"
   },
   {
     "id": "INF06",
@@ -2710,6 +2830,7 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "causal",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [
       "causal"
@@ -2717,7 +2838,7 @@
     "state": "resource_required",
     "note": "需准备：causal",
     "default": false,
-    "method_id": "inf06.lingmetrics.0.1"
+    "method_id": "inf06.lingmetrics.0.2"
   },
   {
     "id": "INF07",
@@ -2731,12 +2852,13 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "corpus",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [],
     "state": "ready",
     "note": "已实现；公式验证与目标语料效度分别记录",
     "default": false,
-    "method_id": "inf07.lingmetrics.0.1"
+    "method_id": "inf07.lingmetrics.0.2"
   },
   {
     "id": "READ01",
@@ -2750,12 +2872,13 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "base",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [],
     "state": "ready",
     "note": "已实现；公式验证与目标语料效度分别记录",
     "default": true,
-    "method_id": "read01.lingmetrics.0.1"
+    "method_id": "read01.lingmetrics.0.2"
   },
   {
     "id": "READ02",
@@ -2769,12 +2892,13 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "base",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [],
     "state": "ready",
     "note": "已实现；公式验证与目标语料效度分别记录",
     "default": true,
-    "method_id": "read02.lingmetrics.0.1"
+    "method_id": "read02.lingmetrics.0.2"
   },
   {
     "id": "READ03",
@@ -2788,12 +2912,13 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "base",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [],
     "state": "ready",
     "note": "已实现；公式验证与目标语料效度分别记录",
     "default": false,
-    "method_id": "read03.lingmetrics.0.1"
+    "method_id": "read03.lingmetrics.0.2"
   },
   {
     "id": "READ04",
@@ -2807,12 +2932,13 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "base",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [],
     "state": "ready",
     "note": "已实现；公式验证与目标语料效度分别记录",
     "default": false,
-    "method_id": "read04.lingmetrics.0.1"
+    "method_id": "read04.lingmetrics.0.2"
   },
   {
     "id": "READ05",
@@ -2826,12 +2952,13 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "base",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [],
     "state": "ready",
     "note": "已实现；公式验证与目标语料效度分别记录",
     "default": true,
-    "method_id": "read05.lingmetrics.0.1"
+    "method_id": "read05.lingmetrics.0.2"
   },
   {
     "id": "READ06",
@@ -2845,12 +2972,13 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "base",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [],
     "state": "ready",
     "note": "已实现；公式验证与目标语料效度分别记录",
     "default": true,
-    "method_id": "read06.lingmetrics.0.1"
+    "method_id": "read06.lingmetrics.0.2"
   },
   {
     "id": "READ07",
@@ -2864,6 +2992,7 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "lexical",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [
       "easy_words"
@@ -2871,7 +3000,7 @@
     "state": "resource_required",
     "note": "需准备：easy_words",
     "default": false,
-    "method_id": "read07.lingmetrics.0.1"
+    "method_id": "read07.lingmetrics.0.2"
   },
   {
     "id": "READ08",
@@ -2885,12 +3014,13 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "base",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [],
     "state": "ready",
     "note": "已实现；公式验证与目标语料效度分别记录",
     "default": true,
-    "method_id": "read08.lingmetrics.0.1"
+    "method_id": "read08.lingmetrics.0.2"
   },
   {
     "id": "READ09",
@@ -2904,12 +3034,13 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "base",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [],
     "state": "ready",
     "note": "已实现；公式验证与目标语料效度分别记录",
     "default": true,
-    "method_id": "read09.lingmetrics.0.1"
+    "method_id": "read09.lingmetrics.0.2"
   },
   {
     "id": "STY01",
@@ -2923,6 +3054,7 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "lexical",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [
       "function_words"
@@ -2930,7 +3062,7 @@
     "state": "resource_required",
     "note": "需准备：function_words",
     "default": false,
-    "method_id": "sty01.lingmetrics.0.1"
+    "method_id": "sty01.lingmetrics.0.2"
   },
   {
     "id": "STY02",
@@ -2944,12 +3076,13 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "corpus",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [],
     "state": "ready",
     "note": "已实现；公式验证与目标语料效度分别记录",
     "default": false,
-    "method_id": "sty02.lingmetrics.0.1"
+    "method_id": "sty02.lingmetrics.0.2"
   },
   {
     "id": "STY03",
@@ -2963,12 +3096,13 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "base",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [],
     "state": "ready",
     "note": "已实现；公式验证与目标语料效度分别记录",
     "default": true,
-    "method_id": "sty03.lingmetrics.0.1"
+    "method_id": "sty03.lingmetrics.0.2"
   },
   {
     "id": "STY04",
@@ -2982,6 +3116,7 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "lexical",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [
       "nominalizations"
@@ -2989,7 +3124,7 @@
     "state": "resource_required",
     "note": "需准备：nominalizations",
     "default": false,
-    "method_id": "sty04.lingmetrics.0.1"
+    "method_id": "sty04.lingmetrics.0.2"
   },
   {
     "id": "STY05",
@@ -3003,6 +3138,7 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "lexical",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [
       "stance"
@@ -3010,7 +3146,7 @@
     "state": "resource_required",
     "note": "需准备：stance",
     "default": false,
-    "method_id": "sty05.lingmetrics.0.1"
+    "method_id": "sty05.lingmetrics.0.2"
   },
   {
     "id": "STY06",
@@ -3024,6 +3160,7 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "configured",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [
       "biber"
@@ -3031,7 +3168,7 @@
     "state": "resource_required",
     "note": "需准备：biber",
     "default": false,
-    "method_id": "sty06.lingmetrics.0.1"
+    "method_id": "sty06.lingmetrics.0.2"
   },
   {
     "id": "STY07",
@@ -3045,14 +3182,15 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "corpus",
-    "scope": "document",
+    "workflow": "extract",
+    "scope": "pair",
     "required_resources": [
       "function_words"
     ],
     "state": "resource_required",
     "note": "需准备：function_words",
     "default": false,
-    "method_id": "sty07.lingmetrics.0.1"
+    "method_id": "sty07.lingmetrics.0.2"
   },
   {
     "id": "PHO01",
@@ -3066,12 +3204,13 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "base",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [],
     "state": "ready",
     "note": "已实现；公式验证与目标语料效度分别记录",
     "default": false,
-    "method_id": "pho01.lingmetrics.0.1"
+    "method_id": "pho01.lingmetrics.0.2"
   },
   {
     "id": "PHO02",
@@ -3085,12 +3224,13 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "base",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [],
     "state": "ready",
     "note": "已实现；公式验证与目标语料效度分别记录",
     "default": false,
-    "method_id": "pho02.lingmetrics.0.1"
+    "method_id": "pho02.lingmetrics.0.2"
   },
   {
     "id": "PHO03",
@@ -3104,6 +3244,7 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "lexical",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [
       "phonology"
@@ -3111,7 +3252,7 @@
     "state": "resource_required",
     "note": "需准备：phonology",
     "default": false,
-    "method_id": "pho03.lingmetrics.0.1"
+    "method_id": "pho03.lingmetrics.0.2"
   },
   {
     "id": "PHO04",
@@ -3125,6 +3266,7 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "lexical",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [
       "phonology"
@@ -3132,7 +3274,7 @@
     "state": "resource_required",
     "note": "需准备：phonology",
     "default": false,
-    "method_id": "pho04.lingmetrics.0.1"
+    "method_id": "pho04.lingmetrics.0.2"
   },
   {
     "id": "PHO05",
@@ -3146,6 +3288,7 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "lexical",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [
       "phonology"
@@ -3153,7 +3296,7 @@
     "state": "resource_required",
     "note": "需准备：phonology",
     "default": false,
-    "method_id": "pho05.lingmetrics.0.1"
+    "method_id": "pho05.lingmetrics.0.2"
   },
   {
     "id": "PHO06",
@@ -3167,6 +3310,7 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "lexical",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [
       "phonology"
@@ -3174,7 +3318,7 @@
     "state": "resource_required",
     "note": "需准备：phonology",
     "default": false,
-    "method_id": "pho06.lingmetrics.0.1"
+    "method_id": "pho06.lingmetrics.0.2"
   },
   {
     "id": "QL01",
@@ -3187,15 +3331,16 @@
     "source_ids": "R29,R30",
     "specifications": [],
     "operationalization_states": [],
-    "route": "corpus",
+    "route": "fit",
+    "workflow": "fit",
     "scope": "corpus",
     "required_resources": [
       "corpus"
     ],
-    "state": "resource_required",
-    "note": "需准备：corpus",
+    "state": "fit_only",
+    "note": "已移至拟合；提取会保留可复用的观测表",
     "default": false,
-    "method_id": "ql01.lingmetrics.0.1"
+    "method_id": "ql01.lingmetrics.0.2"
   },
   {
     "id": "QL02",
@@ -3208,15 +3353,16 @@
     "source_ids": "R29",
     "specifications": [],
     "operationalization_states": [],
-    "route": "corpus",
+    "route": "fit",
+    "workflow": "fit",
     "scope": "corpus",
     "required_resources": [
       "corpus"
     ],
-    "state": "resource_required",
-    "note": "需准备：corpus",
+    "state": "fit_only",
+    "note": "已移至拟合；提取会保留可复用的观测表",
     "default": false,
-    "method_id": "ql02.lingmetrics.0.1"
+    "method_id": "ql02.lingmetrics.0.2"
   },
   {
     "id": "QL03",
@@ -3229,15 +3375,16 @@
     "source_ids": "R29",
     "specifications": [],
     "operationalization_states": [],
-    "route": "corpus",
+    "route": "fit",
+    "workflow": "fit",
     "scope": "corpus",
     "required_resources": [
       "corpus"
     ],
-    "state": "resource_required",
-    "note": "需准备：corpus",
+    "state": "fit_only",
+    "note": "已移至拟合；提取会保留可复用的观测表",
     "default": false,
-    "method_id": "ql03.lingmetrics.0.1"
+    "method_id": "ql03.lingmetrics.0.2"
   },
   {
     "id": "QL04",
@@ -3250,15 +3397,16 @@
     "source_ids": "R29",
     "specifications": [],
     "operationalization_states": [],
-    "route": "corpus",
+    "route": "fit",
+    "workflow": "fit",
     "scope": "corpus",
     "required_resources": [
       "lnre"
     ],
-    "state": "resource_required",
-    "note": "需准备：lnre",
+    "state": "fit_only",
+    "note": "已移至拟合；提取会保留可复用的观测表",
     "default": false,
-    "method_id": "ql04.lingmetrics.0.1"
+    "method_id": "ql04.lingmetrics.0.2"
   },
   {
     "id": "QL05",
@@ -3271,15 +3419,16 @@
     "source_ids": "R01,R30",
     "specifications": [],
     "operationalization_states": [],
-    "route": "corpus",
+    "route": "fit",
+    "workflow": "fit",
     "scope": "document",
     "required_resources": [
       "corpus"
     ],
-    "state": "resource_required",
-    "note": "需准备：corpus",
+    "state": "fit_only",
+    "note": "已移至拟合；提取会保留可复用的观测表",
     "default": false,
-    "method_id": "ql05.lingmetrics.0.1"
+    "method_id": "ql05.lingmetrics.0.2"
   },
   {
     "id": "QL06",
@@ -3292,15 +3441,16 @@
     "source_ids": "R31",
     "specifications": [],
     "operationalization_states": [],
-    "route": "corpus",
+    "route": "fit",
+    "workflow": "fit",
     "scope": "document",
     "required_resources": [
       "corpus"
     ],
-    "state": "resource_required",
-    "note": "需准备：corpus",
+    "state": "fit_only",
+    "note": "已移至拟合；提取会保留可复用的观测表",
     "default": false,
-    "method_id": "ql06.lingmetrics.0.1"
+    "method_id": "ql06.lingmetrics.0.2"
   },
   {
     "id": "QL07",
@@ -3313,13 +3463,14 @@
     "source_ids": "R34",
     "specifications": [],
     "operationalization_states": [],
-    "route": "corpus",
+    "route": "fit",
+    "workflow": "fit",
     "scope": "corpus",
     "required_resources": [],
-    "state": "ready",
-    "note": "已实现；公式验证与目标语料效度分别记录",
+    "state": "fit_only",
+    "note": "已移至拟合；提取会保留可复用的观测表",
     "default": false,
-    "method_id": "ql07.lingmetrics.0.1"
+    "method_id": "ql07.lingmetrics.0.2"
   },
   {
     "id": "QL08",
@@ -3332,13 +3483,14 @@
     "source_ids": "R32",
     "specifications": [],
     "operationalization_states": [],
-    "route": "corpus",
+    "route": "fit",
+    "workflow": "fit",
     "scope": "corpus",
     "required_resources": [],
-    "state": "ready",
-    "note": "已实现；公式验证与目标语料效度分别记录",
+    "state": "fit_only",
+    "note": "已移至拟合；提取会保留可复用的观测表",
     "default": false,
-    "method_id": "ql08.lingmetrics.0.1"
+    "method_id": "ql08.lingmetrics.0.2"
   },
   {
     "id": "QL09",
@@ -3381,12 +3533,13 @@
       }
     ],
     "route": "corpus",
+    "workflow": "extract",
     "scope": "corpus",
     "required_resources": [],
     "state": "ready",
     "note": "已实现；公式验证与目标语料效度分别记录",
     "default": false,
-    "method_id": "ql09.lingmetrics.0.1"
+    "method_id": "ql09.lingmetrics.0.2"
   },
   {
     "id": "QL10",
@@ -3400,12 +3553,13 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "corpus",
+    "workflow": "extract",
     "scope": "corpus",
     "required_resources": [],
     "state": "ready",
     "note": "已实现；公式验证与目标语料效度分别记录",
     "default": false,
-    "method_id": "ql10.lingmetrics.0.1"
+    "method_id": "ql10.lingmetrics.0.2"
   },
   {
     "id": "QC01",
@@ -3419,12 +3573,13 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "configured",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [],
     "state": "ready",
     "note": "已实现；公式验证与目标语料效度分别记录",
     "default": false,
-    "method_id": "qc01.lingmetrics.0.1"
+    "method_id": "qc01.lingmetrics.0.2"
   },
   {
     "id": "QC02",
@@ -3438,12 +3593,13 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "configured",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [],
     "state": "ready",
     "note": "已实现；公式验证与目标语料效度分别记录",
     "default": false,
-    "method_id": "qc02.lingmetrics.0.1"
+    "method_id": "qc02.lingmetrics.0.2"
   },
   {
     "id": "QC03",
@@ -3457,12 +3613,13 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "configured",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [],
     "state": "ready",
     "note": "已实现；公式验证与目标语料效度分别记录",
     "default": false,
-    "method_id": "qc03.lingmetrics.0.1"
+    "method_id": "qc03.lingmetrics.0.2"
   },
   {
     "id": "QC04",
@@ -3476,12 +3633,13 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "base",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [],
     "state": "ready",
     "note": "已实现；公式验证与目标语料效度分别记录",
     "default": true,
-    "method_id": "qc04.lingmetrics.0.1"
+    "method_id": "qc04.lingmetrics.0.2"
   },
   {
     "id": "QC05",
@@ -3495,12 +3653,13 @@
     "specifications": [],
     "operationalization_states": [],
     "route": "base",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [],
     "state": "ready",
     "note": "已实现；公式验证与目标语料效度分别记录",
     "default": true,
-    "method_id": "qc05.lingmetrics.0.1"
+    "method_id": "qc05.lingmetrics.0.2"
   },
   {
     "id": "FREQ10",
@@ -3570,12 +3729,13 @@
       }
     ],
     "route": "corpus",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [],
     "state": "ready",
     "note": "已实现；公式验证与目标语料效度分别记录",
     "default": false,
-    "method_id": "freq10.lingmetrics.0.1"
+    "method_id": "freq10.lingmetrics.0.2"
   },
   {
     "id": "MWE07",
@@ -3645,12 +3805,13 @@
       }
     ],
     "route": "corpus",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [],
     "state": "ready",
     "note": "已实现；公式验证与目标语料效度分别记录",
     "default": false,
-    "method_id": "mwe07.lingmetrics.0.1"
+    "method_id": "mwe07.lingmetrics.0.2"
   },
   {
     "id": "MWE08",
@@ -3693,12 +3854,13 @@
       }
     ],
     "route": "corpus",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [],
     "state": "ready",
     "note": "已实现；公式验证与目标语料效度分别记录",
     "default": false,
-    "method_id": "mwe08.lingmetrics.0.1"
+    "method_id": "mwe08.lingmetrics.0.2"
   },
   {
     "id": "SYN23",
@@ -3768,6 +3930,7 @@
       }
     ],
     "route": "syntax",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [
       "stanza"
@@ -3775,7 +3938,7 @@
     "state": "resource_required",
     "note": "需准备：stanza",
     "default": false,
-    "method_id": "syn23.lingmetrics.0.1"
+    "method_id": "syn23.lingmetrics.0.2"
   },
   {
     "id": "SYN24",
@@ -3845,6 +4008,7 @@
       }
     ],
     "route": "syntax",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [
       "stanza"
@@ -3852,7 +4016,7 @@
     "state": "resource_required",
     "note": "需准备：stanza",
     "default": false,
-    "method_id": "syn24.lingmetrics.0.1"
+    "method_id": "syn24.lingmetrics.0.2"
   },
   {
     "id": "SYN25",
@@ -3895,12 +4059,13 @@
       }
     ],
     "route": "pending",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [],
     "state": "method_pending",
     "note": "修订D-Level完整识别规则、冲突和碎片处理尚未形成可验证执行规范",
     "default": false,
-    "method_id": "syn25.lingmetrics.0.1"
+    "method_id": "syn25.lingmetrics.0.2"
   },
   {
     "id": "DEP16",
@@ -3943,12 +4108,13 @@
       }
     ],
     "route": "pending",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [],
     "state": "method_pending",
     "note": "NDD原始标点、重编号和聚合规则尚待核验",
     "default": false,
-    "method_id": "dep16.lingmetrics.0.1"
+    "method_id": "dep16.lingmetrics.0.2"
   },
   {
     "id": "DIS11",
@@ -4072,12 +4238,13 @@
       }
     ],
     "route": "pending",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [],
     "state": "method_pending",
     "note": "CPIDR 3.2完整37条规则源码尚未取得；DEPID的dobj差异尚待核验",
     "default": false,
-    "method_id": "dis11.lingmetrics.0.1"
+    "method_id": "dis11.lingmetrics.0.2"
   },
   {
     "id": "DIS12",
@@ -4120,6 +4287,7 @@
       }
     ],
     "route": "sbert",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [
       "sbert",
@@ -4128,7 +4296,7 @@
     "state": "resource_required",
     "note": "需准备：sbert, sid",
     "default": false,
-    "method_id": "dis12.lingmetrics.0.1"
+    "method_id": "dis12.lingmetrics.0.2"
   },
   {
     "id": "INF08",
@@ -4279,6 +4447,7 @@
       }
     ],
     "route": "causal",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [
       "causal"
@@ -4286,7 +4455,7 @@
     "state": "resource_required",
     "note": "需准备：causal",
     "default": false,
-    "method_id": "inf08.lingmetrics.0.1"
+    "method_id": "inf08.lingmetrics.0.2"
   },
   {
     "id": "INF09",
@@ -4329,6 +4498,7 @@
       }
     ],
     "route": "causal",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [
       "causal",
@@ -4337,7 +4507,7 @@
     "state": "resource_required",
     "note": "需准备：causal, unigram",
     "default": false,
-    "method_id": "inf09.lingmetrics.0.1"
+    "method_id": "inf09.lingmetrics.0.2"
   },
   {
     "id": "INF10",
@@ -4434,6 +4604,7 @@
       }
     ],
     "route": "mlm",
+    "workflow": "extract",
     "scope": "document",
     "required_resources": [
       "mlm"
@@ -4441,7 +4612,7 @@
     "state": "resource_required",
     "note": "需准备：mlm",
     "default": false,
-    "method_id": "inf10.lingmetrics.0.1"
+    "method_id": "inf10.lingmetrics.0.2"
   },
   {
     "id": "QL11",
@@ -4484,12 +4655,13 @@
       }
     ],
     "route": "corpus",
+    "workflow": "extract",
     "scope": "corpus",
     "required_resources": [],
     "state": "ready",
     "note": "已实现；公式验证与目标语料效度分别记录",
     "default": false,
-    "method_id": "ql11.lingmetrics.0.1"
+    "method_id": "ql11.lingmetrics.0.2"
   },
   {
     "id": "NET01",
@@ -4559,12 +4731,13 @@
       }
     ],
     "route": "corpus",
+    "workflow": "extract",
     "scope": "corpus",
     "required_resources": [],
     "state": "ready",
     "note": "已实现；公式验证与目标语料效度分别记录",
     "default": false,
-    "method_id": "net01.lingmetrics.0.1"
+    "method_id": "net01.lingmetrics.0.2"
   },
   {
     "id": "NET02",
@@ -4607,12 +4780,13 @@
       }
     ],
     "route": "corpus",
+    "workflow": "extract",
     "scope": "corpus",
     "required_resources": [],
     "state": "ready",
     "note": "已实现；公式验证与目标语料效度分别记录",
     "default": false,
-    "method_id": "net02.lingmetrics.0.1"
+    "method_id": "net02.lingmetrics.0.2"
   },
   {
     "id": "NET03",
@@ -4655,12 +4829,13 @@
       }
     ],
     "route": "corpus",
+    "workflow": "extract",
     "scope": "corpus",
     "required_resources": [],
     "state": "ready",
     "note": "已实现；公式验证与目标语料效度分别记录",
     "default": false,
-    "method_id": "net03.lingmetrics.0.1"
+    "method_id": "net03.lingmetrics.0.2"
   },
   {
     "id": "NET04",
@@ -4703,12 +4878,13 @@
       }
     ],
     "route": "corpus",
+    "workflow": "extract",
     "scope": "corpus",
     "required_resources": [],
     "state": "ready",
     "note": "已实现；公式验证与目标语料效度分别记录",
     "default": false,
-    "method_id": "net04.lingmetrics.0.1"
+    "method_id": "net04.lingmetrics.0.2"
   },
   {
     "id": "NET05",
@@ -4751,11 +4927,12 @@
       }
     ],
     "route": "corpus",
+    "workflow": "extract",
     "scope": "corpus",
     "required_resources": [],
     "state": "ready",
     "note": "已实现；公式验证与目标语料效度分别记录",
     "default": false,
-    "method_id": "net05.lingmetrics.0.1"
+    "method_id": "net05.lingmetrics.0.2"
   }
 ]

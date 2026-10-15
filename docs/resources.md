@@ -2,6 +2,8 @@
 
 基础词典CMUdict随应用提供。大型依赖和模型存放在用户的 `Library/Application Support/LingMetrics`；单个资源准备成功后才写入清单，记录实际版本和文件校验值。
 
+“拟合计算工具：SciPy”仅是计算依赖，不含语料，内部资源ID保留`corpus`以兼容已有安装。线性和对数空间幂函数使用已有NumPy；其他常规拟合按需使用SciPy，LNRE使用独立R/zipfR。冻结参照来自用户先前的提取结果，选择方式见[工作流](fitting.md)。Biber与SID应用已给定的维度/训练簇，不在提取时重新训练。
+
 ## 词表
 
 导入UTF-8 CSV/TSV，首列 `word`，其他列采用资源页显示的字段名。支持常见原字段别名，例如 SUBTLEX-US 的 `Word/SubtlWF/Lg10WF/Lg10CD`、具体性 `Word/Conc.M`、AoA `Word/AoA_Kup`。无法判断的字段要求按模板整理，不能自动猜含义。

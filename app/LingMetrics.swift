@@ -4,7 +4,7 @@ import Foundation
 import UniformTypeIdentifiers
 
 struct Metric: Identifiable {
-    let id, name, english, category, definition, caution, state, note, sources, scope, method: String
+    let id, name, english, category, definition, caution, state, note, sources, scope, method, workflow: String
     let selectedByDefault: Bool
     let requirements: [String]
     let details: String
@@ -13,6 +13,7 @@ struct Metric: Identifiable {
         category=d["category"] as? String ?? ""; definition=d["definition"] as? String ?? ""
         caution=d["caution"] as? String ?? "";state=d["state"] as? String ?? "";note=d["note"] as? String ?? ""
         sources=d["sources"] as? String ?? "";scope=d["scope"] as? String ?? "";method=d["method_id"] as? String ?? ""
+        workflow=d["workflow"] as? String ?? "extract"
         selectedByDefault=d["default"] as? Bool ?? false;requirements=d["required_resources"] as? [String] ?? []
         let specs=d["specifications"] as? [[String:Any]] ?? []
         details=specs.map { s in ["操作化名称","定义与公式","分母与归一化","聚合方式","预处理与参数","待核细节或变更"].map { "\($0)：\(s[$0] as? String ?? "")" }.joined(separator:"\n") }.joined(separator:"\n\n")
@@ -35,6 +36,17 @@ final class AppModel: ObservableObject {
     @Published var advancedOptions="{}"; @Published var retryFailed=false
     @Published var semanticBackend="sbert"
     @Published var cacheSize=""
+    @Published var referenceMode="batch";@Published var referencePath=""
+    @Published var corpusGroupColumn="";@Published var partitionColumn="";@Published var pairColumn=""
+    @Published var networkEdge="adjacent";@Published var networkWindow=2;@Published var networkDirected=true;@Published var networkMinCount=1
+    @Published var bundleOrder=4;@Published var bundleFrequency=10;@Published var bundleDocuments=3
+    @Published var fitSource="";@Published var fitTables:[FitTable]=[];@Published var fitTable=""
+    @Published var fitColumns:[String]=[];@Published var fitNumericColumns:[String]=[];@Published var fitRowCount=0
+    @Published var fitKind="relation";@Published var fitX="";@Published var fitY="";@Published var fitWeight="";@Published var fitGroup=""
+    @Published var fitMinX="";@Published var fitMaxX="";@Published var fitMinY="";@Published var fitMaxY=""
+    @Published var fitModels:Set<String>=["linear"];@Published var fitOutput="";@Published var fitSummary=""
+    @Published var fitCompletedOutput="";@Published var fitUnit="";@Published var fitSpectrum=false
+    @Published var fitPreview="";@Published var fitPositiveOnly=false
     private var process: Process?; private var operation=""; private var initialized=false
     private let queue=DispatchQueue(label:"LingMetrics.Output")
     let root: URL
@@ -48,7 +60,7 @@ final class AppModel: ObservableObject {
     }
     func append(_ message: String) {log.append(message);if log.count>120 {log.removeFirst(log.count-120)}}
     func isReady(_ metric: Metric) -> Bool {
-        if metric.state=="method_pending" {return false}
+        if metric.state=="method_pending" || metric.workflow=="fit" {return false}
         let needed=metric.requirements.map {$0=="sbert" ? semanticBackend : $0}
         return needed.allSatisfy {id in resources.contains {$0.id==id && $0.installed}}
     }
@@ -108,6 +120,7 @@ final class AppModel: ObservableObject {
         case "columns":
             columns=d["columns"] as? [String] ?? []
             textColumn=columns.first(where:{["text","content","文本"].contains($0.lowercased())}) ?? columns.first ?? "text"
+            if !metadataColumns.contains(corpusGroupColumn) {corpusGroupColumn=""};if !metadataColumns.contains(partitionColumn) {partitionColumn=""};if !metadataColumns.contains(pairColumn) {pairColumn=""}
         case "started":progress=0;completedOutput="";status="正在提取 \(d["documents"] ?? 0) 篇文本";append(status)
         case "progress":
             status=d["message"] as? String ?? "正在计算…"
@@ -122,6 +135,28 @@ final class AppModel: ObservableObject {
                 append("结果："+counts.keys.sorted().map {"\(names[$0] ?? $0) \(counts[$0] ?? 0)"}.joined(separator:"，"))
             }
             history.removeAll(where:{$0==completedOutput});history.insert(completedOutput,at:0);history=Array(history.prefix(20));UserDefaults.standard.set(history,forKey:"runHistory")
+        case "fit_columns":
+            fitTables=(d["tables"] as? [[String:Any]] ?? []).map(FitTable.init)
+            fitColumns=d["columns"] as? [String] ?? [];fitNumericColumns=d["numeric_columns"] as? [String] ?? fitColumns;fitRowCount=d["rows"] as? Int ?? 0
+            let defaults=d["defaults"] as? [String:Any] ?? [:]
+            fitTable=defaults["id"] as? String ?? "";fitKind=defaults["kind"] as? String ?? "relation"
+            fitX=defaults["x"] as? String ?? fitNumericColumns.first ?? "";fitY=defaults["y"] as? String ?? (fitNumericColumns.count>1 ? fitNumericColumns[1] : "")
+            fitWeight=defaults["weight"] as? String ?? "";fitGroup=defaults["group"] as? String ?? ""
+            fitModels=Set(defaults["models"] as? [String] ?? ["linear"])
+            let unit=defaults["unit"] as? String ?? ""
+            fitUnit=["sentence":"句子（每行一句）","word token, frequency compressed":"词次（以频数压缩）","word type":"词型","word type, frequency compressed":"词型（以频数压缩）","prefix of input sequence":"文本前缀（累计观测，相互依赖）","word type across complete token windows":"词型（跨固定词数窗口）","document":"文档","token":"词 / 标点节点","text pair":"文本对","corpus":"语料组"][unit] ?? "外部CSV：请确认每行的观测单位"
+            fitSpectrum=fitTable=="frequency_spectrum";fitMinX="";fitMaxX="";fitMinY="";fitMaxY=""
+            fitPositiveOnly=defaults["positive_only"] as? Bool ?? false
+            let preview=d["preview"] as? [[String:Any]] ?? []
+            fitPreview=fitColumns.joined(separator:" | ")+"\n"+preview.prefix(3).map {row in fitColumns.map {String(describing:row[$0] ?? "").prefix(40)}.joined(separator:" | ")}.joined(separator:"\n")
+            status="拟合数据已载入，\(fitRowCount) 行"
+        case "fit_started":progress=0;fitCompletedOutput="";fitSummary="";status="正在拟合 \(d["rows"] ?? 0) 行观测";append(status)
+        case "fit_finished":
+            progress=1;fitCompletedOutput=d["output"] as? String ?? fitOutput;fitSummary=d["summary"] as? String ?? ""
+            let state=d["state"] as? String ?? "failed"
+            status=state=="complete" ? "拟合完成" : state=="partial" ? "部分模型完成，请查看逐项结果" : state=="cancelled" ? "拟合已取消，已完成结果保留" : "所选模型均未完成，请查看原因"
+            append(status);history.removeAll(where:{$0==fitCompletedOutput});history.insert(fitCompletedOutput,at:0);history=Array(history.prefix(20));UserDefaults.standard.set(history,forKey:"runHistory")
+            fitOutput=URL(fileURLWithPath:fitCompletedOutput).deletingLastPathComponent().appendingPathComponent("LingMetrics-fit-"+UUID().uuidString.prefix(8)).path
         case "resource_installed":status="资源准备完成";append(status)
         case "error":error=d["message"] as? String ?? "未知错误";status="运行出错";append(error)
         default:break
@@ -154,10 +189,44 @@ final class AppModel: ObservableObject {
         do {
             guard var options=(try JSONSerialization.jsonObject(with:Data(advancedOptions.utf8))) as? [String:Any] else {throw NSError(domain:"LingMetrics",code:1,userInfo:[NSLocalizedDescriptionKey:"高级参数必须是JSON对象"])}
             options["window"]=window;options["seed"]=seed;options["token_unit"]=useLemma ? "lemma" : "wordform";options["semantic_backend"]=semanticBackend
+            options["reference_mode"]=referenceMode;options["reference_path"]=referencePath;options["corpus_group_column"]=corpusGroupColumn;options["partition_column"]=partitionColumn;options["pair_column"]=pairColumn
+            options["network_edge"]=networkEdge;options["network_window"]=networkWindow;options["network_directed"]=networkDirected;options["network_min_count"]=networkMinCount
+            options["bundle_order"]=bundleOrder;options["bundle_min_frequency"]=bundleFrequency;options["bundle_min_documents"]=bundleDocuments
             let job:[String:Any]=["inputs":inputs,"output":output,"features":selected.sorted(),"text_column":textColumn,"options":options,"retry_failed":retryFailed]
             let jobs=cache.appendingPathComponent("jobs");try FileManager.default.createDirectory(at:jobs,withIntermediateDirectories:true)
             let path=jobs.appendingPathComponent(UUID().uuidString+".json");try JSONSerialization.data(withJSONObject:job,options:[.prettyPrinted,.sortedKeys]).write(to:path,options:.atomic)
             command(["run",path.path])
+        } catch {self.error=error.localizedDescription}
+    }
+    var metadataColumns:[String] {columns.filter {$0 != textColumn && $0 != "doc_id"}}
+    func chooseReference() {
+        let panel=NSOpenPanel();panel.canChooseFiles=false;panel.canChooseDirectories=true;panel.prompt="选择参照提取结果"
+        panel.message="选择已完成的0.2版提取结果目录，将复用其中冻结的词频、搭配与分块统计。"
+        if panel.runModal() == .OK,let url=panel.url {referencePath=url.path}
+    }
+    func useFitSource(_ path:String) {
+        fitSource=path;fitTables=[];fitColumns=[];fitTable="";fitSummary="";fitCompletedOutput=""
+        fitOutput=cache.appendingPathComponent("fits/fit-"+UUID().uuidString.prefix(8)).path
+        command(["fit-inspect",path])
+    }
+    func chooseFitSource(folder:Bool) {
+        let panel=NSOpenPanel();panel.canChooseFiles = !folder;panel.canChooseDirectories=folder;panel.prompt=folder ? "选择提取结果" : "选择CSV"
+        if !folder {panel.allowedContentTypes=[.commaSeparatedText]}
+        if panel.runModal() == .OK,let url=panel.url {useFitSource(url.path)}
+    }
+    func chooseFitOutput() {
+        let panel=NSOpenPanel();panel.canChooseFiles=false;panel.canChooseDirectories=true;panel.canCreateDirectories=true
+        panel.message="选择保存位置；拟合会创建独立结果文件夹，保留原始测量表。"
+        if panel.runModal() == .OK,let url=panel.url {fitOutput=url.appendingPathComponent("LingMetrics-fit-"+UUID().uuidString.prefix(8)).path}
+    }
+    func selectFitTable(_ id:String) {if !id.isEmpty {command(["fit-inspect",fitSource,id])}}
+    func startFit() {
+        guard !fitSource.isEmpty,!fitOutput.isEmpty else {error="请选择拟合数据和输出位置。";return}
+        do {
+            let job:[String:Any]=["source":fitSource,"table":fitTable,"output":fitOutput,"kind":fitKind,"x":fitX,"y":fitY,"weight":fitWeight,"group":fitGroup,"models":fitModels.sorted(),"min_x":fitMinX,"max_x":fitMaxX,"min_y":fitMinY,"max_y":fitMaxY,"lnre_frequency_spectrum":fitSpectrum,"positive_only":fitPositiveOnly]
+            let jobs=cache.appendingPathComponent("jobs");try FileManager.default.createDirectory(at:jobs,withIntermediateDirectories:true)
+            let path=jobs.appendingPathComponent(UUID().uuidString+".json");try JSONSerialization.data(withJSONObject:job,options:[.prettyPrinted,.sortedKeys]).write(to:path,options:.atomic)
+            command(["fit",path.path])
         } catch {self.error=error.localizedDescription}
     }
     func stop() {process?.terminate();status="正在保留已完成结果…"}
@@ -216,14 +285,14 @@ struct ContentView: View {
         VStack(spacing:0) {
             HStack {
                 Image(systemName:"chart.bar.xaxis").font(.system(size:30)).foregroundColor(.accentColor)
-                VStack(alignment:.leading,spacing:3) {Text("LingMetrics").font(.title2.bold());Text("英语语言指标 · 本地提取与研究资料导出").font(.caption).foregroundColor(.secondary)}
+                VStack(alignment:.leading,spacing:3) {Text("LingMetrics").font(.title2.bold());Text("英语语言指标 · 提取、复用与拟合").font(.caption).foregroundColor(.secondary)}
                 Spacer()
-                Picker("页面",selection:$tab) {Text("提取").tag(0);Text("指标库").tag(1);Text("资源").tag(2);Text("运行记录").tag(3)}.pickerStyle(.segmented).frame(width:350)
+                Picker("页面",selection:$tab) {Text("提取").tag(0);Text("拟合").tag(1);Text("指标库").tag(2);Text("资源").tag(3);Text("运行记录").tag(4)}.pickerStyle(.segmented).frame(width:440)
             }.padding(20)
             Divider()
-            if tab==0 {extraction} else if tab==1 {metrics} else if tab==2 {resources} else {history}
+            if tab==0 {extraction} else if tab==1 {FittingView(showResources:{tab=3})} else if tab==2 {metrics} else if tab==3 {resources} else {history}
             Divider()
-            HStack {Text(model.status).font(.caption);Spacer();if model.busy {ProgressView().controlSize(.small)};Text("0.1.2 · Apple Silicon").font(.caption).foregroundColor(.secondary)}.padding(12)
+            HStack {Text(model.status).font(.caption);Spacer();if model.busy {ProgressView().controlSize(.small)};Text("0.2.0 · Apple Silicon").font(.caption).foregroundColor(.secondary)}.padding(12)
         }.frame(minWidth:1000,minHeight:700)
         .alert("资源下载",isPresented:$showDownload,presenting:download) {r in
             Button("下载") {model.command(["install",r.id])};Button("取消",role:.cancel) {}
@@ -233,7 +302,7 @@ struct ContentView: View {
                 HStack {Text("\(m.id) · \(m.name)").font(.title2.bold());Spacer();Button("关闭"){detail=nil}}
                 Text(m.english).foregroundColor(.secondary)
                 ScrollView {VStack(alignment:.leading,spacing:16) {
-                    Text(m.definition);Text("分析层级：\(m.scope=="corpus" ? "语料" : "文档")\n状态：\(m.note)")
+                    Text(m.definition);Text("分析层级：\(m.scope=="pair" ? "文本对" : m.scope=="corpus" ? "语料" : "文档")\n状态：\(m.note)")
                     Text("测量注意：\(m.caution)")
                     if !m.details.isEmpty {Text(m.details).font(.callout)}
                     ForEach(m.sources.split(separator:"\n").map(String.init),id:\.self) {source in if let url=URL(string:source) {Link("查看来源",destination:url)}}
@@ -243,7 +312,7 @@ struct ContentView: View {
     }
     var extraction:some View {
         HStack(alignment:.top,spacing:24) {
-            VStack(alignment:.leading,spacing:10) {
+            ScrollView {VStack(alignment:.leading,spacing:10) {
                 Group {
                 Text("1  导入文本").font(.headline)
                 HStack {Button("添加 TXT / CSV"){model.addInputs()};Button("添加文件夹"){model.addInputs(folder:true)};Button("载入示例"){model.loadExample()}}.disabled(model.busy)
@@ -260,17 +329,19 @@ struct ContentView: View {
                 Picker("语义相似度后端",selection:$model.semanticBackend) {Text("MPNet 句向量").tag("sbert");Text("fastText 词向量均值").tag("fasttext")}
                 DisclosureGroup("高级参数（JSON）") {TextEditor(text:$model.advancedOptions).font(.system(.caption,design:.monospaced)).frame(height:85);Text("参数与方法说明见使用手册。").font(.caption);Button("打开使用手册"){model.reveal(model.root.appendingPathComponent("docs/extractor.md").path)}}
                 }
-            }.frame(width:410).disabled(model.busy)
+                AnalysisChoicesView()
+            }}.frame(width:445).disabled(model.busy)
             Divider()
             VStack(alignment:.leading,spacing:16) {
                 Text("3  提取与导出").font(.headline)
-                HStack {Text("已选 \(model.selected.count) 个条目").font(.title3.bold());Spacer();Button("选择指标"){tab=1}}
+                HStack {Text("已选 \(model.selected.count) 个条目").font(.title3.bold());Spacer();Button("选择指标"){tab=2}}
                 let pending=model.metrics.filter {model.selected.contains($0.id) && !model.isReady($0)}
                 if pending.isEmpty {Label("已选指标可开始提取",systemImage:"checkmark.circle").foregroundColor(.green)}
-                else {VStack(alignment:.leading,spacing:5) {Text("\(pending.count) 个条目需要资源或方法核验").font(.callout.bold());Text("运行会保留缺失与原因，已具备条件的指标继续计算。").font(.caption).foregroundColor(.secondary);Button("准备所需资源"){tab=2}}}
-                Text("导出包含文档特征矩阵、词与句、实际使用的中间计数、语料层结果及运行版本。数值缺失与零分别记录。").font(.callout).foregroundColor(.secondary)
+                else {VStack(alignment:.leading,spacing:5) {Text("\(pending.count) 个条目需要资源或方法核验").font(.callout.bold());Text("运行会保留缺失与原因，已具备条件的指标继续计算。").font(.caption).foregroundColor(.secondary);Button("准备所需资源"){tab=3}}}
+                Text("保存文档特征、词句明细、词频谱、长度分布、句级测量与增长数据。提取完成后，可在拟合页选择变量和模型。").font(.callout).foregroundColor(.secondary)
                 ProgressView(value:model.progress)
                 HStack {Button(model.busy ? "正在运行…" : "开始提取"){model.start()}.buttonStyle(.borderedProminent).disabled(model.busy || model.inputs.isEmpty || model.output.isEmpty || model.selected.isEmpty);if model.busy {Button("取消并保留结果"){model.stop()}};if !model.completedOutput.isEmpty {Button("打开结果文件夹"){model.reveal(model.completedOutput)}}}
+                if !model.completedOutput.isEmpty && !model.busy && FileManager.default.fileExists(atPath:model.completedOutput+"/analysis_tables.json") {Button("用本次结果拟合"){model.useFitSource(model.completedOutput);tab=1}}
                 if !model.error.isEmpty {Text(model.error).foregroundColor(.red).textSelection(.enabled)}
                 ScrollView {Text(model.log.suffix(25).joined(separator:"\n")).font(.system(.caption,design:.monospaced)).frame(maxWidth:.infinity,alignment:.leading).textSelection(.enabled)}.frame(maxHeight:.infinity).padding(10).background(Color(NSColor.textBackgroundColor)).cornerRadius(8)
             }.frame(maxWidth:.infinity,maxHeight:.infinity,alignment:.topLeading)
@@ -279,14 +350,15 @@ struct ContentView: View {
     var metrics:some View {
         VStack(spacing:12) {
             HStack {TextField("搜索名称、缩写或编号",text:$search);Picker("类别",selection:$category){Text("全部类别").tag("全部类别");ForEach(Array(Set(model.metrics.map(\.category))).sorted(),id:\.self){Text($0).tag($0)}}.frame(width:250)}
-            HStack {Button("常用组合"){model.selected=Set(model.metrics.filter(\.selectedByDefault).map(\.id))};Button("全部可提取"){model.selected=Set(model.metrics.filter{model.isReady($0)}.map(\.id))};Button("选择全库"){model.selected=Set(model.metrics.map(\.id))};Button("清空"){model.selected=[]};Spacer();Text("\(model.selected.count) / \(model.metrics.count)")}.disabled(model.busy)
+            HStack {Button("常用组合"){model.selected=Set(model.metrics.filter(\.selectedByDefault).map(\.id))};Button("全部可提取"){model.selected=Set(model.metrics.filter{model.isReady($0)}.map(\.id))};Button("选择全部提取项"){model.selected=Set(model.metrics.filter{$0.workflow=="extract"}.map(\.id))};Button("清空"){model.selected=[]};Spacer();Text("\(model.selected.count) 已选 · 8项分析已移至拟合")}.disabled(model.busy)
             List(filtered) {m in
                 HStack(spacing:14) {
-                    Toggle("",isOn:Binding(get:{model.selected.contains(m.id)},set:{v in if v {model.selected.insert(m.id)} else {model.selected.remove(m.id)}})).labelsHidden().disabled(model.busy)
+                    Toggle("",isOn:Binding(get:{model.selected.contains(m.id)},set:{v in if v {model.selected.insert(m.id)} else {model.selected.remove(m.id)}})).labelsHidden().disabled(model.busy || m.workflow=="fit")
                     Text(m.id).font(.system(.caption,design:.monospaced)).frame(width:62,alignment:.leading)
                     VStack(alignment:.leading,spacing:3){Text(m.name);Text(m.english).font(.caption).foregroundColor(.secondary)}.frame(maxWidth:.infinity,alignment:.leading)
-                    Text(m.scope=="corpus" ? "语料层" : "文档层").font(.caption).foregroundColor(.secondary)
-                    Text(m.state=="method_pending" ? "方法待核" : model.isReady(m) ? "可提取" : "需要资源").font(.caption).foregroundColor(model.isReady(m) ? .green : .orange).frame(width:75)
+                    Text(m.scope=="pair" ? "文本对" : m.scope=="corpus" ? "语料层" : "文档层").font(.caption).foregroundColor(.secondary)
+                    if m.workflow=="fit" {Button("去拟合"){tab=1}.font(.caption).frame(width:75)}
+                    else {Text(m.state=="method_pending" ? "方法待核" : model.isReady(m) ? "可提取" : "需要资源").font(.caption).foregroundColor(model.isReady(m) ? .green : .orange).frame(width:75)}
                     Button("详情"){detail=m}
                 }.padding(.vertical,3)
             }
@@ -309,7 +381,7 @@ struct ContentView: View {
     }
     var history:some View {
         VStack(alignment:.leading,spacing:16) {Text("运行记录").font(.headline);Text("每个结果目录包含 run.json、字段字典和状态表。选择原目录及相同配置即可续算。").foregroundColor(.secondary)
-            List(model.history,id:\.self){path in HStack {Text(path).lineLimit(2);Spacer();Button("打开"){model.reveal(path)};Button("设为续算目录"){model.output=path;tab=0}}}
+            List(model.history,id:\.self){path in HStack {Text(path).lineLimit(2);Spacer();Button("打开"){model.reveal(path)};if FileManager.default.fileExists(atPath:path+"/analysis_tables.json") {Button("用于拟合"){model.useFitSource(path);tab=1}};if FileManager.default.fileExists(atPath:path+"/run.json") {Button("设为续算目录"){model.output=path;tab=0}}}}
         }.padding(24)
     }
 }

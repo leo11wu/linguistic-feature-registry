@@ -6,6 +6,7 @@ from collections import Counter
 from . import __version__, resources, catalogue
 from .util import ROOT, CACHE, emit, atomic_json, clean, sha, csv_write, Unavailable,local_bytes
 from .core import Text, base_measure
+from .observations import choices, lightweight, load_reference, freeze_reference, export_observations
 
 cancelled=False
 def cancel(signum=None,frame=None):
@@ -152,6 +153,7 @@ def run(job):
     selected=job.get('features',sorted(catalogue.DEFAULT));known={r['id'] for r in catalogue.catalogue()}
     unknown=set(selected)-known
     if unknown:raise ValueError('未知指标ID：'+', '.join(sorted(unknown)))
+    if set(selected)&catalogue.FIT_ONLY:raise ValueError('以下项目已移至拟合页，提取时会保留所需观测表：'+', '.join(sorted(set(selected)&catalogue.FIT_ONLY)))
     selected=sorted(set(selected));options=dict(job.get('options',{}));options.setdefault('seed',1729)
     options.setdefault('window',50);options.setdefault('hdd_sample',42);options.setdefault('mtld_threshold',.72);options.setdefault('token_unit','wordform')
     for key in ['window','hdd_sample','random_permutations','network_max_nodes','taylor_window','character_ngram_order']:
@@ -159,14 +161,16 @@ def run(job):
     if type(options['seed']) is not int or options['seed']<0:raise ValueError('seed需要非负整数')
     if not 0<options['mtld_threshold']<1:raise ValueError('MTLD阈值须在0与1之间')
     if options.get('semantic_backend','sbert') not in {'sbert','fasttext'}:raise ValueError('语义后端须为sbert或fasttext')
+    analysis_choices=choices(options,documents)
+    reference_data,reference_info=load_reference(options)
     code_hashes={str(p.relative_to(ROOT)):sha(p) for directory in ['engine','data','native'] for p in (ROOT/directory).rglob('*') if p.is_file() and p.suffix in {'.py','.csv','.json','.R','.cpp'} and '__pycache__' not in p.parts}
-    identity=dict(version=__version__,code_hashes=code_hashes,inputs=file_hashes,features=selected,options=options,text_column=job.get('text_column','text'),encoding=job.get('encoding','utf-8-sig'),resources=resources.snapshot(),versions=versions())
+    identity=dict(version=__version__,code_hashes=code_hashes,inputs=file_hashes,features=selected,options=options,reference=reference_info,text_column=job.get('text_column','text'),encoding=job.get('encoding','utf-8-sig'),resources=resources.snapshot(),versions=versions())
     signature=hashlib.sha256(json.dumps(identity,sort_keys=True,ensure_ascii=False).encode()).hexdigest()
     previous=output/'run.json'
     if previous.exists():
         prior=json.loads(previous.read_text())
         if prior.get('signature')!=signature:raise ValueError('此输出目录属于另一输入、参数或资源版本，请选择新目录')
-    runmeta=dict(signature=signature,identity=identity,state='running',started_at=time.strftime('%Y-%m-%dT%H:%M:%S%z'),offset_unit='Unicode codepoints; Apple checker ranges are UTF-16',dependency_nodes='spaCy tokens including punctuation; ROOT self-loop excluded',corpus_order='input order; TXT folder lexicographic path order',resources=resources.snapshot())
+    runmeta=dict(signature=signature,identity=identity,workflow='extract',analysis_choices=analysis_choices,state='running',started_at=time.strftime('%Y-%m-%dT%H:%M:%S%z'),offset_unit='Unicode codepoints; Apple checker ranges are UTF-16',dependency_nodes='spaCy tokens including punctuation; ROOT self-loop excluded',corpus_order='input order; TXT folder lexicographic path order',resources=resources.snapshot())
     started=time.perf_counter()
     atomic_json(previous,runmeta)
     checkpoint=output/'.checkpoint';checkpoint.mkdir(exist_ok=True)
@@ -229,48 +233,76 @@ def run(job):
             if stage=='syntax':
                 from .syntax import pipeline
                 pipeline.cache_clear()
-        corpus_fids=[f for f in selected if catalogue.route(f)=='corpus'];corpus_values={};corpus_status=[];corpus_details={}
-        if not cancelled and corpus_fids:
+        corpus_fids=[f for f in selected if catalogue.route(f)=='corpus'];corpus_rows=[];corpus_status=[];corpus_details={};corpora={};pair_rows=[];pair_status=[]
+        if not cancelled:
             corpus_started=time.perf_counter()
             from .corpus import Corpus
-            lightweight=[]
+            light=[]
             for r in record_iter():
-                words=[t for t in r.get('tokens',[]) if not t['is_punctuation']];sentences=[[t['lookup_key'] for t in words if t['sentence_id']==s['sentence_id']] for s in r.get('sentences',[])]
-                lightweight.append(dict(id=r['id'],meta=r['meta'],text=source[r['id']]['text'],keys=[t['lookup_key'] for t in words],sentences=sentences,token_sentences=[[t['word'] for t in words if t['sentence_id']==s['sentence_id']] for s in r.get('sentences',[])],pos_sentences=[[(t['lookup_key'],t['pos']) for t in words if t['sentence_id']==s['sentence_id']] for s in r.get('sentences',[])],details={}))
-            corpus=Corpus(lightweight,options,selected_features=corpus_fids)
-            for fid in [f for f in corpus_fids if f in catalogue.CORPUS_SCOPE]:
+                light.append(lightweight(r,source[r['id']]['text']))
+            global_corpus=Corpus(light,options,selected_features=corpus_fids,reference=reference_data)
+            grouped={}
+            for r in light:
+                group=str(r['meta'][options['corpus_group_column']]) if options['corpus_group_column'] else 'all_inputs'
+                grouped.setdefault(group,[]).append(r)
+            corpora={key:Corpus(rows,options,selected_features=corpus_fids,reference=reference_data) if options['corpus_group_column'] else global_corpus for key,rows in grouped.items()}
+            atomic_json(output/'reference.json',freeze_reference(global_corpus,options,signature))
+            if reference_data is not None:atomic_json(output/'reference_applied.json',reference_data)
+            def corpus_calculate(corpus,fid,rec):
+                missing=[name for name in catalogue.required(fid,options) if not resources.available(name)]
+                if missing:raise Unavailable('需准备资源：'+', '.join(missing),'resource_required')
+                return corpus.measure(fid,rec)
+            per_document=[f for f in corpus_fids if f not in catalogue.CORPUS_SCOPE and f not in catalogue.PAIR_SCOPE]
+            for scope_id,corpus in corpora.items():
+                values_row=dict(corpus_id=scope_id)
+                for fid in [f for f in corpus_fids if f in catalogue.CORPUS_SCOPE]:
+                    if cancelled:break
+                    emit('progress',completed=done,total=total,message='计算语料层 '+scope_id+' '+fid,stage='corpus')
+                    feature_started=time.perf_counter()
+                    values,state=result(fid,lambda fid=fid:corpus_calculate(corpus,fid,corpus.records[0]));values_row.update(values);corpus_status.append(dict(corpus_id=scope_id,**state))
+                    timing=feature_timings.setdefault(fid,dict(seconds=0.,calls=0));timing['seconds']+=time.perf_counter()-feature_started;timing['calls']+=1
+                if len(values_row)>1:corpus_rows.append(values_row)
+            for r in light if per_document else []:
                 if cancelled:break
-                emit('progress',completed=done,total=total,message='计算语料层 '+fid,stage='corpus')
-                feature_started=time.perf_counter()
-                values,state=result(fid,lambda fid=fid:corpus.measure(fid,lightweight[0]));corpus_values.update(values);corpus_status.append(state)
-                feature_timings[fid]=dict(seconds=time.perf_counter()-feature_started,calls=1)
-            per_document=[f for f in corpus_fids if f not in catalogue.CORPUS_SCOPE]
-            for r in lightweight if per_document else []:
-                if cancelled:break
+                group=str(r['meta'][options['corpus_group_column']]) if options['corpus_group_column'] else 'all_inputs';corpus=corpora[group]
                 p=paths[r['id']];rec=json.loads(p.read_text())
                 for fid in per_document:
                     if cancelled:break
                     feature_started=time.perf_counter()
-                    values,state=result(fid,lambda fid=fid,r=r:corpus.measure(fid,r));rec['features'].update(values);rec['statuses']=[s for s in rec['statuses'] if s['feature_id']!=fid]+[state]
+                    values,state=result(fid,lambda fid=fid,r=r:corpus_calculate(corpus,fid,r));rec['features'].update(values);rec['statuses']=[s for s in rec['statuses'] if s['feature_id']!=fid]+[state]
                     timing=feature_timings.setdefault(fid,dict(seconds=0.,calls=0));timing['seconds']+=time.perf_counter()-feature_started;timing['calls']+=1
                 rec['details'].update(r['details']);atomic_json(p,rec,compact=True)
                 emit('progress',completed=done,total=total,message='计算语料参照指标 '+r['id'],stage='corpus')
-            corpus_details=corpus.details
+            if 'STY07' in corpus_fids:
+                pairs={};field=options['pair_column']
+                for r in light:pairs.setdefault(str(r['meta'].get(field,'')) if field else '',[]).append(r)
+                for pair_id,members in pairs.items():
+                    if not pair_id or len(members)!=2:
+                        pair_status.append(dict(pair_id=pair_id,feature_id='STY07',status='input_required',reason='配对列须有非空值，每个配对值恰好两篇文本',doc_ids=[r['id'] for r in members]));continue
+                    values,state=result('STY07',lambda:corpus_calculate(global_corpus,'STY07',members[0]))
+                    pair_rows.append(dict(pair_id=pair_id,doc_id_left=members[0]['id'],doc_id_right=members[1]['id'],**values));pair_status.append(dict(pair_id=pair_id,**state))
+            for scope_id,corpus in corpora.items():
+                for name,rows in corpus.details.items():corpus_details.setdefault(name,[]).extend(dict(corpus_id=scope_id,**row) for row in rows)
             phase_timings['corpus']=time.perf_counter()-corpus_started
         emit('progress',message='整理研究资料',stage='export',completed=done,total=total)
         export_started=time.perf_counter()
         headers,counts=export_documents(output,record_iter)
-        if corpus_values:csv_write(output/'corpus_features.csv',[dict(corpus_id='all_inputs',**corpus_values)])
+        if corpus_rows:csv_write(output/'corpus_features.csv',corpus_rows)
         if corpus_status:csv_write(output/'corpus_status.csv',corpus_status)
+        if pair_rows:csv_write(output/'pair_features.csv',pair_rows)
+        if pair_status:csv_write(output/'pair_status.csv',pair_status)
         for name,rows in corpus_details.items():csv_write(output/'corpus'/(name+'.csv'),rows)
+        if not cancelled:export_observations(output,record_iter,corpora,options,signature,reference_info,light=light)
         recipes={r['id']:r for r in catalogue.catalogue()}
         fields=[]
-        for h in headers+list(corpus_values):
+        extra_headers=sorted({k for row in corpus_rows+pair_rows for k in row})
+        for h in headers+extra_headers:
             fid=h.split('.',1)[0];recipe=recipes.get(fid)
             if recipe:fields.append(dict(column=h,feature_id=fid,method_id=recipe['method_id'],scope=recipe['scope'],definition=recipe['definition'],source_ids=recipe['source_ids'],parameters=options))
         csv_write(output/'field_dictionary.csv',fields)
         atomic_json(output/'execution_manifest.json',[recipes[f] for f in selected])
         counts.update(s['status'] for s in corpus_status)
+        counts.update(s['status'] for s in pair_status)
         phase_timings['export']=time.perf_counter()-export_started
         runmeta['timings']={'phases_seconds':phase_timings,'features':feature_timings,'scope':'current invocation; reused checkpoints excluded; shared work and resource/model loading attributed to first requesting feature'}
         runmeta.update(state='cancelled' if cancelled else 'complete',finished_at=time.strftime('%Y-%m-%dT%H:%M:%S%z'),status_counts=dict(counts),documents=len(documents),versions=versions(),outputs={str(p.relative_to(output)):sha(p) for p in output.rglob('*') if p.is_file() and '.checkpoint' not in p.parts and p.name!='run.json'})

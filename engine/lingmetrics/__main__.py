@@ -3,7 +3,7 @@ from . import resources
 from .util import emit
 
 def main():
-    parser=argparse.ArgumentParser();parser.add_argument('command',choices=['catalogue','resources','inspect','run','install','import-resource']);parser.add_argument('argument',nargs='?');parser.add_argument('source',nargs='?');args=parser.parse_args();resources.activate()
+    parser=argparse.ArgumentParser();parser.add_argument('command',choices=['catalogue','resources','inspect','run','fit-inspect','fit','install','import-resource']);parser.add_argument('argument',nargs='?');parser.add_argument('source',nargs='?');args=parser.parse_args();resources.activate()
     if args.command=='catalogue':
         from .catalogue import catalogue
         emit('catalogue',features=catalogue())
@@ -14,6 +14,12 @@ def main():
     elif args.command=='run':
         from .runner import run
         run(json.loads(open(args.argument,encoding='utf-8').read()))
+    elif args.command=='fit-inspect':
+        from .fitting import inspect
+        inspect(args.argument,args.source or '')
+    elif args.command=='fit':
+        from .fitting import fit
+        fit(json.loads(open(args.argument,encoding='utf-8').read()))
     elif args.command=='install':resources.install(args.argument)
     else:resources.import_resource(args.argument,args.source);emit('resource_installed',resource_id=args.argument)
 

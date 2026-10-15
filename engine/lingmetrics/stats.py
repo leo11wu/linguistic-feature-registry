@@ -139,14 +139,17 @@ def grid_transitions(grid, width=2):
         for j in range(s-width+1): out["".join(entity[j:j+width])]+=1
     return {k:v/(e*(s-width+1)) for k,v in out.items()}
 
-def graph_measures(edges, nodes, requested=None):
-    """Directed, binary, ordered pairs; k<2 clustering=0 is our declared convention."""
+def graph_measures(edges, nodes, requested=None, directed=True):
+    """Binary paths; occurrence counts are strengths. Undirected betweenness uses unordered pairs."""
     requested=set(requested) if requested is not None else {'NET01','NET02','NET03','NET04','NET05'}
     paths=bool(requested & {'NET03','NET04'});centrality='NET05' in requested
     nodes=sorted(nodes); adj={x:set() for x in nodes}; incoming={x:set() for x in nodes}
-    for a,b in edges:
-        if a!=b: adj[a].add(b); incoming[b].add(a)
-    weights=Counter(edges); bet={x:0. for x in nodes}; dist_total=0; inv_total=0.; unreachable=0
+    weights=Counter()
+    for (a,b),count in (edges.items() if isinstance(edges,Counter) else Counter(edges).items()):
+        if a==b:continue
+        adj[a].add(b); incoming[b].add(a);weights[(a,b)]+=count
+        if not directed:adj[b].add(a);incoming[a].add(b);weights[(b,a)]+=count
+    bet={x:0. for x in nodes}; dist_total=0; inv_total=0.; unreachable=0
     for source in nodes if paths or centrality else []:
         stack=[]; pred={v:[] for v in nodes}; sigma={v:0. for v in nodes}; sigma[source]=1.
         d={source:0}; q=deque([source])
@@ -172,7 +175,7 @@ def graph_measures(edges, nodes, requested=None):
         if 'NET02' in requested:
             between=sum(b in ns for a in ns for b in adj[a])
             row['clustering']=between/(k*(k-1)) if k>=2 else 0.
-        if centrality:row['betweenness']=bet[v]
+        if centrality:row['betweenness']=bet[v] if directed else bet[v]/2
         rows.append(row)
     denom=len(nodes)*(len(nodes)-1)
     values={}
