@@ -18,7 +18,9 @@ An English-first registry of linguistic measures for quantitative linguistics, d
 
 ## LingMetrics Mac 应用
 
-仓库现在包含 LingMetrics 0.1.1 组内测试应用：原生界面、自带基础环境、TXT/CSV 输入、进度与断点续算，以及可追溯的研究资料导出。适用于 Apple Silicon、macOS 13 及以上。
+<img src="app/Assets/AppIcon.png" alt="LingMetrics 应用图标" width="96">
+
+仓库现在包含 LingMetrics 0.1.2 组内测试应用：原生界面、自带基础环境、TXT/CSV 输入、进度与断点续算，以及可追溯的研究资料导出。适用于 Apple Silicon、macOS 13 及以上。
 
 全库177个条目均有入口，默认常用组合61个条目。模型与参照资源按需准备；3个目录条目及部分操作化细节保留方法待核状态。具体覆盖以[执行清单](metadata/execution_manifest.json)和每次运行状态为准。
 

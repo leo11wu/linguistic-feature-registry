@@ -52,6 +52,12 @@ def build():
     (res/'metadata').mkdir()
     for file in ['execution_manifest.json','performance.json']:
         if (ROOT/'metadata'/file).exists():safe_copy(ROOT/'metadata'/file,res/'metadata'/file)
+    icon_metadata=json.loads((ROOT/'metadata/icon.json').read_text())
+    for item in icon_metadata['files']:
+        content=(ROOT/item['path']).read_bytes()
+        if hashlib.sha256(content).hexdigest()!=item['sha256']:raise RuntimeError('Icon asset hash mismatch: '+item['path'])
+    safe_copy(ROOT/'app/Assets/AppIcon.icns',res/'AppIcon.icns')
+    safe_copy(ROOT/'app/Assets/AppIcon.svg',res/'AppIcon.svg')
     tools=res/'tools';tools.mkdir();shutil.copy2(uv,tools/'uv')
     native=BUILD/'helpers/lal'
     archive=ROOT/'downloads/native-lal-arm64.tar.gz'
@@ -83,7 +89,7 @@ def build():
     env=dict(os.environ,CLANG_MODULE_CACHE_PATH=str(BUILD/'ModuleCache'))
     command(['xcrun','swiftc','-O','-parse-as-library','-target','arm64-apple-macos13.0','-module-cache-path',BUILD/'ModuleCache',ROOT/'app/LingMetrics.swift','-o',mac/'LingMetrics'],env=env)
     command(['xcrun','swiftc','-O','-target','arm64-apple-macos13.0','-module-cache-path',BUILD/'ModuleCache',ROOT/'app/SystemCheck.swift','-o',tools/'system-check'],env=env)
-    info={'CFBundleName':'LingMetrics','CFBundleDisplayName':'LingMetrics','CFBundleIdentifier':'org.leo11wu.LingMetrics','CFBundleVersion':'2','CFBundleShortVersionString':'0.1.1','CFBundleExecutable':'LingMetrics','CFBundlePackageType':'APPL','LSMinimumSystemVersion':'13.0','NSHighResolutionCapable':True,'NSPrincipalClass':'NSApplication','LSApplicationCategoryType':'public.app-category.education'}
+    info={'CFBundleName':'LingMetrics','CFBundleDisplayName':'LingMetrics','CFBundleIdentifier':'org.leo11wu.LingMetrics','CFBundleVersion':'3','CFBundleShortVersionString':'0.1.2','CFBundleExecutable':'LingMetrics','CFBundleIconFile':'AppIcon.icns','CFBundlePackageType':'APPL','LSMinimumSystemVersion':'13.0','NSHighResolutionCapable':True,'NSPrincipalClass':'NSApplication','LSApplicationCategoryType':'public.app-category.education'}
     with (contents/'Info.plist').open('wb') as f:plistlib.dump(info,f)
     # Sign individual Mach-O files before signing the bundle, including dylibs and extensions.
     for p in contents.rglob('*'):
@@ -98,12 +104,12 @@ def build():
                 command(['codesign','--force','--sign','-',p],stdout=subprocess.DEVNULL)
     command(['codesign','--force','--sign','-',app]);command(['codesign','--verify','--deep','--strict',app])
     destination=DIST/'LingMetrics.app';shutil.rmtree(destination,ignore_errors=True);shutil.copytree(app,destination,symlinks=True,copy_function=safe_copy)
-    archive=DIST/'LingMetrics-0.1.1-arm64.zip'
+    archive=DIST/'LingMetrics-0.1.2-arm64.zip'
     if archive.exists():archive.unlink()
     command(['ditto','-c','-k','--sequesterRsrc','--keepParent',destination,archive])
     digest=hashlib.sha256(archive.read_bytes()).hexdigest();(DIST/'SHA256SUMS.txt').write_text(digest+'  '+archive.name+'\n')
     size=sum(p.stat().st_size for p in destination.rglob('*') if p.is_file() and not p.is_symlink())
-    report={'version':'0.1.1','target':'arm64-macos13+','signing':'ad-hoc','notarized':False,'archive_bytes':archive.stat().st_size,'expanded_bytes':size,'sha256':digest,'budget_archive_pass':archive.stat().st_size<=100*1024**2,'budget_expanded_pass':size<=250*1024**2}
+    report={'version':'0.1.2','target':'arm64-macos13+','signing':'ad-hoc','notarized':False,'archive_bytes':archive.stat().st_size,'expanded_bytes':size,'sha256':digest,'budget_archive_pass':archive.stat().st_size<=100*1024**2,'budget_expanded_pass':size<=250*1024**2}
     (DIST/'build-report.json').write_text(json.dumps(report,indent=2));print(json.dumps(report,indent=2))
 
 if __name__=='__main__':build()

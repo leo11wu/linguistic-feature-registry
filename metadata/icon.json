@@ -1,0 +1,115 @@
+{
+  "application_version": "0.1.2",
+  "date": "2026-10-15",
+  "source": "User-supplied LingMetrics-flat-A.svg; artwork preserved",
+  "renderer": "macOS AppKit NSImage (_NSSVGImageRep), directly rendered at every target size; iconutil ICNS",
+  "bundle_icon_key": "CFBundleIconFile",
+  "bundle_icon_value": "AppIcon.icns",
+  "svg_viewbox": [
+    0,
+    0,
+    1024,
+    1024
+  ],
+  "master_pixels": 1024,
+  "master_alpha_bounds": [
+    100,
+    100,
+    924,
+    924
+  ],
+  "source_blue": "#0E419C",
+  "files": [
+    {
+      "path": "app/Assets/AppIcon.svg",
+      "bytes": 2019,
+      "sha256": "3bd05b4fc7718bc27108e367822c2b60764b7c645462da979c9018bcad7399d7"
+    },
+    {
+      "path": "app/Assets/AppIcon.png",
+      "bytes": 35435,
+      "sha256": "cd958712e9d65a00abaa18c41e5041b31dee8033c3e201af04b09e15e949d804"
+    },
+    {
+      "path": "app/Assets/AppIcon.icns",
+      "bytes": 81349,
+      "sha256": "4cfea0ccf6134448bddf5f09591d00045d07d1e54edc5fd958e3e2e03f917546"
+    }
+  ],
+  "iconset_entries": [
+    {
+      "name": "icon_128x128.png",
+      "pixels": 128,
+      "transparent_corners": true
+    },
+    {
+      "name": "icon_128x128@2x.png",
+      "pixels": 256,
+      "transparent_corners": true
+    },
+    {
+      "name": "icon_16x16.png",
+      "pixels": 16,
+      "transparent_corners": true
+    },
+    {
+      "name": "icon_16x16@2x.png",
+      "pixels": 32,
+      "transparent_corners": true
+    },
+    {
+      "name": "icon_256x256.png",
+      "pixels": 256,
+      "transparent_corners": true
+    },
+    {
+      "name": "icon_256x256@2x.png",
+      "pixels": 512,
+      "transparent_corners": true
+    },
+    {
+      "name": "icon_32x32.png",
+      "pixels": 32,
+      "transparent_corners": true
+    },
+    {
+      "name": "icon_32x32@2x.png",
+      "pixels": 64,
+      "transparent_corners": true
+    },
+    {
+      "name": "icon_512x512.png",
+      "pixels": 512,
+      "transparent_corners": true
+    },
+    {
+      "name": "icon_512x512@2x.png",
+      "pixels": 1024,
+      "transparent_corners": true
+    }
+  ],
+  "icns_representation_count": 10,
+  "icns_chunk_types": [
+    "ic12",
+    "ic07",
+    "ic13",
+    "ic08",
+    "ic04",
+    "ic14",
+    "ic09",
+    "ic05",
+    "ic10",
+    "ic11",
+    "info"
+  ],
+  "system_icon_resolution": "NSWorkspace iconForFile checked on the signed app; rendered and visually inspected",
+  "verified_sizes_pixels": [
+    16,
+    32,
+    64,
+    128,
+    256,
+    512,
+    1024
+  ]
+}
