@@ -1,6 +1,6 @@
 {
   "application_version": "0.2.1",
-  "checked_at": "2026-10-15T12:59:09.539034+08:00",
+  "checked_at": "2026-10-15T13:05:21.206740+08:00",
   "prior_version_ui": {
     "version": "0.2.0",
     "sample_documents": 2,
@@ -37,12 +37,40 @@
       "failures": 0,
       "errors": 0,
       "success": true
-    }
+    },
+    "extraction_status_counts": {
+      "computed": 120,
+      "undefined": 2
+    },
+    "extraction_to_fitting": "passed by actual computer-use clicks",
+    "relationship_results": 6,
+    "word_length_distribution_results": 4,
+    "report_preview_actual_display": "passed: relationship and distribution reports loaded inside app; gray observation points and blue fitted curves visually inspected",
+    "report_switches_to_new_analysis": "passed: source table and plotted curve changed from sentence measures to word lengths",
+    "observation_table_change": "passed: previous summary and report button removed; progress reset to zero",
+    "filter_change": "passed: positive-only checkbox clears previous summary and report button; progress reset to zero",
+    "repeat_fitting": "passed: default filter restored, distribution fit repeated with four computed results",
+    "measurement_files_unchanged": 22,
+    "evidence": {
+      "method": "Native computer-use accessibility states and screenshots, plus output-file hashes and CSV status checks",
+      "extraction_directory": "/Users/leowu/Library/Application Support/LingMetrics/runs/example-5391A35F",
+      "fit_runs": [
+        {
+          "directory": "/Users/leowu/Library/Application Support/LingMetrics/fits/fit-6B7A6317",
+          "computed_results": 6
+        },
+        {
+          "directory": "/Users/leowu/Library/Application Support/LingMetrics/fits/LingMetrics-fit-1E703A65",
+          "computed_results": 4
+        },
+        {
+          "directory": "/Users/leowu/Library/Application Support/LingMetrics/fits/LingMetrics-fit-2F8CD4E5",
+          "computed_results": 4
+        }
+      ]
+    },
+    "computer_control_recovered": true
   },
-  "remaining": {
-    "report_preview_actual_display": "awaiting manual confirmation",
-    "configuration_change_ui_retest": "not completed",
-    "reason": "Native computer-control connection closed during retest; reconnect and session reset did not restore it"
-  },
+  "remaining": {},
   "scope": "Software/UI verification only; does not validate a linguistic law or target-corpus measurement validity"
 }
