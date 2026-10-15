@@ -1,7 +1,7 @@
 name: LingMetrics Mac
 on:
   push:
-    branches: [main]
+    branches: [main, release/0.2.2-lightweight]
   workflow_dispatch:
 permissions:
   contents: read
