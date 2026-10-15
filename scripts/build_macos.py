@@ -40,7 +40,8 @@ def prepare():
     (ROOT/'requirements-core.lock').write_text('\n'.join(sorted(set(lock),key=str.lower))+'\n')
     return runtime,uv
 
-def build():
+def build(app_name='LingMetrics.app'):
+    if Path(app_name).name!=app_name or not app_name.endswith('.app'):raise ValueError('app_name must be an app bundle basename')
     runtime,uv=prepare();DIST.mkdir(exist_ok=True)
     app=Path(tempfile.mkdtemp(prefix='LingMetrics-build-'))/'LingMetrics.app'
     contents=app/'Contents';res=contents/'Resources';mac=contents/'MacOS';mac.mkdir(parents=True);res.mkdir()
@@ -50,7 +51,7 @@ def build():
         if (ROOT/file).exists():shutil.copy2(ROOT/file,res/file)
     # Ship measurement/benchmark records; archive checksums stay outside the bundle.
     (res/'metadata').mkdir()
-    for file in ['execution_manifest.json','performance.json','ui_validation.json','lightweight_validation.json']:
+    for file in ['execution_manifest.json','performance.json','ui_validation.json','lightweight_validation.json','fitting_validation.json']:
         if (ROOT/'metadata'/file).exists():safe_copy(ROOT/'metadata'/file,res/'metadata'/file)
     icon_metadata=json.loads((ROOT/'metadata/icon.json').read_text())
     for item in icon_metadata['files']:
@@ -89,7 +90,7 @@ def build():
     env=dict(os.environ,CLANG_MODULE_CACHE_PATH=str(BUILD/'ModuleCache'))
     command(['xcrun','swiftc','-O','-parse-as-library','-target','arm64-apple-macos13.0','-module-cache-path',BUILD/'ModuleCache',ROOT/'app/LingMetrics.swift',ROOT/'app/FittingView.swift',ROOT/'app/AnalysisChoicesView.swift',ROOT/'app/ReportPreview.swift','-o',mac/'LingMetrics'],env=env)
     command(['xcrun','swiftc','-O','-target','arm64-apple-macos13.0','-module-cache-path',BUILD/'ModuleCache',ROOT/'app/SystemCheck.swift','-o',tools/'system-check'],env=env)
-    info={'CFBundleName':'LingMetrics','CFBundleDisplayName':'LingMetrics','CFBundleIdentifier':'org.leo11wu.LingMetrics','CFBundleVersion':'6','CFBundleShortVersionString':'0.2.2','CFBundleExecutable':'LingMetrics','CFBundleIconFile':'AppIcon.icns','CFBundlePackageType':'APPL','LSMinimumSystemVersion':'13.0','NSHighResolutionCapable':True,'NSPrincipalClass':'NSApplication','LSApplicationCategoryType':'public.app-category.education'}
+    info={'CFBundleName':'LingMetrics','CFBundleDisplayName':'LingMetrics','CFBundleIdentifier':'org.leo11wu.LingMetrics','CFBundleVersion':'7','CFBundleShortVersionString':'0.2.3','CFBundleExecutable':'LingMetrics','CFBundleIconFile':'AppIcon.icns','CFBundlePackageType':'APPL','LSMinimumSystemVersion':'13.0','NSHighResolutionCapable':True,'NSPrincipalClass':'NSApplication','LSApplicationCategoryType':'public.app-category.education'}
     with (contents/'Info.plist').open('wb') as f:plistlib.dump(info,f)
     # Sign individual Mach-O files before signing the bundle, including dylibs and extensions.
     for p in contents.rglob('*'):
@@ -103,13 +104,19 @@ def build():
             if magic in [b'\xcf\xfa\xed\xfe',b'\xfe\xed\xfa\xcf',b'\xca\xfe\xba\xbe',b'\xbe\xba\xfe\xca']:
                 command(['codesign','--force','--sign','-',p],stdout=subprocess.DEVNULL)
     command(['codesign','--force','--sign','-',app]);command(['codesign','--verify','--deep','--strict',app])
-    destination=DIST/'LingMetrics.app';shutil.rmtree(destination,ignore_errors=True);shutil.copytree(app,destination,symlinks=True,copy_function=safe_copy)
-    archive=DIST/'LingMetrics-0.2.2-arm64.zip'
+    destination=DIST/app_name;shutil.rmtree(destination,ignore_errors=True);shutil.copytree(app,destination,symlinks=True,copy_function=safe_copy)
+    archive=DIST/'LingMetrics-0.2.3-arm64.zip'
     if archive.exists():archive.unlink()
-    command(['ditto','-c','-k','--sequesterRsrc','--keepParent',destination,archive])
-    digest=hashlib.sha256(archive.read_bytes()).hexdigest();(DIST/'SHA256SUMS.txt').write_text(digest+'  '+archive.name+'\n')
+    # Archive the verified temporary bundle; Desktop file providers can add Finder metadata to the convenience copy.
+    command(['ditto','-c','-k','--sequesterRsrc','--keepParent',app,archive])
+    digest=hashlib.sha256(archive.read_bytes()).hexdigest()
+    checksums=DIST/'SHA256SUMS.txt'
+    previous=checksums.read_text().splitlines() if checksums.exists() else []
+    checksums.write_text('\n'.join([line for line in previous if line.split()[-1:]!=[archive.name]]+[digest+'  '+archive.name])+'\n')
     size=sum(p.stat().st_size for p in destination.rglob('*') if p.is_file() and not p.is_symlink())
-    report={'version':'0.2.2','target':'arm64-macos13+','signing':'ad-hoc','notarized':False,'archive_bytes':archive.stat().st_size,'expanded_bytes':size,'sha256':digest,'budget_archive_pass':archive.stat().st_size<=100*1024**2,'budget_expanded_pass':size<=250*1024**2}
+    report={'version':'0.2.3','target':'arm64-macos13+','signing':'ad-hoc','notarized':False,'archive_bytes':archive.stat().st_size,'expanded_bytes':size,'sha256':digest,'budget_archive_pass':archive.stat().st_size<=100*1024**2,'budget_expanded_pass':size<=250*1024**2}
     (DIST/'build-report.json').write_text(json.dumps(report,indent=2));print(json.dumps(report,indent=2))
 
-if __name__=='__main__':build()
+if __name__=='__main__':
+    parser=argparse.ArgumentParser();parser.add_argument('--app-name',default='LingMetrics.app')
+    build(parser.parse_args().app_name)

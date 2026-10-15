@@ -1,0 +1,15 @@
+{
+  "version": "0.2.3",
+  "native_compile": true,
+  "bundle_code_matches_source": true,
+  "bundled_fit_results": 4,
+  "bundled_fit_values_match_source": true,
+  "stage_signature_deep_strict": true,
+  "archive_signature_deep_strict_after_extraction": true,
+  "archive_sha256": "de91e2c393bf001ead0be83d15579f428936343df04f1a2edc00e573edf703a8",
+  "source_archive_checksum": "dist/SHA256SUMS.txt",
+  "source_and_archive_integrity": true,
+  "note": "ZIP built from verified temporary bundle; Desktop file-provider Finder metadata on the convenience .app is not included in the archive.",
+  "delivered_artifact": "dist/LingMetrics-0.2.3-arm64.zip",
+  "convenience_copy_removed": true
+}

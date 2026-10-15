@@ -74,7 +74,7 @@ struct FittingView:View {
             Divider()
             VStack(alignment:.leading,spacing:16) {
                 Text("4  拟合与比较").font(.headline)
-                Text("每个候选模型使用同一组筛选后的观测。缺失、排除、失败原因与模型配置分别保存。").font(.callout).foregroundColor(.secondary)
+                Text("每个候选模型使用同一组筛选后的观测。报告包含参数区间、误差或拟合优度、模型比较及残差；适用条件与失败原因同时保存。").font(.callout).foregroundColor(.secondary)
                 HStack {Button("选择输出位置"){model.chooseFitOutput()};Text(model.fitOutput.isEmpty ? "载入数据后自动创建独立目录" : URL(fileURLWithPath:model.fitOutput).lastPathComponent).font(.caption).lineLimit(1)}.disabled(model.busy)
                 ProgressView(value:model.progress)
                 HStack {

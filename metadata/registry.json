@@ -41,18 +41,18 @@
     },
     {
       "path": ".gitignore",
-      "bytes": 139,
-      "sha256": "357abfe4e1a759e9bc2bccbe75a7f9a4f9e826ee1326ee427b1a7e43030ac569"
+      "bytes": 157,
+      "sha256": "99ac698e1c967a045748d175ff98cf7919fc22599b94dfcfa6f188607fdabe01"
     },
     {
       "path": "CHANGELOG.md",
-      "bytes": 4117,
-      "sha256": "9d88d2a75bdcdcd4e36279f17c3964483d5b2eb106bfe28c680c62373df068a6"
+      "bytes": 5228,
+      "sha256": "27c8f8a85340b0e276d44b67f44a0fc1b6cb1d13b71a2ea358bff66144efd710"
     },
     {
       "path": "README.md",
-      "bytes": 7090,
-      "sha256": "d2d654b1efde73f4c284ad52d1de42e9361666bc05e22cb5b09f0f4df86705be"
+      "bytes": 7299,
+      "sha256": "a760926d8015ca716947a5630095597af94be79296ff4473d554fa850aad4603"
     },
     {
       "path": "data/english_linguistic_feature_registry.csv",

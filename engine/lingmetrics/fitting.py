@@ -108,6 +108,8 @@ def relation(model,x,y,w):
             info['confidence_interval_method']='Student_t_in_ln_response; a_interval_back_transformed'
         if base.get('parameter_tests'):
             info['parameter_tests']={'b':base['parameter_tests']['slope']}
+        for key in ('f_statistic','f_p_value','f_p_value_display','f_df_model','f_df_residual'):
+            if key in base:info['log_space_'+key]=base[key]
         return info,predicted
     if model=='linear':
         design=np.column_stack([np.ones(n),x]);root=np.sqrt(w)
@@ -165,7 +167,19 @@ def relation(model,x,y,w):
               method=method,inference='描述性拟合；协方差和标准误依赖误差假设，不构成规律成立的证据')
     info.update(regression_diagnostics(y,predicted,w,len(params)))
     info.update(parameter_uncertainty(names,params,cov,df=n-len(params),bounds=bounds,nonlinear=model!='linear'))
-    if model!='linear':info.pop('parameter_tests',None)
+    if model=='linear':
+        rss=info['sse'];tss=float(np.sum(w*(y-np.average(y,weights=w))**2))
+        statistic=max(0.,tss-rss)/(rss/(n-2)) if rss>0 and tss>0 else None
+        info.update(f_statistic=statistic,f_df_model=1,f_df_residual=n-2,
+                    f_test_note='线性模型相对于截距模型的条件性F检验；需独立正态误差与所选相对精度模型')
+        if statistic is not None:
+            try:
+                from scipy.stats import f
+                p=float(f.sf(statistic,1,n-2));info.update(f_p_value=p,f_p_value_display=format_p(p))
+            except ImportError:info['f_p_value_note']='F统计量已计算；p值需要可选SciPy'
+    if model!='linear':
+        info.pop('parameter_tests',None)
+        info['parameter_test_note']='非线性参数的零值可能位于边界或导致模型不可识别，不自动给出常规零值t检验p值。'
     info.update(convergence)
     if model not in {'linear'} and caught:info['warnings']=[str(warning.message) for warning in caught]
     return info,predicted
@@ -179,9 +193,7 @@ def distribution(model,values,counts):
     if np.any(counts!=np.floor(counts)):raise ValueError('频数列须为正整数；不能用比例代替频数')
     # Public callers may pass repeated or unsorted values; preserve totals at the same observation grain.
     unique,inverse=np.unique(values,return_inverse=True)
-    if len(unique)!=len(values):
-        raise_if_lnre=model.startswith('lnre_')
-        if raise_if_lnre:raise ValueError('LNRE词频谱的频次不能重复；请先合计词型数')
+    if len(unique)!=len(values) and model.startswith('lnre_'):raise ValueError('LNRE词频谱的频次不能重复；请先合计词型数')
     total=float(counts.sum());mean=float(np.average(values,weights=counts))
     if total<3:raise ValueError('至少需要3个观测值（按频数展开后的数量）')
     if model.startswith('lnre_'):
@@ -195,10 +207,13 @@ def distribution(model,values,counts):
                   parameter_uncertainty_note='zipfR接口未提供参数协方差，未自动生成标准误和区间')
         for field in ('goodness_of_fit','expected_spectrum','estimation'):
             if field in result:info['lnre_'+field]=result[field]
+        if result.get('runtime_warnings'):info['warnings']=result['runtime_warnings']
         if result.get('expected_spectrum'):
-            spectrum={int(r['frequency']):float(r['expected_types']) for r in result['expected_spectrum']}
+            spectrum={int(r['frequency']):(float(r['expected_types']) if r.get('expected_types') is not None else np.nan) for r in result['expected_spectrum']}
             predicted=np.array([spectrum.get(int(v),np.nan) for v in values])
-            if np.all(np.isfinite(predicted)):return info,predicted
+            missing=int(np.sum(~np.isfinite(predicted)))
+            if missing:info.setdefault('warnings',[]).append(f'LNRE有{missing}个期望谱元素数值无定义，预测/残差留空；参数和可用的多元拟合优度保留。')
+            return info,predicted
         return info,None
     try:from scipy import optimize,stats
     except ImportError:raise Unavailable('请在资源页准备“拟合计算工具：SciPy”','resource_required')
@@ -332,8 +347,11 @@ def fit(job):
                         row['support_note']='模型按其完整定义支持计算，筛选不会自动把模型改成截断分布；词长等观测单位的允许值需与模型支持一致。'
                         if any(job.get(key) not in (None,'') for key in ('min_x','max_x')) or job.get('positive_only'):
                             row['selection_note']='存在观测范围筛选；当前未按筛选范围重估条件截断似然。拟合优度p值不可直接解释为筛选前总体的检验。'
+                        if excluded.get('outside_x_range',0) or excluded.get('nonpositive_value',0):
+                            row.update(goodness_of_fit_p_value=None,goodness_of_fit_p_display='未报告（筛选改变支持）',
+                                       goodness_of_fit_status='descriptive_only_after_selection')
                     for i,(a,b) in enumerate(zip(xx,actual)):
-                        c=float(predicted[i]) if predicted is not None else None
+                        c=float(predicted[i]) if predicted is not None and np.isfinite(predicted[i]) else None
                         residual=float(b-c) if c is not None else None
                         point=dict(group=label,model=model,source_row=observations[i]['source_row'] if kind=='relation' else '',
                                    x=float(a),observed=float(b),predicted=c,residual=residual,

@@ -1,0 +1,118 @@
+{
+  "application_version": "0.2.3",
+  "checked_at": "2026-10-15T13:45:10.384492+08:00",
+  "scope": "Software/statistical-output verification; model-conditional inference, not validation of a linguistic law",
+  "model_catalogue_count": 17,
+  "unit_tests": {
+    "total": 66,
+    "passed": 62,
+    "skipped": 4,
+    "failures": 0,
+    "errors": 0,
+    "environment": "Bundled Python/base-site/vendor plus installed optional SciPy; source engine under test",
+    "skipped_modules": [
+      "optional torch/transformers kernels (3)",
+      "optional rapidfuzz phonology (1)"
+    ]
+  },
+  "source_statistical_tests": {
+    "count": 14,
+    "result": "passed",
+    "reference_checks": [
+      "SciPy linregress SE, confidence interval, t/F p-value",
+      "SciPy lognormal density with original-response Jacobian",
+      "Relative precision rescaling invariance",
+      "Full discrete support: absent zero, gaps, infinite tail, merged bins, df",
+      "Distribution compression equivalence",
+      "Boundary/insufficient cells suppress p",
+      "Pearson confidence interval and Spearman small-sample note",
+      "LNRE partial numerical predictions remain missing",
+      "Report structure, log axes below one, escaping, dense-head retention"
+    ]
+  },
+  "target_corpus": {
+    "tables_replayed": 7,
+    "computed_results": 18,
+    "failed_results": 0,
+    "real_corpus_model_count": 16,
+    "exponential": "known-curve software test; not additionally fitted to this target corpus",
+    "unchanged_measurement_tables": 11,
+    "source_hashes": {
+      "observations/sentence_measures.csv": "a1a4fbb4f6734170fb0870dec6704bca01c9182f8810d3db3cd04fd0bce45a73",
+      "observations/word_lengths.csv": "ac520ea7f92478ab473789c77422926aef558fba7b5cc8c9074d032cd857182d",
+      "observations/rank_frequency.csv": "e66a9917cb217309cfa3f0c797fbf3dd403438c6cb8e38cceb7ce196bb1c9340",
+      "observations/frequency_spectrum.csv": "4e3444823929d40a0232a34888567d0482962940c854af765b43164e58fc4267",
+      "observations/vocabulary_growth.csv": "79857f7db6e48d7dbb2f016c59acc02309d3ee27bbd78796cff16953c91325af",
+      "observations/abbreviation.csv": "e66a9917cb217309cfa3f0c797fbf3dd403438c6cb8e38cceb7ce196bb1c9340",
+      "observations/taylor_points.csv": "238f450023f748ceeedd4ccdb36b9a9db56a756d366e3ea9371cadbfa34e4ada",
+      "features.csv": "d7d40023eebe4b68171e3c8d63c1fcdedbc6f4dba884f5d062dbd139f85ecad2",
+      "tokens.csv": "166639c87d486d71c2fbac6a5ea3b13e08e204304f2a1a83a5df4adc855c1a6a",
+      "sentences.csv": "d814ef77d44310dd0fc6f938b8f1a793b1a10aecb2a074719859a65c14beb965",
+      "corpus_features.csv": "faf2195145aae366e150f8c0fe26bef33779ae0b99294a3546a16e787475964c"
+    }
+  },
+  "lnre": {
+    "models": [
+      "fzm",
+      "zm",
+      "gigp"
+    ],
+    "package_version": "0.6-70",
+    "real_r_transport_passed": true,
+    "random_seed": 1729,
+    "testing_runtime": "System R with official zipfR installed only in temporary directory; production managed_r transport used with an isolated temporary resource manifest",
+    "official_Brown100k_fixture": "all three models passed",
+    "target_corpus": "all three models computed parameters and multivariate GOF",
+    "gigp_partial_expected_spectrum": "84 extreme-frequency expected values unavailable; left missing and disclosed; fit and available GOF preserved"
+  },
+  "rendered_reports": {
+    "reports": [
+      {
+        "report": "rank_frequency",
+        "tables": 7,
+        "plots": 9,
+        "visible_statistics": true,
+        "javascript_enabled": false
+      },
+      {
+        "report": "word_lengths",
+        "tables": 9,
+        "plots": 12,
+        "visible_statistics": true,
+        "javascript_enabled": false
+      },
+      {
+        "report": "abbreviation",
+        "tables": 5,
+        "plots": 2,
+        "visible_statistics": true,
+        "javascript_enabled": false
+      },
+      {
+        "report": "frequency_spectrum",
+        "tables": 10,
+        "plots": 7,
+        "visible_statistics": true,
+        "javascript_enabled": false
+      }
+    ],
+    "external_requests": []
+  },
+  "source_sha256": {
+    "engine/lingmetrics/fitting.py": "68f26e2fd8202f1cbf49905e309e029e3146e5dc46d264f3f11a64acf105ab99",
+    "engine/lingmetrics/fit_diagnostics.py": "2b45983988503a2c3d2148d82c77261395d50b95a3ffd69b26a93502fb656620",
+    "engine/lingmetrics/fit_report.py": "6a084a18db2bf692c8e49ca80f7c5a53a158c19372711c9290cdc70194b6d5ea",
+    "engine/lingmetrics/managed_r.py": "e3bdf274d1416a0af9eaa61da0b9f216d360fa333bda2641b03aa640d8eefaef",
+    "native/lnre.R": "b3e8a1396542f43aaf2b5552d4c6c5131789698fd6c95cf6ca0eeab03aa89971",
+    "app/FittingView.swift": "4bdfc48e63e8346537d668addbceb570b89b077243b302a763b5654e829507b1",
+    "tests/test_fit_diagnostics.py": "02677b724d5c501b203cda64b51c5b1cf5c1d0a2f6b3da520a0fd0d16585284b",
+    "docs/fitting_statistics.md": "9dfe32c0d548f6b146931e3a24226769aedd5479cb5d155f86d3e422862c7079"
+  },
+  "limits": [
+    "No automatically specified bootstrap, permutation scheme or cluster-robust inference",
+    "LNRE parameter SE/CI and AIC/BIC unavailable from current interface/objective",
+    "Ordinary rank-curve regression is not an automatically normalized discrete distribution",
+    "Pearson GOF p is an iid asymptotic approximation with parameters estimated before pooling; selection-changing-support suppresses p",
+    "AICc correction is approximate outside regular Gaussian linear models"
+  ]
+}

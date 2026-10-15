@@ -30,11 +30,18 @@ jobs:
           export PYTHONNOUSERSITE=1
           export LINGMETRICS_CACHE="$RUNNER_TEMP/lingmetrics-optimization-tests"
           "$LINGMETRICS_ROOT/python/bin/python3.11" -m unittest discover -s tests -v
+      - name: Package repository source
+        run: |
+          version="$(python3 -c 'import runpy; print(runpy.run_path("engine/lingmetrics/__init__.py")["__version__"])')"
+          git archive --format=zip --prefix=LingMetrics-source/ -o "dist/LingMetrics-${version}-source.zip" HEAD
+          shasum -a 256 "dist/LingMetrics-${version}-source.zip" >> dist/SHA256SUMS.txt
       - uses: actions/upload-artifact@v4
         with:
           name: LingMetrics-arm64
+          if-no-files-found: error
           path: |
-            dist/LingMetrics-0.2.2-arm64.zip
+            dist/LingMetrics-*-arm64.zip
+            dist/LingMetrics-*-source.zip
             dist/SHA256SUMS.txt
             dist/build-report.json
           retention-days: 30

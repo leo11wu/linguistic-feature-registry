@@ -8,6 +8,7 @@ node_modules/
 .env.*
 .research/
 outputs/
+performance-runs/
 models/
 cache/
 .build/

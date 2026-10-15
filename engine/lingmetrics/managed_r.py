@@ -73,4 +73,6 @@ def fit(spectrum,model='fzm'):
     meta=json.loads(p.read_text());home=Path(meta['runtime']);env=dict(os.environ,R_HOME=str(home),R_LIBS_USER=str(home/'library'))
     text='m Vm\n'+'\n'.join(f"{r['frequency']} {r['types']}" for r in spectrum)+'\n'
     proc=subprocess.run([str(home/'bin/exec/R'),'--vanilla','--slave','--file='+str(ROOT/'native/lnre.R'),'--args',model],input=text,text=True,capture_output=True,env=env,check=True,timeout=300)
-    return json.loads(proc.stdout)
+    result=json.loads(proc.stdout)
+    if proc.stderr.strip():result['runtime_warnings']=[proc.stderr.strip()]
+    return result

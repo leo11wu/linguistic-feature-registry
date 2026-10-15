@@ -1,6 +1,6 @@
 # LingMetrics 使用说明
 
-LingMetrics 0.2.2 为 Apple Silicon、macOS 13 及以上的组内测试应用。自带 Python 3.11 和固定英语基础模型。提取与拟合分为独立入口；目录的核验状态和程序的计算状态分别记录。
+LingMetrics 0.2.3 为 Apple Silicon、macOS 13 及以上的组内测试应用。自带 Python 3.11 和固定英语基础模型。提取与拟合分为独立入口；目录的核验状态和程序的计算状态分别记录。
 
 ## 开始提取
 
