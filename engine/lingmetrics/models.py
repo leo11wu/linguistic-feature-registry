@@ -1,5 +1,6 @@
 from __future__ import annotations
 import math, json, gc
+from bisect import bisect_left,bisect_right
 from functools import lru_cache
 from collections import Counter
 import numpy as np
@@ -44,6 +45,22 @@ def embeddings(texts,backend='sbert'):
         raise Unavailable('文本单元超过MPNet的固定384子词上限；请使用明确分段，避免静默截断','input_required')
     return model.encode(texts,normalize_embeddings=True,show_progress_bar=False,batch_size=16)
 
+def causal_logits(model,chunk,begin,end):
+    # Pythia's decoder keeps the full context; its vocabulary head needs target rows only.
+    if getattr(model.config,'model_type',None)=='gpt_neox' and hasattr(model,'gpt_neox') and hasattr(model,'embed_out'):
+        hidden=model.gpt_neox(chunk,return_dict=True).last_hidden_state
+        return model.embed_out(hidden[:,begin:end])[0]
+    return model(chunk).logits[0,begin:end]
+
+def masked_logits(model,batch,positions):
+    import torch
+    rows=torch.arange(len(positions))
+    # BERT's attention sees the unchanged, singly masked sentence.
+    if getattr(model.config,'model_type',None)=='bert' and hasattr(model,'bert') and hasattr(model,'cls'):
+        hidden=model.bert(batch,return_dict=True).last_hidden_state
+        return model.cls(hidden[rows,positions])
+    return model(batch).logits[rows,positions]
+
 def score_stream(text):
     import torch
     tokenizer,model=load('causal'); maxlen=int(model.config.max_position_embeddings)
@@ -58,9 +75,10 @@ def score_stream(text):
             target_end=min(len(all_ids),target_start+stride)
             begin=max(0,target_end-maxlen)
             chunk=torch.tensor([all_ids[begin:target_end]],dtype=torch.long)
-            logp=model(chunk).logits[0].log_softmax(-1)
-            for j in range(target_start,target_end):
-                scores.append(-float(logp[j-begin-1,all_ids[j]]))
+            # Normalize only the rows whose next-token probabilities are used.
+            logits=causal_logits(model,chunk,target_start-begin-1,target_end-begin-1)
+            targets=torch.tensor(all_ids[target_start:target_end],dtype=torch.long)
+            scores.extend((-logits.log_softmax(-1).gather(1,targets[:,None])[:,0]).tolist())
     return ids,offsets,scores
 
 def causal_scores(ctx):
@@ -69,14 +87,21 @@ def causal_scores(ctx):
     rows=[dict(subword_index=i,subword_id=ids[i],start=a,end=b,surprisal_nats=scores[i]) for i,(a,b) in enumerate(offsets)]
     # Sum subword surprisals assigned by character overlap to fixed linguistic tokens.
     word_scores=[]; uncovered=0
+    starts=[r['start'] for r in rows];ends=[r['end'] for r in rows]
+    ordered=all(a<=b for a,b in zip(starts,starts[1:])) and all(a<=b for a,b in zip(ends,ends[1:]))
+    changes=np.zeros(len(rows)+1,dtype=np.int64)
     for t in ctx.words:
-        matching=[r for r in rows if r['end']>t.idx and r['start']<t.idx+len(t.text)]
+        if ordered:
+            left=bisect_right(ends,t.idx);right=bisect_left(starts,t.idx+len(t.text))
+            matching=rows[left:right]
+            if left<right:changes[left]+=1;changes[right]-=1
+        else:matching=[r for r in rows if r['end']>t.idx and r['start']<t.idx+len(t.text)]
         value=sum(r['surprisal_nats'] for r in matching) if matching else None
         if value is None: uncovered+=1
         word_scores.append(dict(token_id=t.i,word=t.text,start=t.idx,end=t.idx+len(t.text),surprisal_nats=value))
     # A subword crossing two linguistic tokens would double count; expose and block word aggregates.
-    overlaps=[sum(r['end']>t.idx and r['start']<t.idx+len(t.text) for t in ctx.words) for r in rows]
-    ambiguity=any(k>1 for k in overlaps)
+    if ordered:ambiguity=bool(np.any(np.cumsum(changes[:-1])>1))
+    else:ambiguity=any(sum(r['end']>t.idx and r['start']<t.idx+len(t.text) for t in ctx.words)>1 for r in rows)
     ctx.details['lm_subwords']=rows;ctx.details['lm_words']=word_scores
     ctx._causal=dict(scores=scores,words=word_scores,ambiguous=ambiguity,uncovered=uncovered)
     return ctx._causal
@@ -87,7 +112,10 @@ def measure(fid,ctx):
         else: texts=[s.text for s in ctx.sentences]; gap=1 if fid=='DIS08' else 2
         backend=ctx.options.get('semantic_backend','sbert')
         if backend=='fasttext':texts=[' '.join(t.text for t in ctx.words if (s.start_char<=t.idx<s.end_char)) for s in ctx.sentences] if fid!='DIS10' else [' '.join(t.text for t in ctx.words if a<=t.idx<b) for a,b,_ in ctx.paragraphs]
-        vec=embeddings(texts,backend); rows=[dict(left=i,right=i+gap,cosine=float(np.dot(vec[i],vec[i+gap])),backend=backend) for i in range(len(vec)-gap)]
+        if not hasattr(ctx,'_embedding_units'):ctx._embedding_units={}
+        key=(backend,'paragraphs' if fid=='DIS10' else 'sentences')
+        if key not in ctx._embedding_units:ctx._embedding_units[key]=embeddings(texts,backend)
+        vec=ctx._embedding_units[key]; rows=[dict(left=i,right=i+gap,cosine=float(np.dot(vec[i],vec[i+gap])),backend=backend) for i in range(len(vec)-gap)]
         ctx.details[fid.lower()+'_similarity']=rows
         return summary([r['cosine'] for r in rows],fid+('.fasttext_mean_cosine' if backend=='fasttext' else '.mpnet_cosine'))
     if fid=='INF09':
@@ -127,9 +155,11 @@ def measure(fid,ctx):
                 for start in range(0,len(positions),16):
                     ps=positions[start:start+16]; batch=torch.tensor([ids]*len(ps))
                     for j,pos in enumerate(ps): batch[j,pos]=tokenizer.mask_token_id
-                    logits=model(batch).logits.log_softmax(-1)
-                    for j,pos in enumerate(ps):
-                        lp=float(logits[j,pos,ids[pos]]); total+=lp;count+=1
+                    logits=masked_logits(model,batch,ps)
+                    targets=torch.tensor([ids[pos] for pos in ps],dtype=torch.long)
+                    values=logits.log_softmax(-1).gather(1,targets[:,None])[:,0].tolist()
+                    for pos,lp in zip(ps,values):
+                        total+=lp;count+=1
                         rows.append(dict(sentence_id=sn,subword_position=pos,log_probability=lp,method='pll_single_token'))
         ctx.details['mlm_scores']=rows
         return {'INF10.pll_single_token':total if count else None,'INF10.pppl_subword':math.exp(-total/count) if count and -total/count<700 else None,'INF10.scored_subwords':count}

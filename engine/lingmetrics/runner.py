@@ -1,5 +1,6 @@
 from __future__ import annotations
 import csv, json, hashlib, importlib.metadata, os, platform, signal, sqlite3, sys, time, traceback, io, resource
+from contextlib import ExitStack
 from pathlib import Path
 from collections import Counter
 from . import __version__, resources, catalogue
@@ -104,6 +105,41 @@ def stream_table(path,records,extract,extra_fields=('doc_id',)):
                 writer.writerow({k:json.dumps(v,ensure_ascii=False) if isinstance(v,(list,dict)) else v for k,v in row.items()})
     os.replace(temp,path)
 
+def export_documents(output,records):
+    """Two sequential checkpoint scans for every table; keep one document in memory."""
+    schemas={name:{'doc_id'} for name in ['features','feature_status','tokens','sentences','word_frequency']}
+    schemas['word_frequency'].update({'word','frequency'})
+    def content(rec):
+        yield 'features',[dict(doc_id=rec['id'],**{'meta.'+k:v for k,v in rec['meta'].items()},**rec['features'])]
+        yield 'feature_status',rec['statuses']
+        yield 'tokens',rec.get('tokens',[])
+        yield 'sentences',rec.get('sentences',[])
+        for name,rows in rec['details'].items():yield 'details/'+name,rows
+    for rec in records():
+        for name,rows in content(rec):
+            fields=schemas.setdefault(name,{'doc_id'})
+            for row in rows:fields.update(row)
+    headers={name:['doc_id']+sorted(fields-{'doc_id'}) for name,fields in schemas.items()}
+    counts=Counter();destinations=[]
+    with ExitStack() as stack:
+        writers={}
+        for name,fields in headers.items():
+            path=output/(name+'.csv');path.parent.mkdir(parents=True,exist_ok=True)
+            temp=path.with_suffix('.csv.partial');destinations.append((temp,path))
+            handle=stack.enter_context(temp.open('w',encoding='utf-8-sig',newline=''))
+            writers[name]=csv.DictWriter(handle,fieldnames=fields);writers[name].writeheader()
+        def write(name,doc_id,row):
+            # Checkpoints have already passed clean() and strict JSON encoding.
+            writers[name].writerow(dict(doc_id=doc_id,**{k:json.dumps(v,ensure_ascii=False) if isinstance(v,(list,dict)) else v for k,v in row.items() if k!='doc_id'}))
+        for rec in records():
+            for name,rows in content(rec):
+                for row in rows:write(name,rec['id'],row)
+            for word,frequency in Counter(t['lookup_key'] for t in rec.get('tokens',[]) if not t['is_punctuation']).items():
+                write('word_frequency',rec['id'],dict(word=word,frequency=frequency))
+            counts.update(s['status'] for s in rec['statuses'])
+    for temp,path in destinations:os.replace(temp,path)
+    return headers['features'],counts
+
 def run(job):
     global cancelled
     cancelled=False;signal.signal(signal.SIGTERM,cancel);signal.signal(signal.SIGINT,cancel)
@@ -136,7 +172,7 @@ def run(job):
     checkpoint=output/'.checkpoint';checkpoint.mkdir(exist_ok=True)
     database=sqlite3.connect(checkpoint/'state.sqlite3');database.execute('CREATE TABLE IF NOT EXISTS stages (doc_id TEXT, stage TEXT, PRIMARY KEY(doc_id,stage))')
     stages=['base']+[k for k in ['syntax','sbert','causal','mlm','coref'] if any(catalogue.route(fid)==k for fid in selected)]
-    total=len(documents)*len(stages);done=0
+    total=len(documents)*len(stages);done=0;feature_timings={};phase_timings={}
     emit('started',total=total,documents=len(documents),output=str(output),stages=stages)
     import spacy
     nlp=spacy.load('en_core_web_sm');nlp.max_length=max(nlp.max_length,max(map(lambda r:len(r['text']),documents))+1)
@@ -149,6 +185,7 @@ def run(job):
     try:
         for stage in stages:
             if cancelled:break
+            phase_started=time.perf_counter()
             fids=[f for f in selected if (catalogue.route(f) in {'base','lexical','configured','pending'} if stage=='base' else catalogue.route(f)==stage)]
             for doc in documents:
                 if cancelled:break
@@ -170,18 +207,22 @@ def run(job):
                     rec['statuses']=[s for s in rec['statuses'] if s['feature_id'] not in fids]
                     for fid in fids:
                         if cancelled:break
+                        feature_started=time.perf_counter()
                         if not ctx.n and fid not in {'LEN01','LEN02','LEN03','LEN04','LEN05','QC05'}:
                             values,state=result(fid,lambda:(_ for _ in ()).throw(Unavailable('空文本','undefined')))
                         else:values,state=result(fid,lambda fid=fid:calculate(fid,ctx,catalogue.route(fid)))
+                        timing=feature_timings.setdefault(fid,dict(seconds=0.,calls=0))
+                        timing['seconds']+=time.perf_counter()-feature_started;timing['calls']+=1
                         rec['features']={k:v for k,v in rec['features'].items() if not k.startswith(fid+'.')}
                         rec['features'].update(values);rec['statuses'].append(state)
                     if cancelled:break
                     serializable(ctx,rec)
-                    atomic_json(path,rec)
+                    atomic_json(path,rec,compact=True)
                     database.execute('INSERT OR REPLACE INTO stages VALUES (?,?)',(doc['id'],stage));database.commit()
                 except Exception as error:
-                    rec['statuses'].append(dict(feature_id='document',status='error',reason=f'{type(error).__name__}: {error}'));atomic_json(path,rec)
+                    rec['statuses'].append(dict(feature_id='document',status='error',reason=f'{type(error).__name__}: {error}'));atomic_json(path,rec,compact=True)
                 emit('progress',completed=done,total=total,document_id=doc['id'],stage=stage,message='已完成 '+doc['id'])
+            phase_timings[stage]=time.perf_counter()-phase_started
             if stage in {'sbert','causal','mlm','coref'}:
                 from .models import release
                 release()
@@ -190,34 +231,38 @@ def run(job):
                 pipeline.cache_clear()
         corpus_fids=[f for f in selected if catalogue.route(f)=='corpus'];corpus_values={};corpus_status=[];corpus_details={}
         if not cancelled and corpus_fids:
+            corpus_started=time.perf_counter()
             from .corpus import Corpus
             lightweight=[]
             for r in record_iter():
                 words=[t for t in r.get('tokens',[]) if not t['is_punctuation']];sentences=[[t['lookup_key'] for t in words if t['sentence_id']==s['sentence_id']] for s in r.get('sentences',[])]
                 lightweight.append(dict(id=r['id'],meta=r['meta'],text=source[r['id']]['text'],keys=[t['lookup_key'] for t in words],sentences=sentences,token_sentences=[[t['word'] for t in words if t['sentence_id']==s['sentence_id']] for s in r.get('sentences',[])],pos_sentences=[[(t['lookup_key'],t['pos']) for t in words if t['sentence_id']==s['sentence_id']] for s in r.get('sentences',[])],details={}))
-            corpus=Corpus(lightweight,options)
-            for fid in corpus_fids:
+            corpus=Corpus(lightweight,options,selected_features=corpus_fids)
+            for fid in [f for f in corpus_fids if f in catalogue.CORPUS_SCOPE]:
                 if cancelled:break
                 emit('progress',completed=done,total=total,message='计算语料层 '+fid,stage='corpus')
-                if fid in catalogue.CORPUS_SCOPE:
-                    values,state=result(fid,lambda fid=fid:corpus.measure(fid,lightweight[0]));corpus_values.update(values);corpus_status.append(state)
-                else:
-                    for r in lightweight:
-                        p=paths[r['id']];rec=json.loads(p.read_text());values,state=result(fid,lambda fid=fid,r=r:corpus.measure(fid,r));rec['features'].update(values);rec['statuses']=[s for s in rec['statuses'] if s['feature_id']!=fid]+[state];rec['details'].update(r['details']);atomic_json(p,rec)
+                feature_started=time.perf_counter()
+                values,state=result(fid,lambda fid=fid:corpus.measure(fid,lightweight[0]));corpus_values.update(values);corpus_status.append(state)
+                feature_timings[fid]=dict(seconds=time.perf_counter()-feature_started,calls=1)
+            per_document=[f for f in corpus_fids if f not in catalogue.CORPUS_SCOPE]
+            for r in lightweight if per_document else []:
+                if cancelled:break
+                p=paths[r['id']];rec=json.loads(p.read_text())
+                for fid in per_document:
+                    if cancelled:break
+                    feature_started=time.perf_counter()
+                    values,state=result(fid,lambda fid=fid,r=r:corpus.measure(fid,r));rec['features'].update(values);rec['statuses']=[s for s in rec['statuses'] if s['feature_id']!=fid]+[state]
+                    timing=feature_timings.setdefault(fid,dict(seconds=0.,calls=0));timing['seconds']+=time.perf_counter()-feature_started;timing['calls']+=1
+                rec['details'].update(r['details']);atomic_json(p,rec,compact=True)
+                emit('progress',completed=done,total=total,message='计算语料参照指标 '+r['id'],stage='corpus')
             corpus_details=corpus.details
+            phase_timings['corpus']=time.perf_counter()-corpus_started
         emit('progress',message='整理研究资料',stage='export',completed=done,total=total)
-        stream_table(output/'features.csv',record_iter,lambda r:[dict(doc_id=r['id'],**{'meta.'+k:v for k,v in r['meta'].items()},**r['features'])])
-        stream_table(output/'feature_status.csv',record_iter,lambda r:[dict(doc_id=r['id'],**s) for s in r['statuses']])
-        stream_table(output/'tokens.csv',record_iter,lambda r:[dict(doc_id=r['id'],**t) for t in r.get('tokens',[])])
-        stream_table(output/'sentences.csv',record_iter,lambda r:[dict(doc_id=r['id'],**s) for s in r.get('sentences',[])])
-        stream_table(output/'word_frequency.csv',record_iter,lambda r:[dict(doc_id=r['id'],word=w,frequency=v) for w,v in Counter(t['lookup_key'] for t in r.get('tokens',[]) if not t['is_punctuation']).items()])
-        detail_names={k for r in record_iter() for k in r['details']}
-        for name in sorted(detail_names):stream_table(output/'details'/(name+'.csv'),record_iter,lambda r,name=name:[dict(doc_id=r['id'],**x) for x in r['details'].get(name,[])])
+        export_started=time.perf_counter()
+        headers,counts=export_documents(output,record_iter)
         if corpus_values:csv_write(output/'corpus_features.csv',[dict(corpus_id='all_inputs',**corpus_values)])
         if corpus_status:csv_write(output/'corpus_status.csv',corpus_status)
         for name,rows in corpus_details.items():csv_write(output/'corpus'/(name+'.csv'),rows)
-        headers=[]
-        with (output/'features.csv').open(encoding='utf-8-sig',newline='') as f:headers=next(csv.reader(f))
         recipes={r['id']:r for r in catalogue.catalogue()}
         fields=[]
         for h in headers+list(corpus_values):
@@ -225,7 +270,9 @@ def run(job):
             if recipe:fields.append(dict(column=h,feature_id=fid,method_id=recipe['method_id'],scope=recipe['scope'],definition=recipe['definition'],source_ids=recipe['source_ids'],parameters=options))
         csv_write(output/'field_dictionary.csv',fields)
         atomic_json(output/'execution_manifest.json',[recipes[f] for f in selected])
-        counts=Counter(s['status'] for r in record_iter() for s in r['statuses']);counts.update(s['status'] for s in corpus_status)
+        counts.update(s['status'] for s in corpus_status)
+        phase_timings['export']=time.perf_counter()-export_started
+        runmeta['timings']={'phases_seconds':phase_timings,'features':feature_timings,'scope':'current invocation; reused checkpoints excluded; shared work and resource/model loading attributed to first requesting feature'}
         runmeta.update(state='cancelled' if cancelled else 'complete',finished_at=time.strftime('%Y-%m-%dT%H:%M:%S%z'),status_counts=dict(counts),documents=len(documents),versions=versions(),outputs={str(p.relative_to(output)):sha(p) for p in output.rglob('*') if p.is_file() and '.checkpoint' not in p.parts and p.name!='run.json'})
         runmeta['elapsed_seconds']=time.perf_counter()-started
         runmeta['peak_memory_bytes']=resource.getrusage(resource.RUSAGE_SELF).ru_maxrss*(1 if sys.platform=='darwin' else 1024)

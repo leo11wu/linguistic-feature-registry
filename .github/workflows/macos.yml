@@ -22,11 +22,19 @@ jobs:
           export PYTHONNOUSERSITE=1
           export LINGMETRICS_CACHE="$RUNNER_TEMP/lingmetrics-tests"
           "$LINGMETRICS_ROOT/python/bin/python3.11" -m unittest discover -s tests -v
+      - name: Verify optional optimization paths
+        run: |
+          export LINGMETRICS_ROOT="$PWD/dist/LingMetrics.app/Contents/Resources"
+          uv pip install --python "$LINGMETRICS_ROOT/python/bin/python3.11" --target "$RUNNER_TEMP/lingmetrics-optional" torch==2.7.0 rapidfuzz==3.14.3 transformers==4.57.1 numpy==2.4.4
+          export PYTHONPATH="$LINGMETRICS_ROOT/engine:$LINGMETRICS_ROOT/engine/vendor:$LINGMETRICS_ROOT/base-site:$RUNNER_TEMP/lingmetrics-optional"
+          export PYTHONNOUSERSITE=1
+          export LINGMETRICS_CACHE="$RUNNER_TEMP/lingmetrics-optimization-tests"
+          "$LINGMETRICS_ROOT/python/bin/python3.11" -m unittest discover -s tests -p test_optimization.py -v
       - uses: actions/upload-artifact@v4
         with:
           name: LingMetrics-arm64
           path: |
-            dist/LingMetrics-0.1.0-arm64.zip
+            dist/LingMetrics-0.1.1-arm64.zip
             dist/SHA256SUMS.txt
             dist/build-report.json
           retention-days: 30

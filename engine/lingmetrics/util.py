@@ -40,12 +40,15 @@ def clean(x):
     if isinstance(x, float) and not math.isfinite(x): return None
     return x
 
-def atomic_json(path, value):
+def atomic_json(path, value, compact=False):
     path = Path(path); path.parent.mkdir(parents=True, exist_ok=True)
     fd, name = tempfile.mkstemp(dir=path.parent, prefix=".partial-")
     try:
         with os.fdopen(fd,"w",encoding="utf-8") as f:
-            json.dump(clean(value), f, ensure_ascii=False, allow_nan=False, indent=2)
+            # Compact checkpoints use the C encoder and remain bounded to one document.
+            f.write(json.dumps(clean(value), ensure_ascii=False, allow_nan=False,
+                               indent=None if compact else 2,
+                               separators=(',', ':') if compact else None))
         os.replace(name,path)
     finally:
         if os.path.exists(name): os.unlink(name)

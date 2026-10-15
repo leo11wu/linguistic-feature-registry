@@ -18,12 +18,13 @@ An English-first registry of linguistic measures for quantitative linguistics, d
 
 ## LingMetrics Mac 应用
 
-仓库现在包含 LingMetrics 0.1.0 组内测试应用：原生界面、自带基础环境、TXT/CSV 输入、进度与断点续算，以及可追溯的研究资料导出。适用于 Apple Silicon、macOS 13 及以上。
+仓库现在包含 LingMetrics 0.1.1 组内测试应用：原生界面、自带基础环境、TXT/CSV 输入、进度与断点续算，以及可追溯的研究资料导出。适用于 Apple Silicon、macOS 13 及以上。
 
 全库177个条目均有入口，默认常用组合61个条目。模型与参照资源按需准备；3个目录条目及部分操作化细节保留方法待核状态。具体覆盖以[执行清单](metadata/execution_manifest.json)和每次运行状态为准。
 
 - [使用手册](docs/extractor.md)与[资源格式](docs/resources.md)。
 - [验证记录](docs/validation.md)：区分公式测试、软件试跑、性能检查和目标语料效度。
+- [速度优化与复测](docs/performance.md)：保留公式、抽样及上下文口径，并记录逐项计时。
 - 源码构建：`python3 scripts/build_macos.py`；组员直接使用打包应用，无需Python。
 - 自动构建的安装包可从本仓库 GitHub Actions 的 `LingMetrics-arm64` 制品下载；本地构建在 `dist/`。
 

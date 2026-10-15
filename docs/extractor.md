@@ -1,6 +1,6 @@
 # LingMetrics 使用说明
 
-LingMetrics 0.1.0 为 Apple Silicon、macOS 13 及以上的组内测试应用。自带 Python 3.11 和固定英语基础模型。应用源代码与研究目录放在同一仓库；目录的核验状态和程序的计算状态分别记录。
+LingMetrics 0.1.1 为 Apple Silicon、macOS 13 及以上的组内测试应用。自带 Python 3.11 和固定英语基础模型。应用源代码与研究目录放在同一仓库；目录的核验状态和程序的计算状态分别记录。
 
 ## 开始提取
 
@@ -51,3 +51,7 @@ WordNet深度需要明确synset选择，如 `{"wordnet_senses":{"dog":"dog.n.01"
 ## 构建与验证
 
 开发者使用 `python3 scripts/build_macos.py` 构建；基础环境隔离在系统临时目录，可用 `LINGMETRICS_BUILD_DIR` 指定位置，成品在 `dist/`。组员只需要应用。核心测试为 `PYTHONPATH=engine:engine/vendor python3 -m unittest discover -s tests`；研究目录仍使用原有校验脚本。
+
+## 速度与计时
+
+0.1.1 优化了文档缓存导出、词典邻域、依存随机基线及模型评分。`run.json` 的 `timings` 记录本次调用的阶段耗时与指标调用次数；共用工作、资源与模型加载归入首次触发的指标，续算复用部分不计入。不要把这一计时表当成各指标的独立算法基准。详见[复测方法](performance.md)。

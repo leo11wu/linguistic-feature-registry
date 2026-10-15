@@ -223,7 +223,7 @@ struct ContentView: View {
             Divider()
             if tab==0 {extraction} else if tab==1 {metrics} else if tab==2 {resources} else {history}
             Divider()
-            HStack {Text(model.status).font(.caption);Spacer();if model.busy {ProgressView().controlSize(.small)};Text("0.1.0 · Apple Silicon").font(.caption).foregroundColor(.secondary)}.padding(12)
+            HStack {Text(model.status).font(.caption);Spacer();if model.busy {ProgressView().controlSize(.small)};Text("0.1.1 · Apple Silicon").font(.caption).foregroundColor(.secondary)}.padding(12)
         }.frame(minWidth:1000,minHeight:700)
         .alert("资源下载",isPresented:$showDownload,presenting:download) {r in
             Button("下载") {model.command(["install",r.id])};Button("取消",role:.cancel) {}

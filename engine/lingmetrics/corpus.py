@@ -9,7 +9,8 @@ from . import resources
 IDS={'FREQ10','MWE01','MWE02','MWE03','MWE04','MWE05','MWE06','MWE07','MWE08','INF07','STY02','STY07',*[f'QL{i:02d}' for i in range(1,12)],*[f'NET{i:02d}' for i in range(1,6)]}
 
 class Corpus:
-    def __init__(self,records,options=None):
+    def __init__(self,records,options=None,selected_features=None):
+        self.network_features=None if selected_features is None else set(selected_features)&{'NET01','NET02','NET03','NET04','NET05'}
         self.options=options or {}; self.records=records;self.counter=Counter();self.left=Counter();self.right=Counter();self.pairs=Counter();self.documents=Counter();self.ngrams={i:Counter() for i in [2,3,4]};self.ranges={i:Counter() for i in [2,3,4]};self.partitions=defaultdict(Counter)
         self.sizes=Counter();self.sequences=[];self.total_pairs=0
         for rec in records:
@@ -24,7 +25,13 @@ class Corpus:
         for (x,y),a in self.pairs.items():
             b=self.left[x]-a;c=self.right[y]-a;d=self.total_pairs-a-b-c
             self.pair_stats[(x,y)]=dict(left=x,right=y,joint=a,left_total=self.left[x],right_total=self.right[y],event_total=self.total_pairs,**association(a,b,c,d))
-        self.details={};self._law=None;self._graph=None
+        self.details={};self._law=None;self._graph=None;self._dispersion={};self._gram_record=None;self._grams={}
+
+    def document_grams(self,rec,orders):
+        if self._gram_record!=rec['id']:self._gram_record=rec['id'];self._grams={}
+        for order in orders:
+            if order not in self._grams:self._grams[order]=[tuple(s[i:i+order]) for s in rec['sentences'] for i in range(len(s)-order+1)]
+        return {order:self._grams[order] for order in orders}
 
     def laws(self):
         if self._law is not None:return self._law
@@ -67,12 +74,13 @@ class Corpus:
         if fid=='FREQ10':
             parts=sorted(self.partitions);sizes=[self.sizes[p] for p in parts]
             for w in set(keys):
-                dp,dn=dispersion([self.partitions[p][w] for p in parts],sizes)
+                if w not in self._dispersion:self._dispersion[w]=dispersion([self.partitions[p][w] for p in parts],sizes)
+                dp,dn=self._dispersion[w]
                 rows.append(dict(word=w,dp=dp,dpnorm_corrected=dn,frequency=self.counter[w]))
             byword={r['word']:r for r in rows};self.details['dispersion']=rows
             return {**summary([byword[w]['dp'] for w in keys],'FREQ10.dp.token'),**summary([byword[w]['dpnorm_corrected'] for w in keys],'FREQ10.dpnorm.token')}
         if fid.startswith('MWE'):
-            grams={order:[tuple(s[i:i+order]) for s in sentences for i in range(len(s)-order+1)] for order in [2,3,4]}
+            grams=self.document_grams(rec,[2,3,4] if fid in {'MWE01','MWE04'} else [2] if fid in {'MWE02','MWE03','MWE07','MWE08'} else [])
             if fid=='MWE01':
                 for order,gs in grams.items():out.update(summary([self.ngrams[order][g] for g in gs],f'MWE01.order{order}_reference_count'))
             elif fid=='MWE04':out={f'MWE04.order{k}_ttr':ratio(len(set(gs)),len(gs)) for k,gs in grams.items()}
@@ -122,7 +130,7 @@ class Corpus:
         if fid.startswith('NET'):
             if self._graph is None:
                 if len(self.counter)>self.options.get('network_max_nodes',2000):raise Unavailable('共现图超过2000节点；请指定更小子语料或显式提高network_max_nodes')
-                graph,values=graph_measures(self.pairs,set(self.counter))
+                graph,values=graph_measures(self.pairs,set(self.counter),self.network_features)
                 self._graph=(graph,values);self.details['network_nodes']=graph
             graph,values=self._graph
             fields={'NET01':['in_degree','out_degree','in_strength','out_strength'],'NET02':['clustering'],'NET05':['betweenness']}

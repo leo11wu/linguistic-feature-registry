@@ -1,10 +1,11 @@
 {
-  "date": "2026-10-14",
+  "date": "2026-10-15",
   "platform": "macOS 15.7.4 arm64",
-  "application_version": "0.1.0",
+  "application_version": "0.1.1",
   "unit_tests": {
-    "passed": 24,
-    "failed": 0
+    "passed": 34,
+    "failed": 0,
+    "skipped": 0
   },
   "exact_optimizer_exhaustive_cases": 20,
   "real_model_smoke": [
@@ -37,16 +38,33 @@
     "feature_matrix_equal_after_cache_optimization": true
   },
   "build": {
-    "version": "0.1.0",
+    "version": "0.1.1",
     "target": "arm64-macos13+",
     "signing": "ad-hoc",
     "notarized": false,
-    "archive_bytes": 90553457,
-    "expanded_bytes": 208505156,
-    "sha256": "aa4172b97c89df40784402e0fa7d2e8e0d4cfea8e8ece886c3ffe4a9ae039761",
+    "archive_bytes": 90605276,
+    "expanded_bytes": 208755196,
+    "sha256": "ec02e82f82ff37747c2d9c3362cc713819ad46460e4cd51a9ebc7a3333cb0bc8",
     "budget_archive_pass": true,
     "budget_expanded_pass": true
   },
   "target_corpus_validity": "not evaluated",
-  "other_group_machines": "not yet tested"
+  "other_group_machines": "not yet tested",
+  "real_model_smoke_application_version": "0.1.0",
+  "optimization_verification": "See metadata/performance.json; random-initialized BERT/Pythia architecture equivalence, not new pretrained throughput",
+  "benchmark_application_version": "0.1.0",
+  "performance_report": "metadata/performance.json",
+  "previous_release_checks_application_version": {
+    "gui_smoke": "0.1.0",
+    "unprepared_full_catalogue": "0.1.0",
+    "exact_optimizer_exhaustive_cases": "0.1.0",
+    "fasttext_smoke": "0.1.0",
+    "lnre_smoke": "0.1.0"
+  },
+  "bundled_optimization_tests": {
+    "passed": 34,
+    "failed": 0,
+    "skipped": 0,
+    "source_hashes_match": true
+  }
 }

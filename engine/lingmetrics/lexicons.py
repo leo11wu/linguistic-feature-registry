@@ -122,25 +122,10 @@ def lexical_measure(fid,ctx):
                 values.append(wn.synset(name).max_depth() if name else None)
         return summary(values,fid+('.synset_count' if fid=='SEM09' else '.selected_synset_max_depth'))
     if fid in {'PHO03','PHO04','PHO05','PHO06'}:
-        try: from rapidfuzz.distance import Levenshtein
+        try: import rapidfuzz
         except ImportError: raise Unavailable('请下载词典邻域资源包','resource_required')
-        from .core import pronunciation_lexicon
-        lex={w:ps[0] for w,ps in pronunciation_lexicon().items() if re.fullmatch('[a-z]+',w)}
-        # Cache unique target words, not repeated tokens.
-        values={}
-        phones={w:tuple(p[:-1] if p[-1:].isdigit() else p for p in ps) for w,ps in lex.items()}
-        single=Counter(p for ps in lex.values() for p in ps); pairs=Counter((a,b) for ps in lex.values() for a,b in zip(ps,ps[1:]))
-        for t in ctx.words:
-            word=t.text.casefold()
-            if word in values: continue
-            if fid=='PHO03': values[word]=sum(len(w)==len(word) and sum(a!=b for a,b in zip(w,word))==1 for w in lex)
-            elif fid=='PHO04':
-                ds=sorted(Levenshtein.distance(word,w) for w in lex if w!=word); values[word]=sum(ds[:20])/20 if len(ds)>=20 else None
-            elif word not in lex: values[word]=None
-            elif fid=='PHO05':
-                target=phones[word]; ds=sorted(Levenshtein.distance(target,p) for w,p in phones.items() if w!=word); values[word]=sum(ds[:20])/20 if len(ds)>=20 else None
-            else:
-                target=lex[word]; values[word]=float(np.mean([pairs[(a,b)]/sum(pairs.values()) for a,b in zip(target,target[1:])])) if len(target)>1 else None
+        from .phonology import value
+        values={word:value(fid,word) for word in dict.fromkeys(t.text.casefold() for t in ctx.words)}
         ctx.details.setdefault('phonological_neighbors',[]).extend(dict(word=w,value=v,feature=fid) for w,v in values.items())
         return summary([values[t.text.casefold()] for t in ctx.words],fid+'.cmudict_dictionary')
     if fid=='SYN22':

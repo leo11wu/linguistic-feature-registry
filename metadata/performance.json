@@ -1,0 +1,920 @@
+{
+  "application_version": "0.1.1",
+  "date": "2026-10-15",
+  "platform": "macOS 15.7.4 arm64",
+  "baseline_commit": "7ba85d58d1119b118705c6a02a01ce36088b4568",
+  "protocol": {
+    "processes": "separate, sequential; identical interpreter and dependencies",
+    "math_model_kernel_repetitions": 3,
+    "kernel_summary": "median",
+    "batch_repetitions": 1,
+    "corpus_pythonhashseed": 1729,
+    "batch_fixture": "synthetic repetitive English, 1000 words per document",
+    "phonology_fixture": "128 tokens, 14 word types, complete CMUdict reference; later documents repeat words",
+    "model_fixture": "random initialized BERT architecture; pretrained model throughput not remeasured",
+    "models_atol": 2e-06,
+    "equivalence": "feature matrices and detailed CSVs compared byte-for-byte; seeded random draws preserved",
+    "memory": "process high-water RSS, not allocation-only; cache paths may retain extra memory",
+    "scope": "software performance and equivalence, not linguistic validity"
+  },
+  "cases": {
+    "kernels": {
+      "baseline": {
+        "case": "kernels",
+        "results": {
+          "vocd": {
+            "median_seconds": 0.024469791911542416,
+            "trials_seconds": [
+              0.04095870815217495,
+              0.02406308287754655,
+              0.024469791911542416
+            ],
+            "value": 267.2464725890674
+          },
+          "diversity": {
+            "median_seconds": 0.020785958040505648,
+            "trials_seconds": [
+              0.021087042056024075,
+              0.02077291696332395,
+              0.020785958040505648
+            ],
+            "values_sha256": "aed9253bd3892d4f13cacfe3b219e95518bb1413950a85441cf3d69e227a7699"
+          },
+          "dependency_random_baseline": {
+            "median_seconds": 0.04780520801432431,
+            "trials_seconds": [
+              0.047662375029176474,
+              0.048168165842071176,
+              0.04780520801432431
+            ],
+            "values_sha256": "abc0b3d3b0ba859d57ddccdac428336cade78cd8fd6bcb391d9377fbfed72306",
+            "permutations": 5000,
+            "nodes": 80
+          },
+          "network_degree_only": {
+            "median_seconds": 0.1921813329681754,
+            "trials_seconds": [
+              0.1889782079961151,
+              0.19871812500059605,
+              0.1921813329681754
+            ],
+            "values_sha256": "d6cd9192bf853e5ff24ebaef059f998bf7f43f63957c0da7930fab9d19367088",
+            "nodes": 500,
+            "edges": 1500
+          }
+        },
+        "peak_memory_bytes": 38141952
+      },
+      "optimized": {
+        "case": "kernels",
+        "results": {
+          "vocd": {
+            "median_seconds": 0.01786875003017485,
+            "trials_seconds": [
+              0.022543958853930235,
+              0.01786875003017485,
+              0.01739474991336465
+            ],
+            "value": 267.2464725890674
+          },
+          "diversity": {
+            "median_seconds": 0.008098708000034094,
+            "trials_seconds": [
+              0.008593374863266945,
+              0.008098708000034094,
+              0.007999749854207039
+            ],
+            "values_sha256": "aed9253bd3892d4f13cacfe3b219e95518bb1413950a85441cf3d69e227a7699"
+          },
+          "dependency_random_baseline": {
+            "median_seconds": 0.0069162079598754644,
+            "trials_seconds": [
+              0.0069162079598754644,
+              0.0069660828448832035,
+              0.006791749969124794
+            ],
+            "values_sha256": "abc0b3d3b0ba859d57ddccdac428336cade78cd8fd6bcb391d9377fbfed72306",
+            "permutations": 5000,
+            "nodes": 80
+          },
+          "network_degree_only": {
+            "median_seconds": 0.0006491250824183226,
+            "trials_seconds": [
+              0.0007538748905062675,
+              0.0006491250824183226,
+              0.0006258750800043344
+            ],
+            "values_sha256": "d6cd9192bf853e5ff24ebaef059f998bf7f43f63957c0da7930fab9d19367088",
+            "nodes": 500,
+            "edges": 1500
+          }
+        },
+        "peak_memory_bytes": 38666240
+      }
+    },
+    "phonology": {
+      "baseline": {
+        "case": "phonology",
+        "results": {
+          "cold": {
+            "seconds": 1.7740998328663409,
+            "values_sha256": "9cb73c01404fa4c9f7c6228cdfe3f2b83cff33987bce2030d494e5a25ee4bd43",
+            "tokens": 128,
+            "types": 14
+          },
+          "warm_1": {
+            "seconds": 1.4621399999596179,
+            "values_sha256": "9cb73c01404fa4c9f7c6228cdfe3f2b83cff33987bce2030d494e5a25ee4bd43",
+            "tokens": 128,
+            "types": 14
+          },
+          "warm_2": {
+            "seconds": 1.4689162920694798,
+            "values_sha256": "9cb73c01404fa4c9f7c6228cdfe3f2b83cff33987bce2030d494e5a25ee4bd43",
+            "tokens": 128,
+            "types": 14
+          }
+        },
+        "peak_memory_bytes": 380600320
+      },
+      "optimized": {
+        "case": "phonology",
+        "results": {
+          "cold": {
+            "seconds": 0.8061695420183241,
+            "values_sha256": "9cb73c01404fa4c9f7c6228cdfe3f2b83cff33987bce2030d494e5a25ee4bd43",
+            "tokens": 128,
+            "types": 14
+          },
+          "warm_1": {
+            "seconds": 0.00022595911286771297,
+            "values_sha256": "9cb73c01404fa4c9f7c6228cdfe3f2b83cff33987bce2030d494e5a25ee4bd43",
+            "tokens": 128,
+            "types": 14
+          },
+          "warm_2": {
+            "seconds": 0.0001805839128792286,
+            "values_sha256": "9cb73c01404fa4c9f7c6228cdfe3f2b83cff33987bce2030d494e5a25ee4bd43",
+            "tokens": 128,
+            "types": 14
+          }
+        },
+        "peak_memory_bytes": 406306816
+      }
+    },
+    "model": {
+      "baseline": {
+        "case": "model",
+        "results": {
+          "bert_single_mask": {
+            "median_seconds": 0.07178791705518961,
+            "trials_seconds": [
+              0.08478612499311566,
+              0.07178791705518961,
+              0.07023758301511407
+            ],
+            "scores": [
+              -10.47392463684082,
+              -10.428316116333008,
+              -10.637990951538086,
+              -10.513992309570312,
+              -10.248433113098145,
+              -10.211216926574707,
+              -10.33907413482666,
+              -10.545504570007324,
+              -10.576272964477539,
+              -10.12806224822998,
+              -10.086750984191895,
+              -10.398221969604492,
+              -10.357522010803223,
+              -10.4623441696167,
+              -10.36597728729248,
+              -10.375882148742676
+            ],
+            "fixture": "random weights; BERT architecture, 30522 vocabulary, 2 layers, hidden 64, 16 masks, sentence length 96; CPU 2 threads",
+            "vocabulary_rows": 1536
+          }
+        },
+        "peak_memory_bytes": 693501952
+      },
+      "optimized": {
+        "case": "model",
+        "results": {
+          "bert_single_mask": {
+            "median_seconds": 0.004168208921328187,
+            "trials_seconds": [
+              0.00430999998934567,
+              0.004168208921328187,
+              0.004102084087207913
+            ],
+            "scores": [
+              -10.47392463684082,
+              -10.428316116333008,
+              -10.637990951538086,
+              -10.513992309570312,
+              -10.248433113098145,
+              -10.211216926574707,
+              -10.33907413482666,
+              -10.545504570007324,
+              -10.576272964477539,
+              -10.12806224822998,
+              -10.086750984191895,
+              -10.398221969604492,
+              -10.357522010803223,
+              -10.4623441696167,
+              -10.36597728729248,
+              -10.375882148742676
+            ],
+            "fixture": "random weights; BERT architecture, 30522 vocabulary, 2 layers, hidden 64, 16 masks, sentence length 96; CPU 2 threads",
+            "vocabulary_rows": 16
+          }
+        },
+        "peak_memory_bytes": 331694080
+      }
+    },
+    "batch": {
+      "baseline": {
+        "case": "batch",
+        "results": {
+          "default_batch": {
+            "seconds": 57.65741283306852,
+            "documents": 100,
+            "feature_matrix_sha256": "744d267866f7697aae7588bcf4bd9a6e3df36d5d6f60807e037bc0acc582f911",
+            "peak_memory_bytes": 303972352,
+            "timings": null
+          }
+        },
+        "peak_memory_bytes": 303972352
+      },
+      "optimized": {
+        "case": "batch",
+        "results": {
+          "default_batch": {
+            "seconds": 25.972232416970655,
+            "documents": 100,
+            "features": "default61",
+            "feature_matrix_sha256": "744d267866f7697aae7588bcf4bd9a6e3df36d5d6f60807e037bc0acc582f911",
+            "peak_memory_bytes": 284426240,
+            "timings": {
+              "phases_seconds": {
+                "base": 20.010457542026415,
+                "export": 5.432154292007908
+              },
+              "features": {
+                "DEP01": {
+                  "seconds": 0.44035925227217376,
+                  "calls": 100
+                },
+                "DEP02": {
+                  "seconds": 0.0010941207874566317,
+                  "calls": 100
+                },
+                "DEP03": {
+                  "seconds": 0.0007751714438199997,
+                  "calls": 100
+                },
+                "DEP04": {
+                  "seconds": 0.0005399193614721298,
+                  "calls": 100
+                },
+                "DEP05": {
+                  "seconds": 0.0005347549449652433,
+                  "calls": 100
+                },
+                "DEP06": {
+                  "seconds": 0.000671254238113761,
+                  "calls": 100
+                },
+                "DEP07": {
+                  "seconds": 0.0006162093486636877,
+                  "calls": 100
+                },
+                "DEP08": {
+                  "seconds": 0.0005288731772452593,
+                  "calls": 100
+                },
+                "DEP09": {
+                  "seconds": 0.0004941241350024939,
+                  "calls": 100
+                },
+                "DEP10": {
+                  "seconds": 0.0005234144628047943,
+                  "calls": 100
+                },
+                "DEP11": {
+                  "seconds": 0.0004952496383339167,
+                  "calls": 100
+                },
+                "DEP12": {
+                  "seconds": 0.0004847911186516285,
+                  "calls": 100
+                },
+                "DEP13": {
+                  "seconds": 0.0004837049636989832,
+                  "calls": 100
+                },
+                "DIS01": {
+                  "seconds": 0.01756471092812717,
+                  "calls": 100
+                },
+                "DIS02": {
+                  "seconds": 0.013921116944402456,
+                  "calls": 100
+                },
+                "DIS03": {
+                  "seconds": 0.9737555833999068,
+                  "calls": 100
+                },
+                "DIS05": {
+                  "seconds": 0.001129873562604189,
+                  "calls": 100
+                },
+                "INF01": {
+                  "seconds": 0.001721332548186183,
+                  "calls": 100
+                },
+                "INF02": {
+                  "seconds": 0.009158042725175619,
+                  "calls": 100
+                },
+                "INF03": {
+                  "seconds": 0.02674445672892034,
+                  "calls": 100
+                },
+                "LD01": {
+                  "seconds": 0.03078871197067201,
+                  "calls": 100
+                },
+                "LD02": {
+                  "seconds": 0.000504037830978632,
+                  "calls": 100
+                },
+                "LD03": {
+                  "seconds": 0.00039537157863378525,
+                  "calls": 100
+                },
+                "LD04": {
+                  "seconds": 0.00037796213291585445,
+                  "calls": 100
+                },
+                "LD05": {
+                  "seconds": 0.0003849572967737913,
+                  "calls": 100
+                },
+                "LD06": {
+                  "seconds": 0.00038600293919444084,
+                  "calls": 100
+                },
+                "LD07": {
+                  "seconds": 0.0003757926169782877,
+                  "calls": 100
+                },
+                "LD08": {
+                  "seconds": 0.0003633734304457903,
+                  "calls": 100
+                },
+                "LD09": {
+                  "seconds": 0.00037199840880930424,
+                  "calls": 100
+                },
+                "LD11": {
+                  "seconds": 0.0003572495188564062,
+                  "calls": 100
+                },
+                "LD12": {
+                  "seconds": 0.00035337754525244236,
+                  "calls": 100
+                },
+                "LD13": {
+                  "seconds": 0.00040421681478619576,
+                  "calls": 100
+                },
+                "LEN01": {
+                  "seconds": 0.0002980749122798443,
+                  "calls": 100
+                },
+                "LEN02": {
+                  "seconds": 0.0002906604204326868,
+                  "calls": 100
+                },
+                "LEN03": {
+                  "seconds": 0.0003007519990205765,
+                  "calls": 100
+                },
+                "LEN04": {
+                  "seconds": 0.0003039983566850424,
+                  "calls": 100
+                },
+                "LEN05": {
+                  "seconds": 0.023188624065369368,
+                  "calls": 100
+                },
+                "LEN06": {
+                  "seconds": 0.030051209265366197,
+                  "calls": 100
+                },
+                "LEN07": {
+                  "seconds": 0.31410936801694334,
+                  "calls": 100
+                },
+                "LEN08": {
+                  "seconds": 0.0004475037567317486,
+                  "calls": 100
+                },
+                "LEN09": {
+                  "seconds": 0.007947913371026516,
+                  "calls": 100
+                },
+                "MOR07": {
+                  "seconds": 0.015326339052990079,
+                  "calls": 100
+                },
+                "POS01": {
+                  "seconds": 0.008654166711494327,
+                  "calls": 100
+                },
+                "POS02": {
+                  "seconds": 0.008012295700609684,
+                  "calls": 100
+                },
+                "POS03": {
+                  "seconds": 0.007773250807076693,
+                  "calls": 100
+                },
+                "POS04": {
+                  "seconds": 0.07133888034150004,
+                  "calls": 100
+                },
+                "POS05": {
+                  "seconds": 0.04251629114151001,
+                  "calls": 100
+                },
+                "POS06": {
+                  "seconds": 0.027480454416945577,
+                  "calls": 100
+                },
+                "POS07": {
+                  "seconds": 0.11745233694091439,
+                  "calls": 100
+                },
+                "POS08": {
+                  "seconds": 0.06991937290877104,
+                  "calls": 100
+                },
+                "POS09": {
+                  "seconds": 0.023203748278319836,
+                  "calls": 100
+                },
+                "POS10": {
+                  "seconds": 0.011944211320951581,
+                  "calls": 100
+                },
+                "QC04": {
+                  "seconds": 0.011265871115028858,
+                  "calls": 100
+                },
+                "QC05": {
+                  "seconds": 0.06884395936504006,
+                  "calls": 100
+                },
+                "READ01": {
+                  "seconds": 0.04993745731189847,
+                  "calls": 100
+                },
+                "READ02": {
+                  "seconds": 0.04959316155873239,
+                  "calls": 100
+                },
+                "READ05": {
+                  "seconds": 0.04645646130666137,
+                  "calls": 100
+                },
+                "READ06": {
+                  "seconds": 0.04625304415822029,
+                  "calls": 100
+                },
+                "READ08": {
+                  "seconds": 0.04623045469634235,
+                  "calls": 100
+                },
+                "READ09": {
+                  "seconds": 0.046424252446740866,
+                  "calls": 100
+                },
+                "STY03": {
+                  "seconds": 0.003254127223044634,
+                  "calls": 100
+                }
+              },
+              "scope": "current invocation; reused checkpoints excluded; shared work and resource/model loading attributed to first requesting feature"
+            }
+          }
+        },
+        "peak_memory_bytes": 284426240
+      },
+      "csv_equivalence": {
+        "files": [
+          "sentences.csv",
+          "field_dictionary.csv",
+          "word_frequency.csv",
+          "feature_status.csv",
+          "features.csv",
+          "tokens.csv",
+          "details/dependencies.csv",
+          "details/dis02_overlap.csv",
+          "details/dependency_sentences.csv",
+          "details/dis01_overlap.csv",
+          "details/dis03_overlap.csv"
+        ],
+        "count": 11,
+        "differing_files": []
+      },
+      "source_identity": {
+        "baseline": {
+          "version": "0.1.0",
+          "code_hashes": {
+            "engine/lingmetrics/runner.py": "0658a3693ab0798085a4960338a91ffe7e6cc3f237d2e65e105cd2725d6cc83d",
+            "engine/lingmetrics/models.py": "2d7601f15c8c4ca8c4cd22d067e1ef152dde218d3a8dd31c962169f451914a62",
+            "engine/lingmetrics/util.py": "b0918fada13d73924cce0efda3950a0026db938e5c3a4ac6ef56604a2f3b54d3",
+            "engine/lingmetrics/__init__.py": "0ecccf79d4d2d9a85f42465ad96d98d481585835a2ebe01ac54cad10e0379066",
+            "engine/lingmetrics/core.py": "b9f1f958d9287d954092c4b5a5ad6b464844e08eb45a0aa3c4e62c2acbec2ef1",
+            "engine/lingmetrics/fasttext_vectors.py": "5210cb2cebbe96e4553be89cfc0100179572fe6ea370dc99df1de7d6dfdb39aa",
+            "engine/lingmetrics/stats.py": "7a876e3a5b9c15f9ea0075872af1ea2422c5c7742019f7d76bd9ae3cac2c3ea8",
+            "engine/lingmetrics/syntax.py": "9f546811f1650f334ce86f319b626278ec726e65df7ff8a4b910181179d5db65",
+            "engine/lingmetrics/configured.py": "9e939d6ff51cf3359df3ac96d5b169fb485673ce37d0244cac0e37f50c47102d",
+            "engine/lingmetrics/resources.py": "607edbf9ff71ff065f6c47eb4ca6dec4ebdc80ec4bccf6fc7cfe39acebb62c3d",
+            "engine/lingmetrics/managed_r.py": "ef62a9a01e24c92f964b6e1c6ecce7e041c560fe14dbec1ad7c8da9594eb29d7",
+            "engine/lingmetrics/__main__.py": "ea1ca66d244a20bd005c3139a6a9cb2059c76a0cf408b0f25d914c660de9af73",
+            "engine/lingmetrics/corpus.py": "a8735cf0bd8b8091a9a8f1e92eb9a0501343c18677f5eecde3c554d36c607edf",
+            "engine/lingmetrics/lexicons.py": "6978960056e6bbf32fc4c44f4d8bb92c4d99476987d91830a7d4c2c95caed795",
+            "engine/lingmetrics/catalogue.py": "b2bf95a1df623f66a649cf4306126ed694a9ac38e126bec3a9a1cc2245848bf0",
+            "engine/vendor/provenance.json": "84ef32a6ce8075c78e833c409ba8db70e42e6df21226f9be79e0434161f7d760",
+            "engine/vendor/neosca/__init__.py": "559fab560d50a9a10e5578b107abbcb4b78fe73cab2bfb2f5daa99b333ee12af",
+            "engine/vendor/neosca/ns_sca/l2sca.py": "96e295161e3b149b62dafc42ff48f3c68ed9763b49d85771c75c8bea6fa9627d",
+            "engine/vendor/neosca/ns_sca/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "engine/vendor/neosca/ns_tregex/head_finder.py": "b1736ae6ff52d97a58d3a35357a5cd18b546918984b47ff04a98d246955b46f2",
+            "engine/vendor/neosca/ns_tregex/abstract_collins_head_finder.py": "fc03d47c4722858c958fd1b4d58658d3870af9b04bbed149a6071bae8c387566",
+            "engine/vendor/neosca/ns_tregex/relation.py": "b46510d7c57fdf9b00f65a7ec0c52104b7025d0d79720736308b037b6197fd47",
+            "engine/vendor/neosca/ns_tregex/tree.py": "c955e1ace920913fb929e81a994f88bb0c4cc6e5364451c1fbed5d4cd4219fbb",
+            "engine/vendor/neosca/ns_tregex/peekable.py": "297876f6c6f71e009fc61dd3bd2958a83050a0f1270e339910b84dda74792793",
+            "engine/vendor/neosca/ns_tregex/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "engine/vendor/neosca/ns_tregex/collins_head_finder.py": "b1bb9bdafe280d39bb9e41125aa0781d8d2536f2da532f09579886591cbc8cc7",
+            "engine/vendor/neosca/ns_tregex/stanford_tregex_cli.py": "a66841acc50afd04b00330a34114437ec34456a66662b90ae7ee6278e29d0c11",
+            "engine/vendor/neosca/ns_tregex/node_descriptions.py": "2f0533535e13a4abd00e2e0cc9f73d4d502c10d2a3d9ae6897cc041ff8900beb",
+            "data/external_resource_selection.csv": "8f5757e3644efa77bb6a926728368ccfebf91bd0d7625aba5b7f2392bc2b2abe",
+            "data/modeling_guidance.csv": "9c674f5c4997e20fbc14c5485f24d9cf4a692bd49ccd5f4c4d057863b338dc76",
+            "data/english_linguistic_feature_registry.csv": "0dd4541dc0108bd0253d518b00fdf28b67c53712d324df81ab8fbdae74aafd24",
+            "data/paper_measure_specifications.csv": "2322ef9ad6eabc3f52df80d6c01d2ff26d2374e2f770a6806a5017a982aa7de3",
+            "data/sources.csv": "04b206b1bb70d9c2c54c094ed02348cd8258afef4ef516a473a5f06fb4657577",
+            "native/LALHelper.cpp": "2778d40e0d5769df0626215b3ca3acf23958ffcf11038d87b3823b51e4bf3dbb",
+            "native/resource-hashes.json": "b175d9c82c5cfea04f0ce6ccd3ff8b217781406272c3b076f3882a3e40749573",
+            "native/lnre.R": "12ba06a1633b56a6379f92a09b190335d55e257bcb1d6999918a6e771418dcb3"
+          },
+          "versions": {
+            "lingmetrics": "0.1.0",
+            "python": "3.11.15",
+            "machine": "arm64",
+            "macos": "15.7.4",
+            "spacy": "3.8.14",
+            "en-core-web-sm": "3.8.0",
+            "numpy": "2.4.4",
+            "cmudict": "1.1.3"
+          }
+        },
+        "optimized": {
+          "version": "0.1.1",
+          "code_hashes": {
+            "engine/lingmetrics/runner.py": "39e4f133e6c5f68cb5fae2cb0842a43103bec9a5b0d6d8513d7fdc11ea3cd8f6",
+            "engine/lingmetrics/models.py": "6e3a0732e9e649ecbb7e9d514fffbac2d6435b9743fe79b591de23de153990d2",
+            "engine/lingmetrics/phonology.py": "8df76392c3ccf96effeab7e0989a39d3dd37c711a87135b329affa1b24179965",
+            "engine/lingmetrics/util.py": "bbca55d0719a89877cce0bcff8d1dfb96c867ab85386500b26c8fa7738778723",
+            "engine/lingmetrics/__init__.py": "0eaa75142769c8da06466795a16e584c58c736c2f6ff9035ca54579c7693c009",
+            "engine/lingmetrics/core.py": "32c9fbf45016700c4b460e5873234056c795bd18ba99b4af7c8557a46c0db107",
+            "engine/lingmetrics/fasttext_vectors.py": "5210cb2cebbe96e4553be89cfc0100179572fe6ea370dc99df1de7d6dfdb39aa",
+            "engine/lingmetrics/stats.py": "b57a83ea93e0654ed142f72880e083315dad65947266b797f29a5f84b9bb0b5e",
+            "engine/lingmetrics/syntax.py": "9f546811f1650f334ce86f319b626278ec726e65df7ff8a4b910181179d5db65",
+            "engine/lingmetrics/configured.py": "9e939d6ff51cf3359df3ac96d5b169fb485673ce37d0244cac0e37f50c47102d",
+            "engine/lingmetrics/resources.py": "607edbf9ff71ff065f6c47eb4ca6dec4ebdc80ec4bccf6fc7cfe39acebb62c3d",
+            "engine/lingmetrics/managed_r.py": "ef62a9a01e24c92f964b6e1c6ecce7e041c560fe14dbec1ad7c8da9594eb29d7",
+            "engine/lingmetrics/__main__.py": "ea1ca66d244a20bd005c3139a6a9cb2059c76a0cf408b0f25d914c660de9af73",
+            "engine/lingmetrics/corpus.py": "8983b975522edcc072afccf3bc2e9b7ae13c7fbdf8296f227512d0dd228bc875",
+            "engine/lingmetrics/lexicons.py": "53bbaa9a9e33cd2a7c5af810a47fc66338f033df902d7a2b0d295c686fee46aa",
+            "engine/lingmetrics/catalogue.py": "b2bf95a1df623f66a649cf4306126ed694a9ac38e126bec3a9a1cc2245848bf0",
+            "engine/vendor/provenance.json": "84ef32a6ce8075c78e833c409ba8db70e42e6df21226f9be79e0434161f7d760",
+            "engine/vendor/neosca/__init__.py": "559fab560d50a9a10e5578b107abbcb4b78fe73cab2bfb2f5daa99b333ee12af",
+            "engine/vendor/neosca/ns_sca/l2sca.py": "96e295161e3b149b62dafc42ff48f3c68ed9763b49d85771c75c8bea6fa9627d",
+            "engine/vendor/neosca/ns_sca/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "engine/vendor/neosca/ns_tregex/head_finder.py": "b1736ae6ff52d97a58d3a35357a5cd18b546918984b47ff04a98d246955b46f2",
+            "engine/vendor/neosca/ns_tregex/abstract_collins_head_finder.py": "fc03d47c4722858c958fd1b4d58658d3870af9b04bbed149a6071bae8c387566",
+            "engine/vendor/neosca/ns_tregex/relation.py": "b46510d7c57fdf9b00f65a7ec0c52104b7025d0d79720736308b037b6197fd47",
+            "engine/vendor/neosca/ns_tregex/tree.py": "c955e1ace920913fb929e81a994f88bb0c4cc6e5364451c1fbed5d4cd4219fbb",
+            "engine/vendor/neosca/ns_tregex/peekable.py": "297876f6c6f71e009fc61dd3bd2958a83050a0f1270e339910b84dda74792793",
+            "engine/vendor/neosca/ns_tregex/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "engine/vendor/neosca/ns_tregex/collins_head_finder.py": "b1bb9bdafe280d39bb9e41125aa0781d8d2536f2da532f09579886591cbc8cc7",
+            "engine/vendor/neosca/ns_tregex/stanford_tregex_cli.py": "a66841acc50afd04b00330a34114437ec34456a66662b90ae7ee6278e29d0c11",
+            "engine/vendor/neosca/ns_tregex/node_descriptions.py": "2f0533535e13a4abd00e2e0cc9f73d4d502c10d2a3d9ae6897cc041ff8900beb",
+            "data/external_resource_selection.csv": "8f5757e3644efa77bb6a926728368ccfebf91bd0d7625aba5b7f2392bc2b2abe",
+            "data/modeling_guidance.csv": "9c674f5c4997e20fbc14c5485f24d9cf4a692bd49ccd5f4c4d057863b338dc76",
+            "data/english_linguistic_feature_registry.csv": "0dd4541dc0108bd0253d518b00fdf28b67c53712d324df81ab8fbdae74aafd24",
+            "data/paper_measure_specifications.csv": "2322ef9ad6eabc3f52df80d6c01d2ff26d2374e2f770a6806a5017a982aa7de3",
+            "data/sources.csv": "04b206b1bb70d9c2c54c094ed02348cd8258afef4ef516a473a5f06fb4657577",
+            "native/LALHelper.cpp": "2778d40e0d5769df0626215b3ca3acf23958ffcf11038d87b3823b51e4bf3dbb",
+            "native/resource-hashes.json": "b175d9c82c5cfea04f0ce6ccd3ff8b217781406272c3b076f3882a3e40749573",
+            "native/lnre.R": "12ba06a1633b56a6379f92a09b190335d55e257bcb1d6999918a6e771418dcb3"
+          },
+          "versions": {
+            "lingmetrics": "0.1.1",
+            "python": "3.11.15",
+            "machine": "arm64",
+            "macos": "15.7.4",
+            "spacy": "3.8.14",
+            "en-core-web-sm": "3.8.0",
+            "numpy": "2.4.4",
+            "cmudict": "1.1.3"
+          }
+        }
+      }
+    },
+    "corpus": {
+      "baseline": {
+        "case": "corpus",
+        "results": {
+          "corpus_batch": {
+            "seconds": 8.146899207960814,
+            "documents": 25,
+            "features": [
+              "FREQ10",
+              "INF07",
+              "MWE01",
+              "MWE02",
+              "MWE03",
+              "MWE04",
+              "MWE05",
+              "MWE06",
+              "MWE07",
+              "MWE08",
+              "NET01",
+              "NET02",
+              "NET03",
+              "NET04",
+              "NET05",
+              "QL09",
+              "QL10",
+              "QL11"
+            ],
+            "feature_matrix_sha256": "7a36f9623a309d34851360a174f265ee2e55171228b86d3bc9ba464f21d4c982",
+            "peak_memory_bytes": 212238336,
+            "timings": null
+          }
+        },
+        "peak_memory_bytes": 212549632
+      },
+      "optimized": {
+        "case": "corpus",
+        "results": {
+          "corpus_batch": {
+            "seconds": 4.830113708972931,
+            "documents": 25,
+            "features": [
+              "FREQ10",
+              "INF07",
+              "MWE01",
+              "MWE02",
+              "MWE03",
+              "MWE04",
+              "MWE05",
+              "MWE06",
+              "MWE07",
+              "MWE08",
+              "NET01",
+              "NET02",
+              "NET03",
+              "NET04",
+              "NET05",
+              "QL09",
+              "QL10",
+              "QL11"
+            ],
+            "feature_matrix_sha256": "7a36f9623a309d34851360a174f265ee2e55171228b86d3bc9ba464f21d4c982",
+            "peak_memory_bytes": 234471424,
+            "timings": {
+              "phases_seconds": {
+                "base": 3.690382417058572,
+                "corpus": 0.5620750000234693,
+                "export": 0.1722540829796344
+              },
+              "features": {
+                "NET01": {
+                  "seconds": 0.0044942498207092285,
+                  "calls": 1
+                },
+                "NET02": {
+                  "seconds": 2.720882184803486e-05,
+                  "calls": 1
+                },
+                "NET03": {
+                  "seconds": 4.208879545331001e-06,
+                  "calls": 1
+                },
+                "NET04": {
+                  "seconds": 2.624932676553726e-06,
+                  "calls": 1
+                },
+                "NET05": {
+                  "seconds": 2.1458137780427933e-05,
+                  "calls": 1
+                },
+                "QL09": {
+                  "seconds": 0.0038378748577088118,
+                  "calls": 1
+                },
+                "QL10": {
+                  "seconds": 3.241607919335365e-05,
+                  "calls": 1
+                },
+                "QL11": {
+                  "seconds": 3.537489101290703e-05,
+                  "calls": 1
+                },
+                "FREQ10": {
+                  "seconds": 0.004593877121806145,
+                  "calls": 25
+                },
+                "INF07": {
+                  "seconds": 0.0011627927888184786,
+                  "calls": 25
+                },
+                "MWE01": {
+                  "seconds": 0.008739336160942912,
+                  "calls": 25
+                },
+                "MWE02": {
+                  "seconds": 0.0024090013466775417,
+                  "calls": 25
+                },
+                "MWE03": {
+                  "seconds": 0.0023739999160170555,
+                  "calls": 25
+                },
+                "MWE04": {
+                  "seconds": 0.0015337085351347923,
+                  "calls": 25
+                },
+                "MWE05": {
+                  "seconds": 0.0036708323750644922,
+                  "calls": 25
+                },
+                "MWE06": {
+                  "seconds": 0.002635832643136382,
+                  "calls": 25
+                },
+                "MWE07": {
+                  "seconds": 0.004606208298355341,
+                  "calls": 25
+                },
+                "MWE08": {
+                  "seconds": 0.002310749376192689,
+                  "calls": 25
+                }
+              },
+              "scope": "current invocation; reused checkpoints excluded; shared work and resource/model loading attributed to first requesting feature"
+            }
+          }
+        },
+        "peak_memory_bytes": 234471424
+      },
+      "csv_equivalence": {
+        "files": [
+          "corpus_features.csv",
+          "sentences.csv",
+          "field_dictionary.csv",
+          "corpus_status.csv",
+          "word_frequency.csv",
+          "feature_status.csv",
+          "features.csv",
+          "tokens.csv",
+          "corpus/rank_frequency.csv",
+          "corpus/curve_fits.csv",
+          "corpus/collocations.csv",
+          "corpus/dispersion.csv",
+          "corpus/network_nodes.csv",
+          "corpus/recurrence.csv",
+          "corpus/vocabulary_growth.csv",
+          "corpus/frequency_spectrum.csv"
+        ],
+        "count": 16,
+        "differing_files": []
+      },
+      "source_identity": {
+        "baseline": {
+          "version": "0.1.0",
+          "code_hashes": {
+            "engine/lingmetrics/runner.py": "0658a3693ab0798085a4960338a91ffe7e6cc3f237d2e65e105cd2725d6cc83d",
+            "engine/lingmetrics/models.py": "2d7601f15c8c4ca8c4cd22d067e1ef152dde218d3a8dd31c962169f451914a62",
+            "engine/lingmetrics/util.py": "b0918fada13d73924cce0efda3950a0026db938e5c3a4ac6ef56604a2f3b54d3",
+            "engine/lingmetrics/__init__.py": "0ecccf79d4d2d9a85f42465ad96d98d481585835a2ebe01ac54cad10e0379066",
+            "engine/lingmetrics/core.py": "b9f1f958d9287d954092c4b5a5ad6b464844e08eb45a0aa3c4e62c2acbec2ef1",
+            "engine/lingmetrics/fasttext_vectors.py": "5210cb2cebbe96e4553be89cfc0100179572fe6ea370dc99df1de7d6dfdb39aa",
+            "engine/lingmetrics/stats.py": "7a876e3a5b9c15f9ea0075872af1ea2422c5c7742019f7d76bd9ae3cac2c3ea8",
+            "engine/lingmetrics/syntax.py": "9f546811f1650f334ce86f319b626278ec726e65df7ff8a4b910181179d5db65",
+            "engine/lingmetrics/configured.py": "9e939d6ff51cf3359df3ac96d5b169fb485673ce37d0244cac0e37f50c47102d",
+            "engine/lingmetrics/resources.py": "607edbf9ff71ff065f6c47eb4ca6dec4ebdc80ec4bccf6fc7cfe39acebb62c3d",
+            "engine/lingmetrics/managed_r.py": "ef62a9a01e24c92f964b6e1c6ecce7e041c560fe14dbec1ad7c8da9594eb29d7",
+            "engine/lingmetrics/__main__.py": "ea1ca66d244a20bd005c3139a6a9cb2059c76a0cf408b0f25d914c660de9af73",
+            "engine/lingmetrics/corpus.py": "a8735cf0bd8b8091a9a8f1e92eb9a0501343c18677f5eecde3c554d36c607edf",
+            "engine/lingmetrics/lexicons.py": "6978960056e6bbf32fc4c44f4d8bb92c4d99476987d91830a7d4c2c95caed795",
+            "engine/lingmetrics/catalogue.py": "b2bf95a1df623f66a649cf4306126ed694a9ac38e126bec3a9a1cc2245848bf0",
+            "engine/vendor/provenance.json": "84ef32a6ce8075c78e833c409ba8db70e42e6df21226f9be79e0434161f7d760",
+            "engine/vendor/neosca/__init__.py": "559fab560d50a9a10e5578b107abbcb4b78fe73cab2bfb2f5daa99b333ee12af",
+            "engine/vendor/neosca/ns_sca/l2sca.py": "96e295161e3b149b62dafc42ff48f3c68ed9763b49d85771c75c8bea6fa9627d",
+            "engine/vendor/neosca/ns_sca/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "engine/vendor/neosca/ns_tregex/head_finder.py": "b1736ae6ff52d97a58d3a35357a5cd18b546918984b47ff04a98d246955b46f2",
+            "engine/vendor/neosca/ns_tregex/abstract_collins_head_finder.py": "fc03d47c4722858c958fd1b4d58658d3870af9b04bbed149a6071bae8c387566",
+            "engine/vendor/neosca/ns_tregex/relation.py": "b46510d7c57fdf9b00f65a7ec0c52104b7025d0d79720736308b037b6197fd47",
+            "engine/vendor/neosca/ns_tregex/tree.py": "c955e1ace920913fb929e81a994f88bb0c4cc6e5364451c1fbed5d4cd4219fbb",
+            "engine/vendor/neosca/ns_tregex/peekable.py": "297876f6c6f71e009fc61dd3bd2958a83050a0f1270e339910b84dda74792793",
+            "engine/vendor/neosca/ns_tregex/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "engine/vendor/neosca/ns_tregex/collins_head_finder.py": "b1bb9bdafe280d39bb9e41125aa0781d8d2536f2da532f09579886591cbc8cc7",
+            "engine/vendor/neosca/ns_tregex/stanford_tregex_cli.py": "a66841acc50afd04b00330a34114437ec34456a66662b90ae7ee6278e29d0c11",
+            "engine/vendor/neosca/ns_tregex/node_descriptions.py": "2f0533535e13a4abd00e2e0cc9f73d4d502c10d2a3d9ae6897cc041ff8900beb",
+            "data/external_resource_selection.csv": "8f5757e3644efa77bb6a926728368ccfebf91bd0d7625aba5b7f2392bc2b2abe",
+            "data/modeling_guidance.csv": "9c674f5c4997e20fbc14c5485f24d9cf4a692bd49ccd5f4c4d057863b338dc76",
+            "data/english_linguistic_feature_registry.csv": "0dd4541dc0108bd0253d518b00fdf28b67c53712d324df81ab8fbdae74aafd24",
+            "data/paper_measure_specifications.csv": "2322ef9ad6eabc3f52df80d6c01d2ff26d2374e2f770a6806a5017a982aa7de3",
+            "data/sources.csv": "04b206b1bb70d9c2c54c094ed02348cd8258afef4ef516a473a5f06fb4657577",
+            "native/LALHelper.cpp": "2778d40e0d5769df0626215b3ca3acf23958ffcf11038d87b3823b51e4bf3dbb",
+            "native/resource-hashes.json": "b175d9c82c5cfea04f0ce6ccd3ff8b217781406272c3b076f3882a3e40749573",
+            "native/lnre.R": "12ba06a1633b56a6379f92a09b190335d55e257bcb1d6999918a6e771418dcb3"
+          },
+          "versions": {
+            "lingmetrics": "0.1.0",
+            "python": "3.11.15",
+            "machine": "arm64",
+            "macos": "15.7.4",
+            "spacy": "3.8.14",
+            "en-core-web-sm": "3.8.0",
+            "numpy": "2.4.4",
+            "cmudict": "1.1.3"
+          }
+        },
+        "optimized": {
+          "version": "0.1.1",
+          "code_hashes": {
+            "engine/lingmetrics/runner.py": "39e4f133e6c5f68cb5fae2cb0842a43103bec9a5b0d6d8513d7fdc11ea3cd8f6",
+            "engine/lingmetrics/models.py": "6e3a0732e9e649ecbb7e9d514fffbac2d6435b9743fe79b591de23de153990d2",
+            "engine/lingmetrics/phonology.py": "8df76392c3ccf96effeab7e0989a39d3dd37c711a87135b329affa1b24179965",
+            "engine/lingmetrics/util.py": "bbca55d0719a89877cce0bcff8d1dfb96c867ab85386500b26c8fa7738778723",
+            "engine/lingmetrics/__init__.py": "0eaa75142769c8da06466795a16e584c58c736c2f6ff9035ca54579c7693c009",
+            "engine/lingmetrics/core.py": "32c9fbf45016700c4b460e5873234056c795bd18ba99b4af7c8557a46c0db107",
+            "engine/lingmetrics/fasttext_vectors.py": "5210cb2cebbe96e4553be89cfc0100179572fe6ea370dc99df1de7d6dfdb39aa",
+            "engine/lingmetrics/stats.py": "b57a83ea93e0654ed142f72880e083315dad65947266b797f29a5f84b9bb0b5e",
+            "engine/lingmetrics/syntax.py": "9f546811f1650f334ce86f319b626278ec726e65df7ff8a4b910181179d5db65",
+            "engine/lingmetrics/configured.py": "9e939d6ff51cf3359df3ac96d5b169fb485673ce37d0244cac0e37f50c47102d",
+            "engine/lingmetrics/resources.py": "607edbf9ff71ff065f6c47eb4ca6dec4ebdc80ec4bccf6fc7cfe39acebb62c3d",
+            "engine/lingmetrics/managed_r.py": "ef62a9a01e24c92f964b6e1c6ecce7e041c560fe14dbec1ad7c8da9594eb29d7",
+            "engine/lingmetrics/__main__.py": "ea1ca66d244a20bd005c3139a6a9cb2059c76a0cf408b0f25d914c660de9af73",
+            "engine/lingmetrics/corpus.py": "8983b975522edcc072afccf3bc2e9b7ae13c7fbdf8296f227512d0dd228bc875",
+            "engine/lingmetrics/lexicons.py": "53bbaa9a9e33cd2a7c5af810a47fc66338f033df902d7a2b0d295c686fee46aa",
+            "engine/lingmetrics/catalogue.py": "b2bf95a1df623f66a649cf4306126ed694a9ac38e126bec3a9a1cc2245848bf0",
+            "engine/vendor/provenance.json": "84ef32a6ce8075c78e833c409ba8db70e42e6df21226f9be79e0434161f7d760",
+            "engine/vendor/neosca/__init__.py": "559fab560d50a9a10e5578b107abbcb4b78fe73cab2bfb2f5daa99b333ee12af",
+            "engine/vendor/neosca/ns_sca/l2sca.py": "96e295161e3b149b62dafc42ff48f3c68ed9763b49d85771c75c8bea6fa9627d",
+            "engine/vendor/neosca/ns_sca/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "engine/vendor/neosca/ns_tregex/head_finder.py": "b1736ae6ff52d97a58d3a35357a5cd18b546918984b47ff04a98d246955b46f2",
+            "engine/vendor/neosca/ns_tregex/abstract_collins_head_finder.py": "fc03d47c4722858c958fd1b4d58658d3870af9b04bbed149a6071bae8c387566",
+            "engine/vendor/neosca/ns_tregex/relation.py": "b46510d7c57fdf9b00f65a7ec0c52104b7025d0d79720736308b037b6197fd47",
+            "engine/vendor/neosca/ns_tregex/tree.py": "c955e1ace920913fb929e81a994f88bb0c4cc6e5364451c1fbed5d4cd4219fbb",
+            "engine/vendor/neosca/ns_tregex/peekable.py": "297876f6c6f71e009fc61dd3bd2958a83050a0f1270e339910b84dda74792793",
+            "engine/vendor/neosca/ns_tregex/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "engine/vendor/neosca/ns_tregex/collins_head_finder.py": "b1bb9bdafe280d39bb9e41125aa0781d8d2536f2da532f09579886591cbc8cc7",
+            "engine/vendor/neosca/ns_tregex/stanford_tregex_cli.py": "a66841acc50afd04b00330a34114437ec34456a66662b90ae7ee6278e29d0c11",
+            "engine/vendor/neosca/ns_tregex/node_descriptions.py": "2f0533535e13a4abd00e2e0cc9f73d4d502c10d2a3d9ae6897cc041ff8900beb",
+            "data/external_resource_selection.csv": "8f5757e3644efa77bb6a926728368ccfebf91bd0d7625aba5b7f2392bc2b2abe",
+            "data/modeling_guidance.csv": "9c674f5c4997e20fbc14c5485f24d9cf4a692bd49ccd5f4c4d057863b338dc76",
+            "data/english_linguistic_feature_registry.csv": "0dd4541dc0108bd0253d518b00fdf28b67c53712d324df81ab8fbdae74aafd24",
+            "data/paper_measure_specifications.csv": "2322ef9ad6eabc3f52df80d6c01d2ff26d2374e2f770a6806a5017a982aa7de3",
+            "data/sources.csv": "04b206b1bb70d9c2c54c094ed02348cd8258afef4ef516a473a5f06fb4657577",
+            "native/LALHelper.cpp": "2778d40e0d5769df0626215b3ca3acf23958ffcf11038d87b3823b51e4bf3dbb",
+            "native/resource-hashes.json": "b175d9c82c5cfea04f0ce6ccd3ff8b217781406272c3b076f3882a3e40749573",
+            "native/lnre.R": "12ba06a1633b56a6379f92a09b190335d55e257bcb1d6999918a6e771418dcb3"
+          },
+          "versions": {
+            "lingmetrics": "0.1.1",
+            "python": "3.11.15",
+            "machine": "arm64",
+            "macos": "15.7.4",
+            "spacy": "3.8.14",
+            "en-core-web-sm": "3.8.0",
+            "numpy": "2.4.4",
+            "cmudict": "1.1.3"
+          }
+        }
+      }
+    }
+  },
+  "unit_tests": {
+    "passed": 34,
+    "failed": 0,
+    "skipped": 0
+  }
+}

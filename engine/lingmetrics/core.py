@@ -3,7 +3,7 @@ import math, re, itertools
 from collections import Counter, defaultdict, deque
 from functools import lru_cache
 import numpy as np
-from .stats import diversity, vocd, graph_measures
+from .stats import diversity, vocd, graph_measures, permuted_lengths
 from .util import ratio, summary, entropy, Unavailable
 
 @lru_cache(maxsize=1)
@@ -130,9 +130,7 @@ def base_measure(fid,ctx):
         for row in ctx.details['dependency_sentences']:
             k=row['n']; edges=row['edge_list']
             if k<3: continue
-            sims=[]
-            for _ in range(repetitions):
-                p=rng.permutation(k); sims.append(sum(abs(int(p[a])-int(p[b])) for a,b in edges))
+            sims=permuted_lengths(k,edges,repetitions,rng)
             sd=float(np.std(sims)); z=ratio(row['total_length']-float(np.mean(sims)),sd)
             rows.append(dict(sentence_id=row['sentence_id'],z_mc=z,baseline_mean=float(np.mean(sims)),baseline_sd=sd,mean_mc_se=sd/math.sqrt(repetitions),repetitions=repetitions))
             values.append(z)

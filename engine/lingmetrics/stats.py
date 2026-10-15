@@ -37,9 +37,13 @@ def diversity(words, window=50, threshold=.72, sample=42):
             counts[words[i]]+=1; total+=len(counts)
         out["LD07.mattr"]=total/((n-window+1)*window)
     if n>=sample:
+        probabilities={}
         def zero_prob(f):
+            if f in probabilities: return probabilities[f]
             if n-f<sample: return 0.
-            return math.exp(sum(math.log(n-f-i)-math.log(n-i) for i in range(sample)))
+            value=math.exp(sum(math.log(n-f-i)-math.log(n-i) for i in range(sample)))
+            probabilities[f]=value
+            return value
         out["LD09.hdd"]=sum(1-zero_prob(f) for f in c.values())/sample
     return out
 
@@ -54,8 +58,17 @@ def golden_min(fn, low, high, iterations=80):
 def vocd(words, seed=1729, repeats=100):
     if len(words)<50: raise Unavailable("voc-D 需要至少50词；无放回抽样35–50词", "undefined")
     rng=np.random.default_rng(seed); ns=np.arange(35,51); ds=[]
+    labels={w:i for i,w in enumerate(dict.fromkeys(words))}
+    encoded=np.array([labels[w] for w in words],dtype=np.int64)
     for run in range(3):
-        ttrs=np.array([np.mean([len({words[i] for i in rng.choice(len(words),int(n),replace=False)})/n for _ in range(repeats)]) for n in ns])
+        ttrs=[]
+        for n in ns:
+            # Preserve every RNG draw, sample size and per-sample division.
+            draws=np.stack([rng.choice(len(words),int(n),replace=False) for _ in range(repeats)])
+            samples=np.sort(encoded[draws],axis=1)
+            counts=1+np.count_nonzero(np.diff(samples,axis=1),axis=1)
+            ttrs.append(np.mean(counts/n))
+        ttrs=np.array(ttrs)
         def loss(logd):
             d=math.exp(logd); predicted=(d/ns)*(np.sqrt(1+2*ns/d)-1)
             return float(np.square(predicted-ttrs).sum())
@@ -63,6 +76,17 @@ def vocd(words, seed=1729, repeats=100):
         ds.append(d)
     if max(ds)>9e6: raise Unavailable("D拟合达到搜索边界", "undefined")
     return float(np.mean(ds))
+
+def permuted_lengths(n, edges, repetitions, rng, max_cells=262144):
+    """Exact same seeded permutations; vectorize edge sums in bounded blocks."""
+    ends=np.asarray(edges,dtype=np.int64).reshape(-1,2)
+    sizes=max(n,2*len(ends),1);batch_size=max(1,min(256,max_cells//sizes))
+    result=np.empty(repetitions,dtype=np.int64)
+    for begin in range(0,repetitions,batch_size):
+        count=min(batch_size,repetitions-begin)
+        positions=np.stack([rng.permutation(n) for _ in range(count)])
+        result[begin:begin+count]=np.abs(positions[:,ends[:,0]]-positions[:,ends[:,1]]).sum(axis=1)
+    return result
 
 def association(a,b,c,d):
     if min(a,b,c,d)<0: raise ValueError("Negative contingency count")
@@ -115,35 +139,43 @@ def grid_transitions(grid, width=2):
         for j in range(s-width+1): out["".join(entity[j:j+width])]+=1
     return {k:v/(e*(s-width+1)) for k,v in out.items()}
 
-def graph_measures(edges, nodes):
+def graph_measures(edges, nodes, requested=None):
     """Directed, binary, ordered pairs; k<2 clustering=0 is our declared convention."""
+    requested=set(requested) if requested is not None else {'NET01','NET02','NET03','NET04','NET05'}
+    paths=bool(requested & {'NET03','NET04'});centrality='NET05' in requested
     nodes=sorted(nodes); adj={x:set() for x in nodes}; incoming={x:set() for x in nodes}
     for a,b in edges:
         if a!=b: adj[a].add(b); incoming[b].add(a)
     weights=Counter(edges); bet={x:0. for x in nodes}; dist_total=0; inv_total=0.; unreachable=0
-    for source in nodes:
+    for source in nodes if paths or centrality else []:
         stack=[]; pred={v:[] for v in nodes}; sigma={v:0. for v in nodes}; sigma[source]=1.
         d={source:0}; q=deque([source])
         while q:
             v=q.popleft(); stack.append(v)
             for w in adj[v]:
                 if w not in d: d[w]=d[v]+1; q.append(w)
-                if d[w]==d[v]+1: sigma[w]+=sigma[v]; pred[w].append(v)
-        for dest in nodes:
+                if centrality and d[w]==d[v]+1: sigma[w]+=sigma[v]; pred[w].append(v)
+        for dest in nodes if paths else []:
             if dest==source: continue
             if dest not in d: unreachable+=1
             else: dist_total+=d[dest]; inv_total+=1/d[dest]
         delta={v:0. for v in nodes}
-        for w in reversed(stack):
+        for w in reversed(stack) if centrality else []:
             for v in pred[w]: delta[v]+=sigma[v]/sigma[w]*(1+delta[w])
             if w!=source: bet[w]+=delta[w]
     rows=[]
     for v in nodes:
-        ns=adj[v]; k=len(ns); between=sum(b in ns for a in ns for b in adj[a])
-        rows.append(dict(word=v,in_degree=len(incoming[v]),out_degree=k,
+        ns=adj[v]; k=len(ns)
+        row=dict(word=v,in_degree=len(incoming[v]),out_degree=k,
                          in_strength=sum(weights[(a,v)] for a in incoming[v]),
-                         out_strength=sum(weights[(v,b)] for b in ns),
-                         clustering=between/(k*(k-1)) if k>=2 else 0.,betweenness=bet[v]))
+                         out_strength=sum(weights[(v,b)] for b in ns))
+        if 'NET02' in requested:
+            between=sum(b in ns for a in ns for b in adj[a])
+            row['clustering']=between/(k*(k-1)) if k>=2 else 0.
+        if centrality:row['betweenness']=bet[v]
+        rows.append(row)
     denom=len(nodes)*(len(nodes)-1)
-    return rows,{"NET03.mean_geodesic_directed_all_pairs":ratio(dist_total,denom) if not unreachable else None,
-                 "NET03.unreachable_pairs":unreachable,"NET04.global_efficiency":ratio(inv_total,denom)}
+    values={}
+    if 'NET03' in requested:values.update({"NET03.mean_geodesic_directed_all_pairs":ratio(dist_total,denom) if not unreachable else None,"NET03.unreachable_pairs":unreachable})
+    if 'NET04' in requested:values['NET04.global_efficiency']=ratio(inv_total,denom)
+    return rows,values
