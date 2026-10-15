@@ -7,6 +7,7 @@ struct FitTable:Identifiable {
 
 struct FittingView:View {
     @EnvironmentObject var model:AppModel
+    @State private var showReport=false
     let showResources:()->Void
     let modelNames:[(String,String,String)]=[
         ("linear","线性关系","relation"),("power","幂函数（原尺度）","relation"),("power_log","幂函数（对数回归）","relation"),("exponential","指数关系","relation"),
@@ -81,12 +82,20 @@ struct FittingView:View {
                     if model.busy {Button("取消并保留结果"){model.stop()}}
                 }
                 if !model.fitCompletedOutput.isEmpty {
-                    HStack {Button("查看图形与报告"){model.reveal(model.fitCompletedOutput+"/report.html")};Button("打开结果目录"){model.reveal(model.fitCompletedOutput)}}
+                    HStack {Button("查看图形与报告"){showReport=true};Button("打开结果目录"){model.reveal(model.fitCompletedOutput)}}
                 }
                 if !model.error.isEmpty {Text(model.error).foregroundColor(.red).textSelection(.enabled)}
-                ScrollView {Text(model.fitSummary.isEmpty ? model.log.suffix(12).joined(separator:"\n") : model.fitSummary).font(.system(.callout,design:.monospaced)).frame(maxWidth:.infinity,alignment:.leading).textSelection(.enabled)}.frame(maxWidth:.infinity,maxHeight:.infinity).padding(12).background(Color(NSColor.textBackgroundColor)).cornerRadius(8)
+                ScrollView {Text(model.fitSummary.isEmpty ? (model.busy ? model.log.suffix(12).joined(separator:"\n") : "选择数据与模型，然后开始拟合。") : model.fitSummary).font(.system(.callout,design:.monospaced)).frame(maxWidth:.infinity,alignment:.leading).textSelection(.enabled)}.frame(maxWidth:.infinity,maxHeight:.infinity).padding(12).background(Color(NSColor.textBackgroundColor)).cornerRadius(8)
                 Text("拟合参数和相关关系不自动证明语言规律或因果关系。累计增长点、同文档中的词句可能相互依赖；当前不自动处理这些抽样依赖。").font(.caption).foregroundColor(.secondary)
             }.frame(maxWidth:.infinity,maxHeight:.infinity,alignment:.topLeading)
         }.padding(24)
+        .onChange(of:model.fitSettingsID) {_ in model.invalidateFitResult()}
+        .sheet(isPresented:$showReport) {
+            VStack(spacing:0) {
+                HStack {Text("拟合图形与报告").font(.headline);Spacer();Button("关闭"){showReport=false}.keyboardShortcut(.cancelAction)}.padding(16)
+                Divider()
+                ReportPreview(path:model.fitCompletedOutput+"/report.html")
+            }.frame(width:920,height:620)
+        }
     }
 }

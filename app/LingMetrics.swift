@@ -220,6 +220,13 @@ final class AppModel: ObservableObject {
         if panel.runModal() == .OK,let url=panel.url {fitOutput=url.appendingPathComponent("LingMetrics-fit-"+UUID().uuidString.prefix(8)).path}
     }
     func selectFitTable(_ id:String) {if !id.isEmpty {command(["fit-inspect",fitSource,id])}}
+    var fitSettingsID:String {
+        ([fitSource,fitTable,fitKind,fitX,fitY,fitWeight,fitGroup,fitMinX,fitMaxX,fitMinY,fitMaxY,String(fitSpectrum),String(fitPositiveOnly)]+fitModels.sorted()).joined(separator:"\u{1f}")
+    }
+    func invalidateFitResult() {
+        fitCompletedOutput="";fitSummary="";progress=0
+        if !busy {error="";status="拟合设置已更新，可重新拟合"}
+    }
     func startFit() {
         guard !fitSource.isEmpty,!fitOutput.isEmpty else {error="请选择拟合数据和输出位置。";return}
         do {
@@ -292,7 +299,7 @@ struct ContentView: View {
             Divider()
             if tab==0 {extraction} else if tab==1 {FittingView(showResources:{tab=3})} else if tab==2 {metrics} else if tab==3 {resources} else {history}
             Divider()
-            HStack {Text(model.status).font(.caption);Spacer();if model.busy {ProgressView().controlSize(.small)};Text("0.2.0 · Apple Silicon").font(.caption).foregroundColor(.secondary)}.padding(12)
+            HStack {Text(model.status).font(.caption);Spacer();if model.busy {ProgressView().controlSize(.small)};Text("\(Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "开发版") · Apple Silicon").font(.caption).foregroundColor(.secondary)}.padding(12)
         }.frame(minWidth:1000,minHeight:700)
         .alert("资源下载",isPresented:$showDownload,presenting:download) {r in
             Button("下载") {model.command(["install",r.id])};Button("取消",role:.cancel) {}

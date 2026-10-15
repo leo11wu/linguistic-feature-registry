@@ -46,13 +46,13 @@
     },
     {
       "path": "CHANGELOG.md",
-      "bytes": 2816,
-      "sha256": "93442558421f643d3ee2e33f273a0e06f563024ea6552a807f954da4eb6d2df7"
+      "bytes": 3236,
+      "sha256": "9a02b02e09c4e2e3a9ffc5eb798bb6f5fe8702da30566fc8f0f47ba4a2dd3b0a"
     },
     {
       "path": "README.md",
-      "bytes": 6713,
-      "sha256": "576d126ce7026d3fb383aa72beca5ebf7fdd375a8d677253984e9ecf7f9668f7"
+      "bytes": 6861,
+      "sha256": "d749eee021e1deb6c7be431b7f43e93e0eaa8b754663d7e99e4c114d08cc61d0"
     },
     {
       "path": "data/english_linguistic_feature_registry.csv",

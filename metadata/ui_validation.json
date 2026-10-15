@@ -1,0 +1,48 @@
+{
+  "application_version": "0.2.1",
+  "checked_at": "2026-10-15T12:59:09.539034+08:00",
+  "prior_version_ui": {
+    "version": "0.2.0",
+    "sample_documents": 2,
+    "extraction_status_counts": {
+      "computed": 120,
+      "undefined": 2
+    },
+    "extraction_to_fitting": "passed by actual UI clicks",
+    "relationship_results": 6,
+    "word_length_distribution_results": 4,
+    "measurement_files_unchanged": 22,
+    "observed_issues": [
+      "HTML report button did not display a report on this Mac",
+      "Changing observation table retained previous results"
+    ]
+  },
+  "fixes": {
+    "report": "System WebKit offline report preview inside the application; JavaScript disabled; file access confined to report directory",
+    "stale_results": "Invalidate displayed results and progress on data/model/variable/filter changes; saved files retained",
+    "version_label": "Read registered bundle version"
+  },
+  "fixed_version_checks": {
+    "native_compile": "passed",
+    "app_version_visible": "0.2.1",
+    "sample_loaded": "passed",
+    "catalogue_search": "passed",
+    "new_crash_reports": false,
+    "signature": "deep strict passed",
+    "archive_integrity": "passed",
+    "python_tests": {
+      "total": 46,
+      "passed": 42,
+      "skipped": 4,
+      "failures": 0,
+      "errors": 0,
+      "success": true
+    }
+  },
+  "remaining": {
+    "report_preview_actual_display": "awaiting manual confirmation",
+    "configuration_change_ui_retest": "not completed",
+    "reason": "Native computer-control connection closed during retest; reconnect and session reset did not restore it"
+  },
+  "scope": "Software/UI verification only; does not validate a linguistic law or target-corpus measurement validity"
+}
