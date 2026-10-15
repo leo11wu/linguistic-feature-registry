@@ -16,6 +16,17 @@ An English-first registry of linguistic measures for quantitative linguistics, d
 
 177 条目录与 44 项操作化不能直接相加为独立指标数。目录条目数也不代表独立构念数或软件输出列数。
 
+## LingMetrics Mac 应用
+
+仓库现在包含 LingMetrics 0.1.0 组内测试应用：原生界面、自带基础环境、TXT/CSV 输入、进度与断点续算，以及可追溯的研究资料导出。适用于 Apple Silicon、macOS 13 及以上。
+
+全库177个条目均有入口，默认常用组合61个条目。模型与参照资源按需准备；3个目录条目及部分操作化细节保留方法待核状态。具体覆盖以[执行清单](metadata/execution_manifest.json)和每次运行状态为准。
+
+- [使用手册](docs/extractor.md)与[资源格式](docs/resources.md)。
+- [验证记录](docs/validation.md)：区分公式测试、软件试跑、性能检查和目标语料效度。
+- 源码构建：`python3 scripts/build_macos.py`；组员直接使用打包应用，无需Python。
+- 自动构建的安装包可从本仓库 GitHub Actions 的 `LingMetrics-arm64` 制品下载；本地构建在 `dist/`。
+
 ## 下载与浏览
 
 - [完整 Excel 工作簿](downloads/english_linguistic_feature_registry_20261014.xlsx)：五个工作表，包含筛选按钮及冻结表头。
@@ -42,9 +53,9 @@ CSV 使用 UTF-8 BOM 和带引号字段。字段内可能包含换行，应使�
 
 ## 范围与状态
 
-This snapshot is a research inventory and measurement guide. It does not yet provide a validated feature-extraction pipeline or empirical model-fitting results.
+This research snapshot is an inventory and measurement guide. The accompanying Mac extractor has software and formula checks; target-corpus validity and empirical modeling claims require separate evaluation.
 
-本项目已核对来源和部分方法段，并区分全文、摘要、元数据及工具文档等证据范围。提取器、常模文件与模型尚未在目标语料上完成实测。已验证的是目录关系、记录数量、文件一致性和校验规则；这些检查不能替代语言指标效度验证。
+本项目已核对来源和部分方法段，并区分全文、摘要、元数据及工具文档等证据范围。应用的公式、文件流程和部分真实模型已另行验证；常模和指标在目标研究语料上的效度仍需校准。目录一致性和软件试跑均不能替代语言指标效度验证。
 
 书面英语为主；尚未全面覆盖真实语音韵律、会话互动、多模态和需要人工判断的语用功能。跨语言说明是迁移边界，不能据此认定其他语言已获验证。
 

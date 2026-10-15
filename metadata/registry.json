@@ -41,18 +41,18 @@
     },
     {
       "path": ".gitignore",
-      "bytes": 107,
-      "sha256": "f20802cec1ee1eb42c29a7c6e561a62bd7d0105d0ce0668171ca637c66b6d80c"
+      "bytes": 139,
+      "sha256": "357abfe4e1a759e9bc2bccbe75a7f9a4f9e826ee1326ee427b1a7e43030ac569"
     },
     {
       "path": "CHANGELOG.md",
-      "bytes": 590,
-      "sha256": "183e8b5ea3b25c628a8a3153f9b6fabee42a9c121af5ce3844b6549e36dde8fe"
+      "bytes": 1208,
+      "sha256": "28bf5c50eda2b3607cd94b08c10aa52bcb503e143b6ec7422e3fd031b72292d9"
     },
     {
       "path": "README.md",
-      "bytes": 5271,
-      "sha256": "3519957cc196debdc85208504fe381737b52d3aff78c0046b343828cbb1206db"
+      "bytes": 6246,
+      "sha256": "88ef3c9e1f4b97e47bbe27aeee5f1be25acf28f0d73f3e9d57db9a14526d0a3d"
     },
     {
       "path": "data/english_linguistic_feature_registry.csv",
@@ -106,8 +106,8 @@
     },
     {
       "path": "scripts/validate_registry.py",
-      "bytes": 7328,
-      "sha256": "bc7c33722ba433293f98f7d9f34aaf69e3b2f77f66e12e2b37ff2e99e76d9cf4"
+      "bytes": 7367,
+      "sha256": "a4ed8dd77dc10fe4babb6e5421cc6fc76f759d4818f45251e84043491d63cf7a"
     }
   ]
 }

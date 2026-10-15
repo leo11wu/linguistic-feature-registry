@@ -10,3 +10,7 @@ node_modules/
 outputs/
 models/
 cache/
+.build/
+dist/
+*.sqlite3
+*.spacy

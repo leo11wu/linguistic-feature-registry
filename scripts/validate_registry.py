@@ -93,7 +93,7 @@ def workbook_values(path):
 
 
 def validate_markdown_links():
-    for path in ROOT.rglob('*.md'):
+    for path in list(ROOT.glob('*.md'))+list((ROOT/'docs').rglob('*.md')):
         text = path.read_text(encoding='utf-8')
         for target in re.findall(r'\[[^\]]*\]\(([^\s)]+)\)', text):
             if target.startswith(('https://', 'http://', 'mailto:', '#')):

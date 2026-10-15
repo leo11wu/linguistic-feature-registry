@@ -1,0 +1,43 @@
+{
+  "project": "tanloong/neosca",
+  "source": "https://github.com/tanloong/neosca",
+  "archive_sha256": "7f121729f4a392e59ad0a3ff6028fed7b0a1f974cf1fd1d84431a67da7c5ffaa",
+  "files": [
+    {
+      "path": "neosca/ns_tregex/head_finder.py",
+      "sha256": "b1736ae6ff52d97a58d3a35357a5cd18b546918984b47ff04a98d246955b46f2"
+    },
+    {
+      "path": "neosca/ns_tregex/abstract_collins_head_finder.py",
+      "sha256": "fc03d47c4722858c958fd1b4d58658d3870af9b04bbed149a6071bae8c387566"
+    },
+    {
+      "path": "neosca/ns_tregex/relation.py",
+      "sha256": "b46510d7c57fdf9b00f65a7ec0c52104b7025d0d79720736308b037b6197fd47"
+    },
+    {
+      "path": "neosca/ns_tregex/tree.py",
+      "sha256": "c955e1ace920913fb929e81a994f88bb0c4cc6e5364451c1fbed5d4cd4219fbb"
+    },
+    {
+      "path": "neosca/ns_tregex/peekable.py",
+      "sha256": "297876f6c6f71e009fc61dd3bd2958a83050a0f1270e339910b84dda74792793"
+    },
+    {
+      "path": "neosca/ns_tregex/collins_head_finder.py",
+      "sha256": "b1bb9bdafe280d39bb9e41125aa0781d8d2536f2da532f09579886591cbc8cc7"
+    },
+    {
+      "path": "neosca/ns_tregex/stanford_tregex_cli.py",
+      "sha256": "a66841acc50afd04b00330a34114437ec34456a66662b90ae7ee6278e29d0c11"
+    },
+    {
+      "path": "neosca/ns_tregex/node_descriptions.py",
+      "sha256": "2f0533535e13a4abd00e2e0cc9f73d4d502c10d2a3d9ae6897cc041ff8900beb"
+    },
+    {
+      "path": "neosca/ns_sca/l2sca.py",
+      "sha256": "96e295161e3b149b62dafc42ff48f3c68ed9763b49d85771c75c8bea6fa9627d"
+    }
+  ]
+}

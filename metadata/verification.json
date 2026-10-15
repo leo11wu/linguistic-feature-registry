@@ -1,0 +1,52 @@
+{
+  "date": "2026-10-14",
+  "platform": "macOS 15.7.4 arm64",
+  "application_version": "0.1.0",
+  "unit_tests": {
+    "passed": 24,
+    "failed": 0
+  },
+  "exact_optimizer_exhaustive_cases": 20,
+  "real_model_smoke": [
+    "original-PTB/Stanza",
+    "all-mpnet-base-v2",
+    "Stanza-coref",
+    "Pythia-410m-deduped-step143000",
+    "BERT-base-uncased-PLL"
+  ],
+  "fasttext_smoke": "synthetic 300-dimensional model and OOV construction; pretrained cc.en.300.bin not downloaded",
+  "lnre_smoke": "isolated ARM R 4.5.3 + zipfR 0.6-70 FZM fit",
+  "gui_smoke": {
+    "documents": 2,
+    "preset_entries": 61,
+    "completed": true,
+    "files_exported": true
+  },
+  "unprepared_full_catalogue": {
+    "entries": 177,
+    "unexpected_errors": 0,
+    "missing_resources_reported": true
+  },
+  "benchmark": {
+    "documents": 1000,
+    "words_per_document": 1000,
+    "synthetic_repeated_structure": true,
+    "preset_entries": 61,
+    "elapsed_seconds": 638.1541880411096,
+    "peak_memory_bytes": 305872896,
+    "feature_matrix_equal_after_cache_optimization": true
+  },
+  "build": {
+    "version": "0.1.0",
+    "target": "arm64-macos13+",
+    "signing": "ad-hoc",
+    "notarized": false,
+    "archive_bytes": 90553457,
+    "expanded_bytes": 208505156,
+    "sha256": "aa4172b97c89df40784402e0fa7d2e8e0d4cfea8e8ece886c3ffe4a9ae039761",
+    "budget_archive_pass": true,
+    "budget_expanded_pass": true
+  },
+  "target_corpus_validity": "not evaluated",
+  "other_group_machines": "not yet tested"
+}
