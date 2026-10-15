@@ -20,14 +20,15 @@ An English-first registry of linguistic measures for quantitative linguistics, d
 
 <img src="app/Assets/AppIcon.png" alt="LingMetrics 应用图标" width="96">
 
-仓库现在包含 LingMetrics 0.2.1 组内测试应用：原生界面、自带基础环境，分别提供文本提取与数据拟合。提取保留词、句、文档与语料层观测表；拟合复用这些表或外部CSV，无须重跑文本解析。图形报告在应用内预览。适用于 Apple Silicon、macOS 13 及以上。
+仓库现在包含 LingMetrics 0.2.2 组内测试应用：原生界面、自带基础环境，分别提供文本提取与数据拟合。提取保留词、句、文档与语料层观测表；大型明细无损压缩，拟合可直接复用，无须重跑文本解析。全句对指标精确汇总，逐对明细单独选择，成功后默认清理临时缓存。图形报告在应用内预览。适用于 Apple Silicon、macOS 13 及以上。
 
 全库177个条目保留目录入口，其中8项规律、分布及关系分析移至拟合，其余169项为提取项；默认常用组合61项。模型与参照资源按需准备；3个目录条目及部分操作化细节保留方法待核状态。具体覆盖以[执行清单](metadata/execution_manifest.json)和每次运行状态为准。
 
 - [使用手册](docs/extractor.md)与[资源格式](docs/resources.md)。
 - [提取与拟合工作流](docs/fitting.md)：观测单位、模型选择、冻结参照、配对和构图。
 - [验证记录](docs/validation.md)：区分公式测试、软件试跑、性能检查和目标语料效度。
-- [0.2.1 界面复测记录](metadata/ui_validation.json)：记录实际点击、修复范围与尚待确认项。
+- [界面复测记录](metadata/ui_validation.json)：记录实际点击与验证范围。
+- [0.2.2 大文本复测](metadata/lightweight_validation.json)：输出体积、耗时与新旧数值核对，不含原语料或提取数据。
 - [速度优化与复测](docs/performance.md)：保留公式、抽样及上下文口径，并记录逐项计时。
 - 源码构建：`python3 scripts/build_macos.py`；组员直接使用打包应用，无需Python。
 - 自动构建的安装包可从本仓库 GitHub Actions 的 `LingMetrics-arm64` 制品下载；本地构建在 `dist/`。

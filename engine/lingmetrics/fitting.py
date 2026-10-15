@@ -5,6 +5,9 @@ import csv, html, json, math, signal, time, warnings, subprocess
 import numpy as np
 from . import __version__, resources
 from .util import atomic_json, clean, csv_write, emit, sha, Unavailable
+from .fit_diagnostics import (regression_diagnostics, parameter_uncertainty, information_criteria,
+                              discrete_diagnostics, discrete_uncertainty, compare_results, format_p)
+from .fit_report import report_page, summary as result_summary
 
 MODELS={
     'linear':('线性关系','relation'), 'power':('幂函数 y=a·x^b','relation'),
@@ -27,7 +30,7 @@ cancelled=False
 def table_path(source,table=''):
     source=Path(source).expanduser().resolve()
     if source.is_file():
-        if source.suffix.lower()!='.csv':raise ValueError('请选择提取结果目录或CSV数据表')
+        if not source.name.lower().endswith(('.csv','.csv.gz')):raise ValueError('请选择提取结果目录或CSV数据表（支持.csv.gz）')
         return source,{}
     manifest=json.loads((source/'analysis_tables.json').read_text(encoding='utf-8-sig'))
     tables=manifest.get('tables',[])
@@ -41,7 +44,8 @@ def table_path(source,table=''):
 
 
 def read_table(path):
-    with Path(path).open(encoding='utf-8-sig',newline='') as f:
+    from .util import text_open
+    with text_open(path,encoding='utf-8-sig',newline='') as f:
         reader=csv.DictReader(f);columns=reader.fieldnames or []
         if not columns or len(columns)!=len(set(columns)):raise ValueError('CSV列名为空或重复')
         rows=[]
@@ -54,7 +58,8 @@ def read_table(path):
 def inspect(source,table=''):
     path,entry=table_path(source,table)
     preview=[];count=0;numeric=set();seen=set()
-    with path.open(encoding='utf-8-sig',newline='') as f:
+    from .util import text_open
+    with text_open(path,encoding='utf-8-sig',newline='') as f:
         reader=csv.DictReader(f);columns=reader.fieldnames or []
         if not columns or len(columns)!=len(set(columns)):raise ValueError('CSV列名为空或重复')
         for row in reader:
@@ -81,32 +86,60 @@ def finite(value):
 
 
 def relation(model,x,y,w):
+    x,y,w=(np.asarray(a,dtype=float) for a in (x,y,w))
     n=len(x)
+    if not (len(y)==len(w)==n) or not all(np.all(np.isfinite(a)) for a in (x,y,w)) or np.any(w<=0):
+        raise ValueError('关系分析需要等长的有限数值和正权重')
     if n<3 or np.unique(x).size<2:raise ValueError('关系分析至少需要3行和2个不同的X值')
     if model=='power_log':
         if np.any(x<=0) or np.any(y<=0):raise ValueError('对数空间回归要求X和Y均大于0；请显式筛选范围')
         base,log_prediction=relation('linear',np.log(x),np.log(y),w)
         a=math.exp(base['parameters']['intercept']);b=base['parameters']['slope'];predicted=np.exp(log_prediction)
-        rss=float(np.sum(w*(y-predicted)**2));denom=float(np.sum(w*(y-np.average(y,weights=w))**2))
-        return dict(parameters={'a':a,'b':b},method='weighted_log_log_least_squares',
-                    log_space_covariance=base['covariance'],log_space_rmse=base['rmse'],
-                    rmse=math.sqrt(rss/float(w.sum())),r_squared=1-rss/denom if denom else None,
-                    inference='拟合目标是对数空间误差；原尺度RMSE另报。不等同于原尺度非线性最小二乘。'),predicted
+        covariance=np.diag([a,1.])@np.asarray(base['covariance'])@np.diag([a,1.])
+        info=dict(parameters={'a':a,'b':b},method='weighted_log_log_least_squares',
+                  log_space_covariance=base['covariance'],
+                  inference='拟合目标是ln(Y)空间误差；原尺度指标另报。反变换不是算术条件均值。')
+        info.update(regression_diagnostics(y,predicted,w,2,log_response=True))
+        info.update(parameter_uncertainty(['a','b'],[a,b],covariance,df=n-2))
+        if base.get('confidence_intervals'):
+            low,high=base['confidence_intervals']['intercept']
+            info['confidence_intervals']={'a':clean([float(np.exp(low)),float(np.exp(high))]),
+                                          'b':base['confidence_intervals']['slope']}
+            info['confidence_interval_method']='Student_t_in_ln_response; a_interval_back_transformed'
+        if base.get('parameter_tests'):
+            info['parameter_tests']={'b':base['parameter_tests']['slope']}
+        return info,predicted
     if model=='linear':
         design=np.column_stack([np.ones(n),x]);root=np.sqrt(w)
         params,_,rank,_=np.linalg.lstsq(design*root[:,None],y*root,rcond=None)
         if rank!=2:raise ValueError('线性模型不可识别')
         predicted=design@params;cov=np.linalg.inv((design*root[:,None]).T@(design*root[:,None]))*np.sum(w*(y-predicted)**2)/(n-2)
-        names=['intercept','slope'];method='weighted_least_squares' if not np.all(w==1) else 'least_squares'
+        names=['intercept','slope'];method='weighted_least_squares' if not np.all(w==1) else 'least_squares';bounds=None
+        convergence=dict(converged=True,solver='numpy.linalg.lstsq',design_rank=int(rank))
     else:
         try:from scipy import optimize,stats
         except ImportError:raise Unavailable('请在资源页准备“拟合计算工具：SciPy”','resource_required')
         if model in {'pearson','spearman'}:
             if not np.all(w==1):raise ValueError('相关分析不接受权重列；请先明确观测单位')
             if np.std(y)==0:raise ValueError('相关分析的Y没有变异')
-            r,p=stats.pearsonr(x,y) if model=='pearson' else stats.spearmanr(x,y)
-            return dict(parameters={'r':float(r)},p_value=float(p),method=model,
-                        inference='p值基于相应抽样假设；不自动处理词型、文本或作者间的依赖'),None
+            result=stats.pearsonr(x,y) if model=='pearson' else stats.spearmanr(x,y)
+            r,p=map(float,result)
+            if not math.isfinite(r) or not math.isfinite(p):raise ValueError('相关系数或p值无定义；请检查常数或近常数输入')
+            info=dict(parameters={'r':r},sample_n=n,p_value=p,p_value_display=format_p(p),method=model,
+                      alternative='two-sided',unique_x=int(np.unique(x).size),unique_y=int(np.unique(y).size),
+                      tied_x_rows=int(n-np.unique(x).size),tied_y_rows=int(n-np.unique(y).size),
+                      inference='p值基于独立抽样假设；不自动处理词型、文本或作者间依赖。相关不等于因果。')
+            if model=='pearson':
+                interval=result.confidence_interval(confidence_level=.95)
+                info.update(confidence_level=.95,confidence_intervals={'r':[float(interval.low),float(interval.high)]},
+                            confidence_interval_method='Fisher_z; independent bivariate-normal sampling approximation',
+                            p_value_method='SciPy Pearson exact beta null distribution under independent normal samples')
+                if n<=3:info['confidence_interval_note']='n≤3，Fisher区间无信息，返回[-1,1]'
+            else:
+                info.update(confidence_intervals=None,confidence_interval_note='Spearman区间需另行指定重抽样方案，未用Pearson的Fisher区间冒充',
+                            p_value_method='SciPy Spearman large-sample t approximation')
+                if n<=500:info['warnings']=['Spearman当前p值为大样本近似；n≤500，宜另行进行保留抽样结构的置换检验。']
+            return info,None
         if np.any(x<=0) and model in {'power','zipf','zipf_mandelbrot','heaps','menzerath_altmann'}:
             raise ValueError('此模型要求X全部大于0；请显式设置筛选范围')
         if np.any(y<=0) and model in {'power','exponential','zipf','zipf_mandelbrot','heaps','menzerath_altmann'}:
@@ -123,43 +156,73 @@ def relation(model,x,y,w):
         if n<=len(p0) or np.unique(x).size<=len(p0):raise ValueError('不同X值及观测行数须多于模型参数数目')
         with warnings.catch_warnings(record=True) as caught:
             warnings.simplefilter('always')
-            params,cov=optimize.curve_fit(func,x,y,p0=p0,bounds=bounds,sigma=1/np.sqrt(w),absolute_sigma=False,maxfev=12000)
+            params,cov,solver_info,message,code=optimize.curve_fit(func,x,y,p0=p0,bounds=bounds,sigma=1/np.sqrt(w),absolute_sigma=False,maxfev=12000,full_output=True)
         predicted=func(x,*params);method='nonlinear_least_squares'
+        convergence=dict(converged=code in (1,2,3,4),solver='scipy.optimize.curve_fit/trf',
+                         function_evaluations=int(solver_info['nfev']),convergence_code=int(code),convergence_message=message)
     if not np.all(np.isfinite(predicted)):raise ValueError('预测值非有限数')
-    residual=y-predicted;rss=float(np.sum(w*residual**2));denom=float(np.sum(w*(y-np.average(y,weights=w))**2))
-    se=np.sqrt(np.maximum(0,np.diag(cov)))
-    info=dict(parameters=dict(zip(names,map(float,params))),standard_errors=clean(dict(zip(names,map(float,se)))),
-              covariance=clean(cov.tolist()),rmse=math.sqrt(rss/float(w.sum())),r_squared=1-rss/denom if denom else None,
+    info=dict(parameters=dict(zip(names,map(float,params))),covariance=clean(cov.tolist()),
               method=method,inference='描述性拟合；协方差和标准误依赖误差假设，不构成规律成立的证据')
+    info.update(regression_diagnostics(y,predicted,w,len(params)))
+    info.update(parameter_uncertainty(names,params,cov,df=n-len(params),bounds=bounds,nonlinear=model!='linear'))
+    if model!='linear':info.pop('parameter_tests',None)
+    info.update(convergence)
     if model not in {'linear'} and caught:info['warnings']=[str(warning.message) for warning in caught]
     return info,predicted
 
 
 def distribution(model,values,counts):
+    values,counts=(np.asarray(a,dtype=float) for a in (values,counts))
+    if len(values)!=len(counts) or not len(values) or not all(np.all(np.isfinite(a)) for a in (values,counts)) or np.any(counts<=0):
+        raise ValueError('分布分析需要等长的有限观测值和正整数频数')
     if np.any(values<0) or np.any(values!=np.floor(values)):raise ValueError('离散分布需要非负整数观测值')
     if np.any(counts!=np.floor(counts)):raise ValueError('频数列须为正整数；不能用比例代替频数')
+    # Public callers may pass repeated or unsorted values; preserve totals at the same observation grain.
+    unique,inverse=np.unique(values,return_inverse=True)
+    if len(unique)!=len(values):
+        raise_if_lnre=model.startswith('lnre_')
+        if raise_if_lnre:raise ValueError('LNRE词频谱的频次不能重复；请先合计词型数')
     total=float(counts.sum());mean=float(np.average(values,weights=counts))
     if total<3:raise ValueError('至少需要3个观测值（按频数展开后的数量）')
     if model.startswith('lnre_'):
         if np.any(values<1):raise ValueError('LNRE词频谱需要正整数频次')
         from .managed_r import fit as lnre
         result=lnre([dict(frequency=int(v),types=int(c)) for v,c in zip(values,counts)],model[5:])
-        return dict(parameters=result['parameters'],method='zipfR_'+model[5:],inference='词频谱模型参数；未自动执行外推检验或重抽样'),None
+        info=dict(parameters=result['parameters'],method='zipfR_'+model[5:],sample_n=int(np.sum(values*counts)),
+                  vocabulary_types=int(total),parameter_count=len(result['parameters']),
+                  inference='LNRE使用词频谱的多元协方差拟合优度；不是把词型频谱当成独立词次的Pearson检验。未自动执行外推验证或重抽样。',
+                  information_criteria_note='zipfR默认按词频谱误差优化，未提供相容的最大化完整似然，不报告AIC/BIC',
+                  parameter_uncertainty_note='zipfR接口未提供参数协方差，未自动生成标准误和区间')
+        for field in ('goodness_of_fit','expected_spectrum','estimation'):
+            if field in result:info['lnre_'+field]=result[field]
+        if result.get('expected_spectrum'):
+            spectrum={int(r['frequency']):float(r['expected_types']) for r in result['expected_spectrum']}
+            predicted=np.array([spectrum.get(int(v),np.nan) for v in values])
+            if np.all(np.isfinite(predicted)):return info,predicted
+        return info,None
     try:from scipy import optimize,stats
     except ImportError:raise Unavailable('请在资源页准备“拟合计算工具：SciPy”','resource_required')
     if model in {'zero_truncated_poisson','geometric'} and np.any(values<1):raise ValueError('此分布从1开始，不能包含零')
     if model=='poisson':
         params={'lambda':mean};logp=stats.poisson.logpmf(values,mean);k=1
         predict=lambda v:stats.poisson.pmf(v,mean)
+        cdf=lambda v:stats.poisson.cdf(v,mean);sf=lambda v:stats.poisson.sf(v,mean)
+        fitted_mean=mean;fitted_variance=mean
     elif model=='zero_truncated_poisson':
         def objective(lam):return -float(np.sum(counts*(stats.poisson.logpmf(values,lam)-math.log(-math.expm1(-lam)))))
         result=optimize.minimize_scalar(objective,bounds=(1e-8,max(2,mean*2)),method='bounded')
         if not result.success:raise ValueError('零截断泊松估计未收敛')
         lam=float(result.x);params={'lambda':lam};logp=stats.poisson.logpmf(values,lam)-math.log(-math.expm1(-lam));k=1
         predict=lambda v:stats.poisson.pmf(v,lam)/(-math.expm1(-lam))
+        norm=-math.expm1(-lam)
+        cdf=lambda v:np.where(np.asarray(v)<1,0.,np.maximum(0.,(stats.poisson.cdf(v,lam)-math.exp(-lam))/norm))
+        sf=lambda v:np.where(np.asarray(v)<1,1.,stats.poisson.sf(v,lam)/norm)
+        fitted_mean=lam/norm;fitted_variance=lam/norm-lam**2*math.exp(-lam)/norm**2
     elif model=='geometric':
         p=1/mean;params={'p':p};logp=stats.geom.logpmf(values,p);k=1
         predict=lambda v:stats.geom.pmf(v,p)
+        cdf=lambda v:stats.geom.cdf(v,p);sf=lambda v:stats.geom.sf(v,p)
+        fitted_mean=1/p;fitted_variance=(1-p)/p**2
     elif model=='negative_binomial':
         if mean<=0:raise ValueError('负二项估计需要正均值')
         def objective(logr):
@@ -169,26 +232,23 @@ def distribution(model,values,counts):
         if not result.success or abs(result.x+12)<1e-3 or abs(result.x-18)<1e-3:raise ValueError('负二项估计位于边界；当前数据不能支持稳定的离散参数估计')
         r=math.exp(float(result.x));p=r/(r+mean);params={'r':r,'p':p};logp=stats.nbinom.logpmf(values,r,p);k=2
         predict=lambda v:stats.nbinom.pmf(v,r,p)
+        cdf=lambda v:stats.nbinom.cdf(v,r,p);sf=lambda v:stats.nbinom.sf(v,r,p)
+        fitted_mean=mean;fitted_variance=mean+mean**2/r
     else:raise ValueError('未知分布')
     ll=float(np.sum(counts*logp))
     if not math.isfinite(ll):raise ValueError('所选模型赋予观测数据零概率或出现数值问题')
-    return dict(parameters=params,log_likelihood=ll,aic=2*k-2*ll,bic=k*math.log(total)-2*ll,
-                sample_n=int(total),method='frequency_weighted_maximum_likelihood',
-                inference='AIC/BIC仅比较同一组观测、同一支持及相容似然；不等于分布通过拟合优度检验'),predict(values)*total
-
-
-def plot_svg(points,title):
-    points=[p for p in points if p.get('predicted') is not None]
-    if not points:return '<p>该分析不产生预测曲线。</p>'
-    indices=np.linspace(0,len(points)-1,min(400,len(points)),dtype=int);points=[points[i] for i in indices]
-    xs=[p['x'] for p in points];ys=[p['observed'] for p in points]+[p['predicted'] for p in points]
-    xmin,xmax=min(xs),max(xs);ymin,ymax=min(ys),max(ys)
-    xspan=xmax-xmin or 1.;yspan=ymax-ymin or 1.
-    xp=lambda v:65+565*(v-xmin)/xspan
-    yp=lambda v:280-240*(v-ymin)/yspan
-    circles=''.join(f'<circle cx="{xp(p["x"]):.2f}" cy="{yp(p["observed"]):.2f}" r="2.4" fill="#718096" opacity=".6"/>' for p in points)
-    line=' '.join(f'{xp(p["x"]):.2f},{yp(p["predicted"]):.2f}' for p in sorted(points,key=lambda p:p['x']))
-    return f'<svg viewBox="0 0 680 330" role="img" aria-label="{html.escape(title,quote=True)}"><path d="M65 30V280H640" fill="none" stroke="#a0aec0"/>{circles}<polyline points="{line}" fill="none" stroke="#0e419c" stroke-width="2"/><g fill="#374151" font-size="12"><text x="65" y="305">{xmin:.4g}</text><text x="600" y="305">{xmax:.4g}</text><text x="5" y="280">{ymin:.4g}</text><text x="5" y="40">{ymax:.4g}</text></g></svg>'
+    info=dict(parameters=params,sample_n=int(total),parameter_count=k,observed_categories=int(np.unique(values).size),
+              observed_mean=mean,observed_variance=float(np.average((values-mean)**2,weights=counts)),
+              fitted_mean=float(fitted_mean),fitted_variance=float(fitted_variance),
+              comparison_basis='discrete_probability_mass',converged=True,
+              method='frequency_weighted_maximum_likelihood',
+              inference='拟合优度p值与区间依赖独立同分布假设；未处理文本内依赖。信息准则仅比较相同观测和相容似然，不表示模型通过拟合优度检验。')
+    info.update(information_criteria(ll,total,k))
+    uncertainty,boundary=discrete_uncertainty(model,values,counts,params)
+    info.update(uncertainty)
+    diagnostic_counts=np.bincount(inverse,weights=counts)
+    info.update(discrete_diagnostics(unique,diagnostic_counts,predict,cdf,sf,k,boundary=boundary))
+    return info,predict(values)*total
 
 
 def fit(job):
@@ -245,10 +305,11 @@ def fit(job):
     manifest=dict(version=__version__,workflow='fit',state='running',started_at=time.strftime('%Y-%m-%dT%H:%M:%S%z'),
                   source_sha256=config['source_sha256'],input_rows=len(rows),selected_rows=len(selected),excluded=dict(excluded),
                   row_unit=entry.get('unit','user supplied'),weight_interpretation='frequency counts' if kind=='distribution' else 'least squares inverse-variance weights (relative)',
-                  source_order=entry.get('order'),limits='No automatic independence, causal, goodness-of-fit or law-validation claim. No diachronic analysis.')
+                  source_order=entry.get('order'),statistics_schema_version=1,
+                  limits='Model-conditional goodness-of-fit and uncertainty; no automatic dependence correction, causal or law-validation claim. No diachronic analysis.')
     atomic_json(output/'fit_manifest.json',manifest)
     emit('fit_started',groups=len(grouped),models=len(models),rows=len(selected),output=str(output))
-    results=[];points=[];sections=[];done=0;total=len(grouped)*len(models)
+    results=[];points=[];done=0;total=len(grouped)*len(models);gof_rows=[];spectrum_rows=[]
     try:
         for label,observations in grouped.items():
             x=np.array([r['x'] for r in observations]);w=np.array([r['weight'] for r in observations]);y=np.array([r['y'] for r in observations]) if kind=='relation' else None
@@ -265,30 +326,52 @@ def fit(job):
                         info,predicted=distribution(model,xx,ww);actual=ww
                     else:xx=x;actual=y;info,predicted=relation(model,x,y,w)
                     row.update(status='computed',**info)
-                    if predicted is not None:
-                        current=[dict(group=label,model=model,source_row=observations[i]['source_row'] if kind=='relation' else '',x=float(a),observed=float(b),predicted=float(c),residual=float(b-c)) for i,(a,b,c) in enumerate(zip(xx,actual,predicted))]
-                        points.extend(current)
+                    row.update(x_min=float(np.min(x)),x_max=float(np.max(x)))
+                    if kind=='relation':row.update(y_min=float(np.min(y)),y_max=float(np.max(y)))
+                    if kind=='distribution' and not model.startswith('lnre_'):
+                        row['support_note']='模型按其完整定义支持计算，筛选不会自动把模型改成截断分布；词长等观测单位的允许值需与模型支持一致。'
+                        if any(job.get(key) not in (None,'') for key in ('min_x','max_x')) or job.get('positive_only'):
+                            row['selection_note']='存在观测范围筛选；当前未按筛选范围重估条件截断似然。拟合优度p值不可直接解释为筛选前总体的检验。'
+                    for i,(a,b) in enumerate(zip(xx,actual)):
+                        c=float(predicted[i]) if predicted is not None else None
+                        residual=float(b-c) if c is not None else None
+                        point=dict(group=label,model=model,source_row=observations[i]['source_row'] if kind=='relation' else '',
+                                   x=float(a),observed=float(b),predicted=c,residual=residual,
+                                   absolute_error=abs(residual) if residual is not None else None,
+                                   squared_error=residual**2 if residual is not None else None)
+                        if residual is not None and kind=='distribution' and not model.startswith('lnre_') and c>0:
+                            point.update(pearson_residual=residual/math.sqrt(c),observed_proportion=float(b/info['sample_n']),
+                                         expected_proportion=c/info['sample_n'])
+                        if residual is not None and kind=='relation':
+                            if model=='power_log':
+                                point['log_residual']=float(math.log(b)-math.log(c))
+                                scale=info.get('log_space_residual_standard_error');r=point['log_residual']
+                            else:scale=info.get('residual_standard_error');r=residual
+                            if scale:point['standardized_residual']=float(math.sqrt(w[i])*r/scale)
+                        current.append(point)
+                    points.extend(current)
+                    for bin_ in info.get('gof_bin_details',[]):gof_rows.append(dict(group=label,model=model,**bin_))
+                    for expected in info.get('lnre_expected_spectrum',[]):spectrum_rows.append(dict(group=label,model=model,**expected))
                 except (ValueError,RuntimeError,Unavailable,ArithmeticError,np.linalg.LinAlgError,OSError,subprocess.SubprocessError) as error:
                     row.update(status=getattr(error,'status','error'),reason=str(error))
                 results.append(row)
-                if len(sections)<12:
-                    title=label+' · '+MODELS[model][0]
-                    detail=html.escape(json.dumps(clean(row),ensure_ascii=False,indent=2))
-                    sections.append('<section><h2>'+html.escape(title)+'</h2>'+plot_svg(current,title)+'<pre>'+detail+'</pre></section>')
             if cancelled:break
-        csv_write(output/'fit_results.csv',results)
-        csv_write(output/'fit_predictions.csv',points,['group','model','source_row','x','observed','predicted','residual'])
-        caveat='结果用于比较所选数据与模型；参数、相关或较低AIC不自动证明语言规律或因果关系。曲线图展示至多400个点；完整观测与残差保存在CSV。增长曲线的累计点不独立。'
+        compare_results(results)
+        csv_write(output/'fit_results.csv',[{k:v for k,v in r.items() if k not in {'gof_bin_details','lnre_expected_spectrum'}} for r in results])
+        atomic_json(output/'fit_results.json',dict(statistics_schema_version=1,results=results))
+        csv_write(output/'fit_predictions.csv',points,['group','model','source_row','x','observed','predicted','residual',
+                  'absolute_error','squared_error','log_residual','standardized_residual','pearson_residual','observed_proportion','expected_proportion'])
+        csv_write(output/'fit_gof_bins.csv',gof_rows,['group','model','lower','upper','observed','expected','pearson_residual','chi_squared_contribution'])
+        if spectrum_rows:csv_write(output/'fit_expected_spectrum.csv',spectrum_rows)
         variables=f'源表：{path.name}；观测单位：{manifest["row_unit"]}；X/观测值：{xcol}；Y：{ycol if kind=="relation" else "实际/预测频数"}；权重/频数：{weight or "每行等权"}；分组：{group or "全部行"}。灰点为观测，蓝线为预测。'
-        page='<!doctype html><html lang="zh"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>LingMetrics 拟合报告</title><style>body{max-width:1000px;margin:40px auto;padding:0 24px;font:16px system-ui;color:#17233b;background:#f6f8fc}section{background:white;padding:20px;margin:20px 0;border-radius:12px}svg{max-width:680px;width:100%}pre{white-space:pre-wrap;overflow-wrap:anywhere;font-size:13px}p{line-height:1.7}</style><h1>LingMetrics 拟合报告</h1><p>'+html.escape(variables)+'</p><p>'+html.escape(caveat)+'</p><p>'+html.escape(f'输入 {len(rows)} 行；纳入 {len(selected)} 行；排除 {dict(excluded)}；图形最多展示前12个分析。')+'</p>'+''.join(sections)+'</html>'
+        page=report_page(results,points,variables,f'输入 {len(rows)} 行；纳入 {len(selected)} 行；排除 {dict(excluded)}。',xcol,ycol if kind=='relation' else '实际/预测频数')
         (output/'report.html').write_text(page,encoding='utf-8')
         statuses=Counter(r['status'] for r in results)
         state='cancelled' if cancelled else 'complete' if statuses.get('computed')==len(results) else 'partial' if statuses.get('computed') else 'failed'
         manifest.update(state=state,finished_at=time.strftime('%Y-%m-%dT%H:%M:%S%z'),status_counts=dict(statuses),
                         outputs={p.name:sha(p) for p in output.iterdir() if p.is_file() and p.name!='fit_manifest.json'})
         atomic_json(output/'fit_manifest.json',manifest)
-        summary='\n'.join(r['group']+' · '+r['model_name']+'：'+(json.dumps(clean(r.get('parameters',{})),ensure_ascii=False) if r['status']=='computed' else r.get('reason',r['status'])) for r in results[:30])
-        emit('fit_finished',state=state,output=str(output),status_counts=dict(statuses),summary=summary)
+        emit('fit_finished',state=state,output=str(output),status_counts=dict(statuses),summary=result_summary(results))
         return manifest
     except Exception as error:
         manifest.update(state='failed',error=f'{type(error).__name__}: {error}');atomic_json(output/'fit_manifest.json',manifest);raise

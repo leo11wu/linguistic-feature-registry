@@ -1,10 +1,10 @@
 from __future__ import annotations
-import csv, json, hashlib, importlib.metadata, os, platform, signal, sqlite3, sys, time, traceback, io, resource
+import csv, json, hashlib, importlib.metadata, os, platform, signal, sqlite3, sys, time, traceback, io, resource, gzip, shutil
 from contextlib import ExitStack
 from pathlib import Path
 from collections import Counter
 from . import __version__, resources, catalogue
-from .util import ROOT, CACHE, emit, atomic_json, clean, sha, csv_write, Unavailable,local_bytes
+from .util import ROOT, CACHE, emit, atomic_json, clean, sha, csv_write, Unavailable,local_bytes,read_json,compress_outputs
 from .core import Text, base_measure
 from .observations import choices, lightweight, load_reference, freeze_reference, export_observations
 
@@ -156,6 +156,9 @@ def run(job):
     if set(selected)&catalogue.FIT_ONLY:raise ValueError('以下项目已移至拟合页，提取时会保留所需观测表：'+', '.join(sorted(set(selected)&catalogue.FIT_ONLY)))
     selected=sorted(set(selected));options=dict(job.get('options',{}));options.setdefault('seed',1729)
     options.setdefault('window',50);options.setdefault('hdd_sample',42);options.setdefault('mtld_threshold',.72);options.setdefault('token_unit','wordform')
+    for key,default in [('compact_output',True),('keep_checkpoint',False),('save_pairwise_details',False)]:
+        options.setdefault(key,default)
+        if type(options[key]) is not bool:raise ValueError(key+'需要布尔值')
     for key in ['window','hdd_sample','random_permutations','network_max_nodes','taylor_window','character_ngram_order']:
         if key in options and (type(options[key]) is not int or options[key]<1):raise ValueError(key+'需要正整数')
     if type(options['seed']) is not int or options['seed']<0:raise ValueError('seed需要非负整数')
@@ -170,6 +173,11 @@ def run(job):
     if previous.exists():
         prior=json.loads(previous.read_text())
         if prior.get('signature')!=signature:raise ValueError('此输出目录属于另一输入、参数或资源版本，请选择新目录')
+        if prior.get('state')=='complete' and not job.get('retry_failed',False):
+            if not all((output/name).is_file() and sha(output/name)==digest for name,digest in prior.get('outputs',{}).items()):
+                raise ValueError('已完成结果的文件发生变化，请选择新目录重新提取')
+            emit('finished',state='complete',output=str(output),status_counts=prior.get('status_counts',{}),documents=len(documents),message='复用完整结果，无须重新计算')
+            return prior
     runmeta=dict(signature=signature,identity=identity,workflow='extract',analysis_choices=analysis_choices,state='running',started_at=time.strftime('%Y-%m-%dT%H:%M:%S%z'),offset_unit='Unicode codepoints; Apple checker ranges are UTF-16',dependency_nodes='spaCy tokens including punctuation; ROOT self-loop excluded',corpus_order='input order; TXT folder lexicographic path order',resources=resources.snapshot())
     started=time.perf_counter()
     atomic_json(previous,runmeta)
@@ -180,12 +188,12 @@ def run(job):
     emit('started',total=total,documents=len(documents),output=str(output),stages=stages)
     import spacy
     nlp=spacy.load('en_core_web_sm');nlp.max_length=max(nlp.max_length,max(map(lambda r:len(r['text']),documents))+1)
-    paths={doc['id']:checkpoint/(hashlib.sha256(doc['id'].encode()).hexdigest()+'.json') for doc in documents}
+    paths={doc['id']:checkpoint/(hashlib.sha256(doc['id'].encode()).hexdigest()+'.json.gz') for doc in documents}
     source={d['id']:d for d in documents}
     def record_iter():
         for d in documents:
             p=paths[d['id']]
-            if p.exists():yield json.loads(p.read_text())
+            if p.exists():yield read_json(p)
     try:
         for stage in stages:
             if cancelled:break
@@ -197,20 +205,29 @@ def run(job):
                 completed=database.execute('SELECT 1 FROM stages WHERE doc_id=? AND stage=?',(doc['id'],stage)).fetchone()
                 failed=False
                 if completed and job.get('retry_failed',False) and path.exists():
-                    failed=any(s['feature_id'] in fids and s['status']=='error' for s in json.loads(path.read_text())['statuses'])
+                    failed=any(s['feature_id'] in fids and s['status']=='error' for s in read_json(path)['statuses'])
                 if completed and not failed:
                     emit('progress',completed=done,total=total,document_id=doc['id'],stage=stage,message='复用已完成阶段');continue
-                rec=json.loads(path.read_text()) if path.exists() else dict(id=doc['id'],meta=doc['meta'],sha256=doc['sha256'],features={},statuses=[],details={})
+                rec=read_json(path) if path.exists() else dict(id=doc['id'],meta=doc['meta'],sha256=doc['sha256'],features={},statuses=[],details={})
                 try:
-                    bytepath=path.with_suffix('.spacy')
+                    bytepath=path.with_name(path.name.removesuffix('.json.gz')+'.spacy.gz')
                     if bytepath.exists():
                         from spacy.tokens import Doc
-                        parsed=Doc(nlp.vocab).from_bytes(bytepath.read_bytes());ctx=Text(doc['text'],lambda _:parsed,options)
+                        with gzip.open(bytepath,'rb') as f:parsed=Doc(nlp.vocab).from_bytes(f.read())
+                        ctx=Text(doc['text'],lambda _:parsed,options)
                     else:
-                        ctx=Text(doc['text'],nlp,options);bytepath.write_bytes(ctx.doc.to_bytes())
+                        ctx=Text(doc['text'],nlp,options)
+                        if len(stages)>1 or options['keep_checkpoint']:
+                            with gzip.open(bytepath,'wb',compresslevel=1) as f:f.write(ctx.doc.to_bytes())
+                    ctx.cancel_check=lambda:cancelled
+                    if options['save_pairwise_details']:
+                        ctx.pairwise_path=output/'details'/'dis03_pairs'/(path.name.removesuffix('.json.gz')+'.csv.gz')
                     rec['statuses']=[s for s in rec['statuses'] if s['feature_id'] not in fids]
                     for fid in fids:
                         if cancelled:break
+                        message='计算 '+doc['id']+' '+fid
+                        if fid=='DIS03':message+=f'（{ctx.s*(ctx.s-1)//2:,}句对，精确汇总'+('并导出逐对明细）' if options['save_pairwise_details'] else '，不展开明细）')
+                        emit('progress',completed=done-1,total=total,document_id=doc['id'],stage=stage,message=message)
                         feature_started=time.perf_counter()
                         if not ctx.n and fid not in {'LEN01','LEN02','LEN03','LEN04','LEN05','QC05'}:
                             values,state=result(fid,lambda:(_ for _ in ()).throw(Unavailable('空文本','undefined')))
@@ -246,8 +263,8 @@ def run(job):
                 group=str(r['meta'][options['corpus_group_column']]) if options['corpus_group_column'] else 'all_inputs'
                 grouped.setdefault(group,[]).append(r)
             corpora={key:Corpus(rows,options,selected_features=corpus_fids,reference=reference_data) if options['corpus_group_column'] else global_corpus for key,rows in grouped.items()}
-            atomic_json(output/'reference.json',freeze_reference(global_corpus,options,signature))
-            if reference_data is not None:atomic_json(output/'reference_applied.json',reference_data)
+            atomic_json(output/'reference.json',freeze_reference(global_corpus,options,signature),compact=True)
+            if reference_data is not None:atomic_json(output/'reference_applied.json',reference_data,compact=True)
             def corpus_calculate(corpus,fid,rec):
                 missing=[name for name in catalogue.required(fid,options) if not resources.available(name)]
                 if missing:raise Unavailable('需准备资源：'+', '.join(missing),'resource_required')
@@ -265,7 +282,7 @@ def run(job):
             for r in light if per_document else []:
                 if cancelled:break
                 group=str(r['meta'][options['corpus_group_column']]) if options['corpus_group_column'] else 'all_inputs';corpus=corpora[group]
-                p=paths[r['id']];rec=json.loads(p.read_text())
+                p=paths[r['id']];rec=read_json(p)
                 for fid in per_document:
                     if cancelled:break
                     feature_started=time.perf_counter()
@@ -301,8 +318,16 @@ def run(job):
             if recipe:fields.append(dict(column=h,feature_id=fid,method_id=recipe['method_id'],scope=recipe['scope'],definition=recipe['definition'],source_ids=recipe['source_ids'],parameters=options))
         csv_write(output/'field_dictionary.csv',fields)
         atomic_json(output/'execution_manifest.json',[recipes[f] for f in selected])
+        compressed=compress_outputs(output) if options['compact_output'] else 0
         counts.update(s['status'] for s in corpus_status)
         counts.update(s['status'] for s in pair_status)
+        if not cancelled and not options['keep_checkpoint'] and not counts['error']:
+            database.close();database=None
+            shutil.rmtree(checkpoint)
+        runmeta['storage']=dict(compact_output=options['compact_output'],compressed_files=compressed,
+                               checkpoint_retained=checkpoint.exists(),save_pairwise_details=options['save_pairwise_details'],
+                               dis03='exact all-pairs histogram summary; pair rows require explicit opt-in',
+                               pairwise_files={d['id']:'details/dis03_pairs/'+paths[d['id']].name.removesuffix('.json.gz')+'.csv.gz' for d in documents if (output/'details/dis03_pairs'/(paths[d['id']].name.removesuffix('.json.gz')+'.csv.gz')).exists()})
         phase_timings['export']=time.perf_counter()-export_started
         runmeta['timings']={'phases_seconds':phase_timings,'features':feature_timings,'scope':'current invocation; reused checkpoints excluded; shared work and resource/model loading attributed to first requesting feature'}
         runmeta.update(state='cancelled' if cancelled else 'complete',finished_at=time.strftime('%Y-%m-%dT%H:%M:%S%z'),status_counts=dict(counts),documents=len(documents),versions=versions(),outputs={str(p.relative_to(output)):sha(p) for p in output.rglob('*') if p.is_file() and '.checkpoint' not in p.parts and p.name!='run.json'})
@@ -313,5 +338,6 @@ def run(job):
         runmeta.update(state='failed',error=f'{type(error).__name__}: {error}',finished_at=time.strftime('%Y-%m-%dT%H:%M:%S%z'))
         atomic_json(previous,runmeta)
         raise
-    finally:database.close()
+    finally:
+        if database is not None:database.close()
     return runmeta

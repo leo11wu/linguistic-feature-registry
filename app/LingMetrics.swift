@@ -34,6 +34,7 @@ final class AppModel: ObservableObject {
     @Published var completedOutput=""; @Published var history: [String]=[]
     @Published var window=50; @Published var seed=1729; @Published var useLemma=false
     @Published var advancedOptions="{}"; @Published var retryFailed=false
+    @Published var keepCheckpoint=false;@Published var savePairwiseDetails=false
     @Published var semanticBackend="sbert"
     @Published var cacheSize=""
     @Published var referenceMode="batch";@Published var referencePath=""
@@ -192,6 +193,7 @@ final class AppModel: ObservableObject {
             options["reference_mode"]=referenceMode;options["reference_path"]=referencePath;options["corpus_group_column"]=corpusGroupColumn;options["partition_column"]=partitionColumn;options["pair_column"]=pairColumn
             options["network_edge"]=networkEdge;options["network_window"]=networkWindow;options["network_directed"]=networkDirected;options["network_min_count"]=networkMinCount
             options["bundle_order"]=bundleOrder;options["bundle_min_frequency"]=bundleFrequency;options["bundle_min_documents"]=bundleDocuments
+            options["keep_checkpoint"]=keepCheckpoint;options["save_pairwise_details"]=savePairwiseDetails
             let job:[String:Any]=["inputs":inputs,"output":output,"features":selected.sorted(),"text_column":textColumn,"options":options,"retry_failed":retryFailed]
             let jobs=cache.appendingPathComponent("jobs");try FileManager.default.createDirectory(at:jobs,withIntermediateDirectories:true)
             let path=jobs.appendingPathComponent(UUID().uuidString+".json");try JSONSerialization.data(withJSONObject:job,options:[.prettyPrinted,.sortedKeys]).write(to:path,options:.atomic)
@@ -211,7 +213,7 @@ final class AppModel: ObservableObject {
     }
     func chooseFitSource(folder:Bool) {
         let panel=NSOpenPanel();panel.canChooseFiles = !folder;panel.canChooseDirectories=folder;panel.prompt=folder ? "选择提取结果" : "选择CSV"
-        if !folder {panel.allowedContentTypes=[.commaSeparatedText]}
+        if !folder {panel.allowedContentTypes=[.commaSeparatedText,.gzip]}
         if panel.runModal() == .OK,let url=panel.url {useFitSource(url.path)}
     }
     func chooseFitOutput() {
@@ -333,6 +335,12 @@ struct ContentView: View {
                 Toggle("使用 lemma 计算词汇统计",isOn:$model.useLemma)
                 HStack {Text("多样性窗口");TextField("窗口",value:$model.window,formatter:NumberFormatter()).frame(width:60);Text("随机种子");TextField("种子",value:$model.seed,formatter:NumberFormatter()).frame(width:80)}
                 Toggle("重试该目录中失败的阶段",isOn:$model.retryFailed)
+                DisclosureGroup("保存选项") {
+                    Text("默认无损压缩大型明细，成功后清理临时缓存；词句记录与拟合数据仍可复用。").font(.caption).foregroundColor(.secondary)
+                    Toggle("保留临时缓存（增加磁盘占用）",isOn:$model.keepCheckpoint)
+                    Toggle("导出全部句对明细（可能很大）",isOn:$model.savePairwiseDetails)
+                    Text("句对指标始终精确计算。关闭逐对导出只影响明细保存，不改变测量值。").font(.caption).foregroundColor(.secondary)
+                }
                 Picker("语义相似度后端",selection:$model.semanticBackend) {Text("MPNet 句向量").tag("sbert");Text("fastText 词向量均值").tag("fasttext")}
                 DisclosureGroup("高级参数（JSON）") {TextEditor(text:$model.advancedOptions).font(.system(.caption,design:.monospaced)).frame(height:85);Text("参数与方法说明见使用手册。").font(.caption);Button("打开使用手册"){model.reveal(model.root.appendingPathComponent("docs/extractor.md").path)}}
                 }

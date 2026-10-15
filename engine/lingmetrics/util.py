@@ -1,5 +1,5 @@
 from __future__ import annotations
-import csv, hashlib, json, math, os, tempfile
+import csv, hashlib, json, math, os, tempfile, gzip
 import subprocess,time
 from pathlib import Path
 import numpy as np
@@ -44,7 +44,10 @@ def atomic_json(path, value, compact=False):
     path = Path(path); path.parent.mkdir(parents=True, exist_ok=True)
     fd, name = tempfile.mkstemp(dir=path.parent, prefix=".partial-")
     try:
-        with os.fdopen(fd,"w",encoding="utf-8") as f:
+        os.close(fd)
+        opener=gzip.open if path.suffix=='.gz' else open
+        extra={'compresslevel':1} if path.suffix=='.gz' else {}
+        with opener(name,'wt',encoding='utf-8',**extra) as f:
             # Compact checkpoints use the C encoder and remain bounded to one document.
             f.write(json.dumps(clean(value), ensure_ascii=False, allow_nan=False,
                                indent=None if compact else 2,
@@ -52,6 +55,40 @@ def atomic_json(path, value, compact=False):
         os.replace(name,path)
     finally:
         if os.path.exists(name): os.unlink(name)
+
+def text_open(path,mode='rt',**kwargs):
+    path=Path(path)
+    return (gzip.open if path.suffix=='.gz' else open)(path,mode,**kwargs)
+
+def read_json(path):
+    with text_open(path,encoding='utf-8-sig') as f:return json.load(f)
+
+def compress_outputs(output,threshold=1_000_000):
+    """Losslessly compress large result tables and references; keep manifests in sync."""
+    import shutil
+    output=Path(output);changed={}
+    for path in sorted(output.rglob('*')):
+        if not path.is_file() or '.checkpoint' in path.parts:continue
+        if path.suffix!='.csv' and path.name not in {'reference.json','reference_applied.json'}:continue
+        if path.stat().st_size<threshold:continue
+        destination=path.with_name(path.name+'.gz');temporary=destination.with_name(destination.name+'.partial')
+        try:
+            with path.open('rb') as source,gzip.open(temporary,'wb',compresslevel=1) as target:shutil.copyfileobj(source,target,1024*1024)
+            os.replace(temporary,destination)
+            changed[str(path.relative_to(output))]=destination
+            path.unlink()
+        finally:
+            if temporary.exists():temporary.unlink()
+    manifest=output/'analysis_tables.json'
+    if manifest.exists():
+        data=read_json(manifest)
+        for table in data['tables']:
+            if table['path'] in changed:
+                path=changed[table['path']];table.update(path=str(path.relative_to(output)),sha256=sha(path),compression='gzip')
+        data['storage']=dict(large_tables='lossless gzip',compression_threshold_bytes=threshold,
+                             pairwise_details='explicit opt-in; see run options')
+        atomic_json(manifest,data)
+    return len(changed)
 
 def emit(kind, **data):
     print(json.dumps(clean(dict(event=kind, **data)), ensure_ascii=False, allow_nan=False), flush=True)

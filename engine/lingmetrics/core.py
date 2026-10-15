@@ -2,6 +2,7 @@ from __future__ import annotations
 import math, re, itertools
 from collections import Counter, defaultdict, deque
 from functools import lru_cache
+from bisect import bisect_left
 import numpy as np
 from .stats import diversity, vocd, graph_measures, permuted_lengths
 from .util import ratio, summary, entropy, Unavailable
@@ -19,6 +20,8 @@ class Text:
         self.keys=[self.key(t) for t in self.words]; self.counts=Counter(self.keys)
         self.sentences=[s for s in self.doc.sents if any(not t.is_space for t in s)]
         self.paragraphs=[(m.start(),m.end(),m.group()) for m in re.finditer(r"\S.*?(?=\n[ \t]*\n|\Z)",text,re.S)]
+        offsets=[t.idx for t in self.words]
+        self.paragraph_bounds=[(bisect_left(offsets,a),bisect_left(offsets,b)) for a,b,_ in self.paragraphs]
         self.sentence_keys=[[self.key(t) for t in s if not t.is_punct and not t.is_space] for s in self.sentences]
         self.n=len(self.words); self.s=len(self.sentences)
         self._diversity=None; self._dependency=None; self.details={}
@@ -120,8 +123,9 @@ def base_measure(fid,ctx):
         ctx.pronunciation(); out=summary(ctx.syllables,'LEN07.syllables'); out['LEN07.coverage']=ratio(out['LEN07.syllables.valid_n'],n); return out
     if fid=='LEN08': return {'LEN08.mean_sentence_words':ratio(n,s)}
     if fid=='LEN09':
-        return {**summary([sum(a<=t.idx<b for t in ctx.words) for a,b,_ in ctx.paragraphs],'LEN09.paragraph_words'),
-                **summary([sum(a<=sent.start_char<b for sent in ctx.sentences) for a,b,_ in ctx.paragraphs],'LEN09.paragraph_sentences')}
+        starts=[s.start_char for s in ctx.sentences]
+        return {**summary([b-a for a,b in ctx.paragraph_bounds],'LEN09.paragraph_words'),
+                **summary([bisect_left(starts,b)-bisect_left(starts,a) for a,b,_ in ctx.paragraphs],'LEN09.paragraph_sentences')}
     if fid.startswith('DEP') and fid not in {'DEP14','DEP15','DEP16'}:
         return {k:v for k,v in ctx.dependencies().items() if k.startswith(fid+'.')}
     if fid=='DEP14':
@@ -172,8 +176,11 @@ def base_measure(fid,ctx):
         return {'SYN20.relative_modified_head_proportion':ratio(sum(any(c.dep_=='relcl' for c in t.children) for t in nouns),len(nouns))}
     if fid in {'DIS01','DIS02','DIS03'}:
         seq=ctx.sentence_keys
-        if fid=='DIS02': seq=[[ctx.key(t) for t in ctx.words if a<=t.idx<b] for a,b,_ in ctx.paragraphs]
-        pairs=itertools.combinations(range(len(seq)),2) if fid=='DIS03' else ((i,i+1) for i in range(len(seq)-1))
+        if fid=='DIS03':
+            from .overlap import all_sentence_overlap
+            return all_sentence_overlap(seq,getattr(ctx,'pairwise_path',None),getattr(ctx,'cancel_check',lambda:False))
+        if fid=='DIS02': seq=[ctx.keys[a:b] for a,b in ctx.paragraph_bounds]
+        pairs=((i,i+1) for i in range(len(seq)-1))
         data=[dict(left=i,right=j,jaccard=overlap(seq[i],seq[j])) for i,j in pairs]
         ctx.details[fid.lower()+'_overlap']=data
         return summary([r['jaccard'] for r in data],fid+'.jaccard')

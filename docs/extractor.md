@@ -1,6 +1,6 @@
 # LingMetrics 使用说明
 
-LingMetrics 0.2.1 为 Apple Silicon、macOS 13 及以上的组内测试应用。自带 Python 3.11 和固定英语基础模型。提取与拟合分为独立入口；目录的核验状态和程序的计算状态分别记录。
+LingMetrics 0.2.2 为 Apple Silicon、macOS 13 及以上的组内测试应用。自带 Python 3.11 和固定英语基础模型。提取与拟合分为独立入口；目录的核验状态和程序的计算状态分别记录。
 
 ## 开始提取
 
@@ -24,6 +24,12 @@ LingMetrics 0.2.1 为 Apple Silicon、macOS 13 及以上的组内测试应用。
 - `document_metadata.csv`：文档标识与元数据，供后续连接、分组。
 - `field_dictionary.csv`、`execution_manifest.json`、`run.json`：定义、配置、来源、版本、资源哈希和结果校验值。
 - `.checkpoint/`：续算文件，包含解析结果和原文信息；保留在本机，不纳入应用分发。
+
+0.2.2默认将大于等于1 MB的CSV、`reference.json`和`reference_applied.json`无损压缩为同名`.gz`文件；表清单记录真实路径、压缩方式及哈希。拟合、数据预览和外部参照直接读取压缩文件，也继续兼容0.2.0/0.2.1的未压缩结果。需要在其他软件中使用时，可先解压为原CSV/JSON。
+
+“保存选项”默认关闭“保留临时缓存”和“导出全部句对明细”。取消、失败或出现`error`状态时保留压缩检查点；无错误完成后自动清理，完整结果可直接复用。若需对完成结果重试失败阶段而没有缓存，将重新解析对应文本。旧版已有结果不自动清理。
+
+DIS03始终计算所有有效句对，零重叠保留，双方都为空的句对无定义；汇总包含精确中位数，不抽样。默认保存句子及词级记录供后续重算，避免将数千万句对同时写入明细和缓存。显式勾选逐对导出时，`details/dis03_pairs/`按文档分别保存压缩CSV，`run.json`记录文档与文件的对应；该文件仍可能很大。没有必要为后续模型拟合开启它。
 
 缺失字段为空，状态表区分 `partial`、`undefined`、`resource_required`、`input_required`、`coverage_insufficient`、`method_pending` 和 `error`。部分缺失会列出具体列名。零值只在定义成立时输出。177 个目录条目包含指标族，因此不对应固定177列。
 
@@ -49,7 +55,7 @@ Zipf、Zipf–Mandelbrot、Heaps、Menzerath、词长分布、简短律相关和
 
 ## 高级参数
 
-高级参数为JSON对象，可设置 `hdd_sample`、`mtld_threshold`、`random_permutations`、`low_frequency_pm`、`frequency_bands`、`bundle_order`、`bundle_min_frequency`、`bundle_min_documents`、`taylor_window`、`character_ngram_order`、`network_max_nodes`、`uid_power`、`uid_reference_mean`、`morphological_process`、`wordnet_senses`。
+高级参数为JSON对象，可设置 `hdd_sample`、`mtld_threshold`、`random_permutations`、`low_frequency_pm`、`frequency_bands`、`bundle_order`、`bundle_min_frequency`、`bundle_min_documents`、`taylor_window`、`character_ngram_order`、`network_max_nodes`、`uid_power`、`uid_reference_mean`、`morphological_process`、`wordnet_senses`。`compact_output`默认为`true`；设为`false`保留未压缩的大表，但仍不自动展开全部句对。缓存和逐对导出按界面选项记录。
 
 WordNet深度需要明确synset选择，如 `{"wordnet_senses":{"dog":"dog.n.01"}}`。默认语料网络上限2000词型；超出时要求指定较小语料或显式提高上限。参数全部写入run.json。
 

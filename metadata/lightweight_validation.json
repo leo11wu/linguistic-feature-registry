@@ -1,0 +1,145 @@
+{
+  "application_version": "0.2.2",
+  "checked_at": "2026-10-15T13:29:44.182370+08:00",
+  "input": {
+    "name": "BROWN_Js.txt",
+    "bytes": 1012475,
+    "sha256": "f588076f91bb41548a42f8b67568358b3e39fae216b298a44bf1367ae81812d6",
+    "word_tokens": 164439,
+    "word_types": 14520,
+    "sentences": 6788,
+    "paragraphs": 1175,
+    "all_sentence_pairs": 23035078
+  },
+  "design": {
+    "same_input": true,
+    "same_selected_features": 94,
+    "original_parameters_preserved": true,
+    "system": "macOS 15.7.4 / Apple Silicon",
+    "baseline": "user original completed 0.2.0 run",
+    "candidate": "complete 0.2.2 source snapshot; same bundled Python/base dependencies/LAL/system-check helpers and managed resources; full local system services available",
+    "repetitions": 1,
+    "scope": "software performance and numerical regression; not measurement validity or an invariant speed guarantee",
+    "exploratory_trials_excluded": "Two earlier diagnostic runs lacked system-check helper or system-service access; neither used for the matched comparison."
+  },
+  "baseline": {
+    "version": "0.2.0",
+    "elapsed_seconds": 481.4984388749581,
+    "directory_bytes_including_checkpoint": 2391887605,
+    "peak_memory_bytes": 5844336640,
+    "phases_seconds": {
+      "base": 162.6884744579438,
+      "corpus": 142.93938079103827,
+      "export": 174.36393987503834
+    },
+    "status_counts": {
+      "computed": 83,
+      "coverage_insufficient": 4,
+      "undefined": 1,
+      "input_required": 6
+    }
+  },
+  "candidate": {
+    "version": "0.2.2",
+    "elapsed_seconds": 92.98819745797664,
+    "directory_bytes_including_checkpoint": 27453411,
+    "peak_memory_bytes": 2118025216,
+    "phases_seconds": {
+      "base": 75.85366520797834,
+      "corpus": 10.247015290893614,
+      "export": 6.294428791850805
+    },
+    "status_counts": {
+      "computed": 83,
+      "coverage_insufficient": 4,
+      "undefined": 1,
+      "input_required": 6
+    }
+  },
+  "comparison": {
+    "features.csv": {
+      "rows": 1,
+      "columns": 485,
+      "numeric_cells_checked": 476,
+      "mismatches": 0,
+      "byte_identical": true,
+      "baseline_sha256": "d7d40023eebe4b68171e3c8d63c1fcdedbc6f4dba884f5d062dbd139f85ecad2",
+      "candidate_uncompressed_sha256": "d7d40023eebe4b68171e3c8d63c1fcdedbc6f4dba884f5d062dbd139f85ecad2"
+    },
+    "corpus_features.csv": {
+      "rows": 1,
+      "columns": 24,
+      "numeric_cells_checked": 18,
+      "mismatches": 0,
+      "byte_identical": true,
+      "baseline_sha256": "faf2195145aae366e150f8c0fe26bef33779ae0b99294a3546a16e787475964c",
+      "candidate_uncompressed_sha256": "faf2195145aae366e150f8c0fe26bef33779ae0b99294a3546a16e787475964c"
+    },
+    "feature_status.csv": {
+      "rows": 86,
+      "columns": 5,
+      "numeric_cells_checked": 0,
+      "mismatches": 0,
+      "byte_identical": true,
+      "baseline_sha256": "9c4ab536fc4d3451b85a9542b04d45d8a3f6b7c2723d0bda58017db76194a600",
+      "candidate_uncompressed_sha256": "9c4ab536fc4d3451b85a9542b04d45d8a3f6b7c2723d0bda58017db76194a600"
+    },
+    "corpus_status.csv": {
+      "rows": 8,
+      "columns": 5,
+      "numeric_cells_checked": 0,
+      "mismatches": 0,
+      "byte_identical": true,
+      "baseline_sha256": "407acaf3a7e701a2fc204ecfba3f6b6f86119a3483f0f684e94eb72d565ab422",
+      "candidate_uncompressed_sha256": "407acaf3a7e701a2fc204ecfba3f6b6f86119a3483f0f684e94eb72d565ab422"
+    }
+  },
+  "retained_tables_byte_identical": [
+    "tokens.csv",
+    "sentences.csv",
+    "word_frequency.csv",
+    "observations/sentence_measures.csv",
+    "observations/word_lengths.csv",
+    "observations/rank_frequency.csv",
+    "observations/frequency_spectrum.csv",
+    "observations/vocabulary_growth.csv",
+    "observations/abbreviation.csv",
+    "observations/taylor_points.csv"
+  ],
+  "frozen_reference_counts_equal": true,
+  "exact_dis03_no_sampling": true,
+  "checkpoint_removed": true,
+  "measurement_files_unchanged_after_native_ui_fitting": 34,
+  "storage": {
+    "compact_output": true,
+    "compressed_files": 8,
+    "checkpoint_retained": false,
+    "save_pairwise_details": false,
+    "dis03": "exact all-pairs histogram summary; pair rows require explicit opt-in",
+    "pairwise_files": {}
+  },
+  "tests": {
+    "total": 52,
+    "passed": 48,
+    "skipped": 4,
+    "failures": 0,
+    "errors": 0,
+    "skipped_reason": "Optional Torch/Transformers and RapidFuzz absent from local base environment"
+  },
+  "native_ui": {
+    "version": "0.2.2",
+    "method": "actual native computer-use clicks, accessibility states and screenshot inspection",
+    "saving_controls": "passed: cache retention and full sentence-pair export both off by default",
+    "sample_extraction": "passed: 2 sample documents, computed 120, undefined 2, checkpoint removed",
+    "compressed_source": "observations/taylor_points.csv.gz",
+    "compressed_table_rows": 14519,
+    "fit_models": [
+      "power",
+      "power_log"
+    ],
+    "computed_fit_results": 2,
+    "report": "passed: in-app report identifies .csv.gz source; observation points and fitted curve visibly displayed",
+    "extraction_files_unchanged": true
+  },
+  "privacy": "Only aggregate verification is published; no source text, individual measurements, private resource files or corpus outputs uploaded."
+}

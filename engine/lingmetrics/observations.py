@@ -2,7 +2,7 @@
 from collections import Counter, defaultdict
 from pathlib import Path
 import json, math
-from .util import atomic_json, csv_write, sha
+from .util import atomic_json, csv_write, sha, read_json
 
 
 def choices(options, documents):
@@ -47,7 +47,8 @@ def load_reference(options):
         if not run.is_file() or json.loads(run.read_text(encoding='utf-8-sig')).get('state')!='complete':
             raise ValueError('外部参照须来自完整提取结果')
         path=path/'reference.json'
-    data=json.loads(path.read_text(encoding='utf-8-sig'))
+        if not path.is_file():path=path.with_name('reference.json.gz')
+    data=read_json(path)
     if data.get('schema_version')!=1:raise ValueError('不支持此参照格式；请选择0.2版提取结果')
     if data.get('token_unit')!=options['token_unit']:raise ValueError('参照与当前提取的词形/lemma口径不同')
     if data.get('annotation')!='spacy.en_core_web_sm.3.8.0':raise ValueError('参照的标注方案不匹配')
